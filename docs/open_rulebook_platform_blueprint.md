@@ -402,7 +402,7 @@ Target syntax:
 
 ```md
 ![Barbarian axe and shield](./barbarian-weapons.png)
-*Caption: weapons and ornaments associated with the barbarian.*
+_Caption: weapons and ornaments associated with the barbarian._
 ```
 
 We want to treat this as a semantic figure with a caption, ideally via a parsing rule or plugin.
@@ -418,7 +418,7 @@ Text or a table goes here.
 :::
 :::column
 ![Barbarian art](./berserker.png)
-*Caption: Path of the Berserker.*
+_Caption: Path of the Berserker._
 :::
 :::
 ```
@@ -1161,4 +1161,3 @@ We are building **Return of the Night**, an open-source RPG digital-book platfor
 The implementation strategy is incremental: start with a solid repository foundation, then build the site shell, then the content engine, then the reader, and only after that move into rich authoring features, glossary interactions, localization consolidation, and visual refinement.
 
 The priorities are understanding, clarity, maintainability, and real open-source readiness — not speed or premature complexity.
-

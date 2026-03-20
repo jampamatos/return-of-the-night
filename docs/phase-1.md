@@ -71,7 +71,7 @@
 **Objetivo:** criar o núcleo de documentação comunitária.
 **Escopo:** `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`.
 **Depende de:** P1-10, P1-11.
-**Done when:** os três arquivos existem, estão coerentes entre si e são linkados pelo README.  
+**Done when:** os três arquivos existem, estão coerentes entre si e são linkados pelo README.
 
 ## 13) `P1-13 [S] Write CONTRIBUTING.md`
 
@@ -127,14 +127,14 @@ Eu seguiria exatamente nesta ordem:
 
 Para não virar caos depois, eu já criaria estas labels no GitHub:
 
-* `phase:1`
-* `type:chore`
-* `type:docs`
-* `type:ci`
-* `type:decision`
-* `priority:p0`
-* `size:xs`
-* `size:s`
+- `phase:1`
+- `type:chore`
+- `type:docs`
+- `type:ci`
+- `type:decision`
+- `priority:p0`
+- `size:xs`
+- `size:s`
 
 ## Critério de fechamento da Phase 1
 

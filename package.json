@@ -10,7 +10,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "repository": {
     "type": "git",
@@ -24,10 +26,14 @@
     "url": "https://github.com/jampamatos/return-of-the-night/issues"
   },
   "homepage": "https://github.com/jampamatos/return-of-the-night#readme",
-  "packageManager": "pnpm@9.15.9+sha512.68046141893c66fad01c079231128e9afb89ef87e2691d69e4d40eee228988295fd4682181bae55b58418c3a253bde65a505ec7c5f9403ece5cc3cd37dcf2531",
+  "packageManager": "npm@11.7.0",
   "dependencies": {
+    "astro": "^6.0.7"
+  },
+  "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "astro": "^6.0.7",
+    "prettier": "3.8.1",
+    "prettier-plugin-astro": "0.14.1",
     "typescript": "^5.9.3"
   }
 }
