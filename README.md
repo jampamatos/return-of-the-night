@@ -30,8 +30,8 @@ If a local implementation detail conflicts with those documents, the documentati
 
 ### Requirements
 
-- A recent Node.js version supported by Astro
-- `npm`
+- Node.js `>=22.13.0 <23`
+- npm `>=11.7.0`
 
 ### Setup
 
