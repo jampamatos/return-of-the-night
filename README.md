@@ -96,3 +96,9 @@ Repository-tracked assets are not covered by a single default asset license. Eac
 - [`docs/assets-register.md`](docs/assets-register.md)
 
 If a specific file, directory, or asset declares different licensing terms, those terms take precedence for that material.
+
+## Community
+
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md): expected behavior and enforcement standards for project spaces
+- [SECURITY.md](SECURITY.md): how to report security issues responsibly
+- [SUPPORT.md](SUPPORT.md): where to ask for help and when to open a public issue
