@@ -18,9 +18,11 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/open_rulebook_platform_blueprint.md`](docs/open_rulebook_platform_blueprint.md): product vision, scope, architecture direction, and implementation roadmap for the open-source platform.
 - [`docs/return-of-the-night-source-of-truth-v0.2.md`](docs/return-of-the-night-source-of-truth-v0.2.md): setting canon and project background for Return of the Night.
 - [`docs/adr/0001-bootstrap-strategy.md`](docs/adr/0001-bootstrap-strategy.md): accepted Phase 1 decision to use plain Astro and defer Starlight.
+- [`docs/architecture.md`](docs/architecture.md): current repository architecture, system layers, and explicit Phase 1 boundaries.
 - [`docs/assets-policy.md`](docs/assets-policy.md): repository policy for asset provenance and licensing.
 - [`docs/assets-register.md`](docs/assets-register.md): current register for asset source, author, license, and usage notes.
 - [`docs/phase-1.md`](docs/phase-1.md): the current repository-foundation milestone and its completion criteria.
+- [`docs/writing-guide.md`](docs/writing-guide.md): minimum writing standards for repository artifacts and documentation language policy.
 
 If a local implementation detail conflicts with those documents, the documentation should be treated as authoritative until it is intentionally updated.
 
