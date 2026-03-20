@@ -1,0 +1,54 @@
+name: Feature request
+description: Propose an improvement, new capability, or change in behavior.
+title: "[Feature]: "
+body:
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      description: Please confirm the basics first.
+      options:
+        - label: I searched existing issues and did not find a duplicate request.
+          required: true
+        - label: This request is framed as a concrete user or project need.
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem are you trying to solve?
+      placeholder: Describe the pain point, limitation, or missing capability.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What change would you like to see?
+      placeholder: Describe the expected behavior, workflow, or outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you considered any workarounds or different approaches?
+      placeholder: List alternatives, trade-offs, or why existing behavior is not enough.
+    validations:
+      required: false
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and impact
+      description: Who benefits, and what parts of the project might this affect?
+      placeholder: Explain the expected users, maintainers, or project areas impacted.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Mockups, references, links, or prior discussion.
+      placeholder: Add any supporting context here.
+    validations:
+      required: false

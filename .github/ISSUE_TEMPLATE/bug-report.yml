@@ -1,0 +1,69 @@
+name: Bug report
+description: Report a reproducible bug, regression, or unexpected behavior.
+title: "[Bug]: "
+body:
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      description: Please confirm the basics first.
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: I can reproduce this on the current default branch or latest release.
+          required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the bug in one or two sentences.
+      placeholder: A clear and concise summary of the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the smallest set of steps needed to reproduce the problem.
+      placeholder: |
+        1. Go to ...
+        2. Run ...
+        3. See error ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened instead?
+      placeholder: Describe the expected result.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened in practice?
+      placeholder: Describe the actual result, including errors if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Share any environment details that may matter.
+      placeholder: |
+        - OS:
+        - Browser:
+        - Node.js:
+        - Package manager:
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Links, screenshots, logs, or anything else that helps.
+      placeholder: Add any extra context here.
+    validations:
+      required: false

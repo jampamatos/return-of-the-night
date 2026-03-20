@@ -1,0 +1,35 @@
+# <type>(<scope>): <short summary>
+#
+# Types:
+# feat     A new feature
+# fix      A bug fix
+# docs     Documentation only changes
+# style    Formatting or style-only changes
+# refactor Code changes that do not fix a bug or add a feature
+# test     Adding or updating tests
+# chore    Maintenance or repository housekeeping
+# ci       CI or automation changes
+# build    Build system or dependency changes
+# perf     Performance improvements
+#
+# Summary rules:
+# - Use the imperative mood
+# - Keep it under 72 characters when possible
+# - Do not end with a period
+#
+# Body:
+# - Explain what changed and why
+# - Add relevant context, trade-offs, or follow-up notes
+#
+# Footer examples:
+# Closes #123
+# Related to #456
+# BREAKING CHANGE: explain the user-facing impact
+#
+# ---
+# What changed?
+#
+# Why?
+#
+# References:
+#

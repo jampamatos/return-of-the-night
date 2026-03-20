@@ -1,0 +1,67 @@
+name: Translation issue
+description: Report a translation problem or request a missing translation.
+title: "[Translation]: "
+body:
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      description: Please confirm the basics first.
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: I identified the source text or artifact involved in this issue.
+          required: true
+  - type: input
+    id: artifact
+    attributes:
+      label: Source file or artifact
+      description: Provide the file path, page, or content area that needs attention.
+      placeholder: src/content/... or docs/...
+    validations:
+      required: true
+  - type: input
+    id: target_language
+    attributes:
+      label: Target language
+      description: Which language is affected or requested?
+      placeholder: Brazilian Portuguese
+    validations:
+      required: true
+  - type: dropdown
+    id: problem_type
+    attributes:
+      label: Translation problem type
+      options:
+        - Missing translation
+        - Incorrect translation
+        - Inconsistent terminology
+        - Tone or style issue
+        - Formatting issue
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: current_text
+    attributes:
+      label: Current text
+      description: Paste the current text or describe the missing area.
+      placeholder: Add the current wording here.
+    validations:
+      required: true
+  - type: textarea
+    id: suggested_text
+    attributes:
+      label: Suggested translation or fix
+      description: Share the corrected wording if you have one.
+      placeholder: Add the suggested translation here.
+    validations:
+      required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Explain any terminology, locale, or context considerations.
+      placeholder: Add context that may help reviewers.
+    validations:
+      required: false

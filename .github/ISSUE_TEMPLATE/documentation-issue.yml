@@ -1,0 +1,59 @@
+name: Documentation issue
+description: Report missing, unclear, outdated, or incorrect documentation.
+title: "[Docs]: "
+body:
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      description: Please confirm the basics first.
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: I checked the current documentation before opening this issue.
+          required: true
+  - type: input
+    id: location
+    attributes:
+      label: Affected page or file
+      description: Provide the path, URL, or section name if you know it.
+      placeholder: docs/architecture.md
+    validations:
+      required: false
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Documentation problem type
+      options:
+        - Missing content
+        - Incorrect content
+        - Outdated content
+        - Unclear content
+        - Broken link or reference
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing?
+      description: Explain the documentation gap clearly.
+      placeholder: Describe what a reader cannot understand, find, or trust.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: If you have a concrete fix in mind, describe it here.
+      placeholder: Explain how the documentation could be improved.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, references, or examples.
+      placeholder: Add any supporting context here.
+    validations:
+      required: false
