@@ -12,7 +12,9 @@
     "preview": "astro preview",
     "typecheck": "astro check",
     "format": "prettier . --write",
-    "format:check": "prettier . --check"
+    "format:check": "prettier . --check",
+    "lint": "eslint .",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run build"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
+    "@typescript-eslint/parser": "8.57.1",
+    "eslint": "9.39.4",
+    "eslint-plugin-astro": "1.6.0",
     "prettier": "3.8.1",
     "prettier-plugin-astro": "0.14.1",
     "typescript": "^5.9.3"
