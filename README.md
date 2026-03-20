@@ -83,3 +83,16 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - a writing workflow that stays close to Markdown and MDX
 
 Phase 1 deliberately prioritizes foundation over feature breadth.
+
+## Licensing
+
+Unless otherwise noted, the software code in this repository is licensed under the [MIT License](LICENSE).
+
+Unless otherwise noted, the original textual and documentation content in this repository is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+Repository-tracked assets are not covered by a single default asset license. Each asset must have explicit provenance and licensing information recorded in:
+
+- [`docs/assets-policy.md`](docs/assets-policy.md)
+- [`docs/assets-register.md`](docs/assets-register.md)
+
+If a specific file, directory, or asset declares different licensing terms, those terms take precedence for that material.
