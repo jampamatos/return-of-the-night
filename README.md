@@ -102,3 +102,5 @@ If a specific file, directory, or asset declares different licensing terms, thos
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md): expected behavior and enforcement standards for project spaces
 - [SECURITY.md](SECURITY.md): how to report security issues responsibly
 - [SUPPORT.md](SUPPORT.md): where to ask for help and when to open a public issue
+- [ROADMAP.md](ROADMAP.md): summary of the approved project phases
+- [CHANGELOG.md](CHANGELOG.md): notable repository changes over time
