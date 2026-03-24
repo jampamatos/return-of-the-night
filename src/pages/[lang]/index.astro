@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { LOCALES, getLocaleOrDefault, type Locale } from "../../config/site";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const langParam = Astro.params.lang;
+const lang: Locale = getLocaleOrDefault(langParam);
+
+const pageCopy = {
+  en: {
+    title: "Return of the Night",
+    description:
+      "An open-source digital-book platform for players and game masters.",
+    heading: "Return of the Night",
+    body: "This is the English locale shell entry page.",
+    languageLabel: "English",
+    audienceLabel: "Player",
+  },
+  "pt-BR": {
+    title: "A Volta da Noite",
+    description:
+      "Uma plataforma open-source de livro digital para jogadores e mestres.",
+    heading: "A Volta da Noite",
+    body: "Esta é a página de entrada do shell para o idioma português brasileiro.",
+    languageLabel: "Português (Brasil)",
+    audienceLabel: "Jogador",
+  },
+} as const;
+
+const copy = pageCopy[lang];
+---
+
+<BaseLayout title={copy.title} description={copy.description} lang={lang}>
+  <div slot="header-controls">
+    <button type="button" aria-pressed="true">{copy.languageLabel}</button>
+    <button type="button" aria-pressed="true">{copy.audienceLabel}</button>
+  </div>
+
+  <section>
+    <h1>{copy.heading}</h1>
+    <p>{copy.body}</p>
+  </section>
+</BaseLayout>
