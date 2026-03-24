@@ -1,0 +1,46 @@
+---
+import { getLocaleOrDefault, type Locale } from "../config/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: string;
+}
+
+const {
+  title,
+  description = "Return of the Night - an open source digital book platform.",
+  lang,
+} = Astro.props as Props;
+
+const documentLang: Locale = getLocaleOrDefault(lang);
+---
+
+<!doctype html>
+<html lang={documentLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="site-header__inner">
+          <div class="site-brand">
+            <a href={`/${documentLang}/`}>Return of the Night</a>
+          </div>
+
+          <div class="site-controls" aria-label="Site preferences">
+            <slot name="header-controls" />
+          </div>
+        </div>
+      </header>
+
+      <main class="site-main">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

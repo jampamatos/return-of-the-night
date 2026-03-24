@@ -1,13 +1,19 @@
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Return of the Night</title>
-  </head>
-  <body>
-    <main>
-      <h1>Return of the Night</h1>
-      <p>Phase 1 bootstrap placeholder.</p>
-    </main>
-  </body>
-</html>
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Return of the Night"
+  description="An open-source digital-book platform for players and game masters"
+  lang="en"
+>
+  <div slot="header-controls">
+    <button type="button">English</button>
+    <button type="button">Player</button>
+  </div>
+
+  <section>
+    <h1>Return of the Night</h1>
+    <p>This is the base shell preview for Phase 2.</p>
+  </section>
+</BaseLayout>

@@ -45,7 +45,7 @@ This milestone includes only the **site shell**. It does **not** include content
 **Objective:** create the reusable shell used by all Phase 2 pages.
 **Scope:** app frame, page slot, header area for switches, basic metadata hooks.
 **Depends on:** P2-20.
-**Done when:** both locale entry pages render through one shared layout instead of duplicating structure.
+**Done when:** there is one shared layout component for the Phase 2 shell, and the common app frame is ready to be consumed by the locale entry pages instead of being duplicated in each route.
 
 ### 3) `P2-22 [XS] Add minimal shell styling and focus states`
 
