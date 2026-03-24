@@ -1,19 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import { DEFAULT_LOCALE } from "../config/site";
+
+return Astro.redirect(`/${DEFAULT_LOCALE}/`);
 ---
-
-<BaseLayout
-  title="Return of the Night"
-  description="An open-source digital-book platform for players and game masters"
-  lang="en"
->
-  <div slot="header-controls">
-    <button type="button" aria-pressed="true">English</button>
-    <button type="button" aria-pressed="false">Player</button>
-  </div>
-
-  <section>
-    <h1>Return of the Night</h1>
-    <p>This is the base shell preview for Phase 2.</p>
-  </section>
-</BaseLayout>
