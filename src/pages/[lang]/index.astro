@@ -1,6 +1,13 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { LOCALES, getLocaleOrDefault, type Locale } from "../../config/site";
+import LandingLayout from "../../layouts/LandingLayout.astro";
+import {
+  AUDIENCES,
+  AUDIENCE_STORAGE_KEY,
+  LOCALES,
+  getLocaleOrDefault,
+  type Audience,
+  type Locale,
+} from "../../config/site";
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({
@@ -10,39 +17,350 @@ export function getStaticPaths() {
 
 const langParam = Astro.params.lang;
 const lang: Locale = getLocaleOrDefault(langParam);
+const shellHref = `/${lang}/shell/`;
+
+const localeLabels = {
+  en: {
+    en: "English",
+    "pt-BR": "PT-BR",
+  },
+  "pt-BR": {
+    en: "English",
+    "pt-BR": "PT-BR",
+  },
+} as const satisfies Record<Locale, Record<Locale, string>>;
+
+const audienceLabels = {
+  en: {
+    player: "Player",
+    gm: "GM",
+  },
+  "pt-BR": {
+    player: "Jogador",
+    gm: "Mestre",
+  },
+} as const satisfies Record<Locale, Record<Audience, string>>;
 
 const pageCopy = {
   en: {
     title: "Return of the Night",
-    description:
-      "An open-source digital-book platform for players and game masters.",
-    heading: "Return of the Night",
-    body: "This is the English locale shell entry page.",
-    languageLabel: "English",
-    audienceLabel: "Player",
+    description: "A techno-noir reading shell for players and game masters.",
+    eyebrow: "Open-source digital book platform",
+    heroTitleTop: "Return of",
+    heroTitleBottom: "the Night",
+    heroLead: "A techno-noir reading shell for players and game masters.",
+    heroBody: "Choose your language. Set your audience. Enter the night.",
+    enterLabel: "Enter the site",
+    entryAriaLabel: "Site entry controls",
+    languageLegend: "Language",
+    audienceLegend: "Audience",
+    panelEyebrow: "System status",
+    panelItems: [
+      { label: "Locales", value: "EN / PT-BR" },
+      { label: "Modes", value: "Player / GM" },
+      { label: "Status", value: "Phase 2" },
+    ],
+    valuesEyebrow: "Why this shell exists",
+    valuesTitle: "Built to feel like a platform, not a placeholder.",
+    cards: [
+      {
+        title: "Reader-first entry",
+        body: "The landing page should feel like the threshold of a digital rulebook, not a generic project homepage.",
+      },
+      {
+        title: "Mode-aware direction",
+        body: "Language and audience selection are part of the entry ritual, so the shell already adapts to how the reader wants to enter.",
+      },
+      {
+        title: "Cyberpunk identity",
+        body: "The interface leans into rain, neon, haze, and structured UI framing without collapsing into a generic game promo page.",
+      },
+    ],
+    previewEyebrow: "Planned experience",
+    previewTitle: "Phase 2 establishes the first layer of the night.",
+    previewBody:
+      "This shell is the entry point for a future digital reading platform with structured navigation, audience-aware behavior, and editorial layouts.",
+    previewItems: [
+      "Locale-prefixed routes keep the experience grounded in the active language.",
+      "Audience preference persists as you move deeper into the site.",
+      "The visual shell is ready to grow into a richer reading interface.",
+    ],
   },
   "pt-BR": {
-    title: "A Volta da Noite",
-    description:
-      "Uma plataforma open-source de livro digital para jogadores e mestres.",
-    heading: "A Volta da Noite",
-    body: "Esta é a página de entrada do shell para o idioma português brasileiro.",
-    languageLabel: "Português (Brasil)",
-    audienceLabel: "Jogador",
+    title: "Return of the Night",
+    description: "Uma shell techno-noir de leitura para jogadores e mestres.",
+    eyebrow: "Plataforma open-source de livro digital",
+    heroTitleTop: "Return of",
+    heroTitleBottom: "the Night",
+    heroLead: "Uma shell techno-noir de leitura para jogadores e mestres.",
+    heroBody: "Escolha seu idioma. Defina seu público. Entre na noite.",
+    enterLabel: "Entrar no site",
+    entryAriaLabel: "Controles de entrada do site",
+    languageLegend: "Idioma",
+    audienceLegend: "Público",
+    panelEyebrow: "Status do sistema",
+    panelItems: [
+      { label: "Idiomas", value: "EN / PT-BR" },
+      { label: "Modos", value: "Jogador / Mestre" },
+      { label: "Status", value: "Fase 2" },
+    ],
+    valuesEyebrow: "Por que esta shell existe",
+    valuesTitle: "Feita para parecer uma plataforma, não um placeholder.",
+    cards: [
+      {
+        title: "Entrada orientada ao leitor",
+        body: "A landing page deve parecer o limiar de um livro digital, não uma homepage genérica de projeto.",
+      },
+      {
+        title: "Direção orientada por modo",
+        body: "Idioma e público fazem parte do ritual de entrada, então a shell já se adapta à forma como a leitura vai começar.",
+      },
+      {
+        title: "Identidade cyberpunk",
+        body: "A interface assume chuva, néon, névoa e moldura técnica sem virar uma página promocional genérica de jogo.",
+      },
+    ],
+    previewEyebrow: "Experiência planejada",
+    previewTitle: "A Fase 2 estabelece a primeira camada da noite.",
+    previewBody:
+      "Esta shell é o ponto de entrada para uma futura plataforma digital de leitura com navegação estruturada, comportamento orientado por público e layouts editoriais.",
+    previewItems: [
+      "Rotas com prefixo de idioma mantêm a experiência ancorada no idioma ativo.",
+      "A preferência de público persiste conforme o usuário entra mais fundo no site.",
+      "A base visual já está pronta para evoluir para uma interface de leitura mais rica.",
+    ],
   },
 } as const;
 
 const copy = pageCopy[lang];
+
+const localeOptions = LOCALES.map((locale) => ({
+  value: locale,
+  label: localeLabels[lang][locale],
+  href: `/${locale}/`,
+  isActive: locale === lang,
+}));
+
+const audienceOptions = AUDIENCES.map((audience) => ({
+  value: audience,
+  label: audienceLabels[lang][audience],
+  isActive: audience === "player",
+}));
 ---
 
-<BaseLayout title={copy.title} description={copy.description} lang={lang}>
-  <div slot="header-controls">
-    <button type="button" aria-pressed="true">{copy.languageLabel}</button>
-    <button type="button" aria-pressed="true">{copy.audienceLabel}</button>
-  </div>
+<LandingLayout title={copy.title} description={copy.description} lang={lang}>
+  <section class="landing-hero">
+    <div class="landing-hero__media" aria-hidden="true">
+      <img
+        class="landing-hero__image"
+        src="/images/landing-hero.png"
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div class="landing-hero__overlay landing-hero__overlay--base"></div>
+      <div class="landing-hero__overlay landing-hero__overlay--left"></div>
+      <div class="landing-hero__overlay landing-hero__overlay--vignette"></div>
+      <div class="landing-hero__grid"></div>
+    </div>
 
-  <section>
-    <h1>{copy.heading}</h1>
-    <p>{copy.body}</p>
+    <div class="landing-hero__inner">
+      <div class="landing-hero__content">
+        <p class="landing-hero__eyebrow">{copy.eyebrow}</p>
+
+        <h1 class="landing-hero__title">
+          <span>{copy.heroTitleTop}</span>
+          <span>{copy.heroTitleBottom}</span>
+        </h1>
+
+        <p class="landing-hero__lead">{copy.heroLead}</p>
+        <p class="landing-hero__body">{copy.heroBody}</p>
+
+        <div class="landing-entry" aria-label={copy.entryAriaLabel}>
+          <div class="landing-entry__selectors">
+            <div class="landing-selector landing-selector--locale">
+              <span class="landing-selector__label">{copy.languageLegend}</span>
+
+              <div
+                class="landing-selector__options"
+                role="group"
+                aria-label={copy.languageLegend}
+              >
+                {
+                  localeOptions.map((locale) => (
+                    <a
+                      href={locale.href}
+                      class:list={[
+                        "landing-selector__option",
+                        { "is-active": locale.isActive },
+                      ]}
+                      data-active={locale.isActive}
+                      aria-current={locale.isActive ? "page" : undefined}
+                    >
+                      {locale.label}
+                    </a>
+                  ))
+                }
+              </div>
+            </div>
+
+            <div class="landing-selector landing-selector--audience">
+              <span class="landing-selector__label">{copy.audienceLegend}</span>
+
+              <div
+                class="landing-selector__options"
+                data-audience-selector
+                role="group"
+                aria-label={copy.audienceLegend}
+              >
+                {
+                  audienceOptions.map((audience) => (
+                    <button
+                      type="button"
+                      class:list={[
+                        "landing-selector__option",
+                        { "is-active": audience.isActive },
+                      ]}
+                      data-audience-option={audience.value}
+                      data-active={audience.isActive}
+                      aria-pressed={audience.isActive ? "true" : "false"}
+                    >
+                      {audience.label}
+                    </button>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+
+          <a class="landing-entry__cta" href={shellHref}>
+            {copy.enterLabel}
+          </a>
+        </div>
+      </div>
+
+      <aside class="landing-panel" aria-label={copy.panelEyebrow}>
+        <p class="landing-panel__eyebrow">{copy.panelEyebrow}</p>
+
+        <dl class="landing-panel__list">
+          {
+            copy.panelItems.map((item) => (
+              <div class="landing-panel__row">
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </aside>
+    </div>
   </section>
-</BaseLayout>
+
+  <section class="landing-values" aria-labelledby="landing-values-title">
+    <div class="landing-values__header">
+      <p class="landing-section__eyebrow">{copy.valuesEyebrow}</p>
+      <h2 id="landing-values-title" class="landing-section__title">
+        {copy.valuesTitle}
+      </h2>
+    </div>
+
+    <div class="landing-values__grid">
+      {
+        copy.cards.map((card) => (
+          <article class="landing-card">
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="landing-preview" aria-labelledby="landing-preview-title">
+    <div class="landing-preview__copy">
+      <p class="landing-section__eyebrow">{copy.previewEyebrow}</p>
+      <h2 id="landing-preview-title" class="landing-section__title">
+        {copy.previewTitle}
+      </h2>
+      <p class="landing-preview__body">{copy.previewBody}</p>
+    </div>
+
+    <div class="landing-preview__panel">
+      <ul class="landing-preview__list">
+        {copy.previewItems.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline data-storage-key={AUDIENCE_STORAGE_KEY}>
+    const STORAGE_KEY =
+      document.currentScript?.getAttribute("data-storage-key") ??
+      "rotn:audience";
+    const VALID_AUDIENCES = new Set(["player", "gm"]);
+    const DEFAULT_AUDIENCE = "player";
+
+    const selector = document.querySelector("[data-audience-selector]");
+
+    if (selector instanceof HTMLElement) {
+      const buttons = Array.from(
+        selector.querySelectorAll("[data-audience-option]"),
+      );
+
+      const applyAudience = (value) => {
+        buttons.forEach((button) => {
+          if (!(button instanceof HTMLButtonElement)) {
+            return;
+          }
+
+          const isActive = button.dataset.audienceOption === value;
+
+          button.dataset.active = String(isActive);
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", String(isActive));
+        });
+
+        document.documentElement.dataset.audience = value;
+      };
+
+      const readAudience = () => {
+        try {
+          const storedValue = window.localStorage.getItem(STORAGE_KEY);
+
+          if (storedValue && VALID_AUDIENCES.has(storedValue)) {
+            return storedValue;
+          }
+        } catch {}
+
+        return DEFAULT_AUDIENCE;
+      };
+
+      const writeAudience = (value) => {
+        try {
+          window.localStorage.setItem(STORAGE_KEY, value);
+        } catch {}
+      };
+
+      const initialAudience = readAudience();
+      writeAudience(initialAudience);
+      applyAudience(initialAudience);
+
+      buttons.forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) {
+          return;
+        }
+
+        button.addEventListener("click", () => {
+          const nextAudience = button.dataset.audienceOption;
+
+          if (!nextAudience || !VALID_AUDIENCES.has(nextAudience)) {
+            return;
+          }
+
+          writeAudience(nextAudience);
+          applyAudience(nextAudience);
+        });
+      });
+    }
+  </script>
+</LandingLayout>

@@ -1,5 +1,7 @@
 ---
 import { DEFAULT_LOCALE } from "../config/site";
 
-return Astro.redirect(`/${DEFAULT_LOCALE}/`);
+const defaultLocale = DEFAULT_LOCALE;
+
+return Astro.redirect(`/${defaultLocale}/`);
 ---

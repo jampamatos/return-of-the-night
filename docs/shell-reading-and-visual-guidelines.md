@@ -250,6 +250,77 @@ The site should evoke:
 
 It should feel like the reader is entering a **dangerous, intelligent, stylized world**, not a sterile design system.
 
+## External visual reference: Cities Without Number
+
+The project draws part of its visual inspiration from **Cities Without Number**, but it is important to interpret that reference correctly.
+
+The book does not appear to rely on one single illustration technique or one single hand. Its coherence comes from **art direction**, recurring editorial image patterns, disciplined palette control, and a consistent techno-noir mood.
+
+What stands out most in practice is not constant splash art, but a repeated editorial grammar made of:
+
+- recurring support images and visual motifs
+- opening images with stronger atmospheric impact
+- image use as part of page composition, not only as decoration
+
+The recurring visual language of that reference tends to favor:
+
+- dark charcoal, slate-blue, and blue-violet base tones
+- selective magenta, cyan, or amber accents rather than full-spectrum neon
+- large shadow masses with localized glow
+- industrial grime, haze, rain, smoke, and degraded technological surfaces
+- oppressive architecture and infrastructure
+- human figures used for scale, vulnerability, or tension rather than glamor
+- asymmetrical crops, vertical framing, and compositions that feel editorial rather than poster-like
+
+For this project, the important takeaway is not to imitate the exact rendering style of any one illustration, but to preserve the same visual discipline:
+
+- dark first, neon second
+- one dominant accent family per image whenever possible
+- atmosphere before spectacle
+- architecture, systems, and power structures over character glamour
+- support art, side imagery, and framing devices should matter as much as hero images
+
+Different production methods may still be acceptable, including:
+
+- digital painting
+- photobashed or matte-painted scenes
+- more graphic or stylized illustration
+- mixed editorial image systems
+
+What matters is that all of them still read as belonging to the same world.
+
+## Image direction for Return of the Night
+
+The project should adapt that reference to its own specific identity rather than copying generic cyberpunk imagery.
+
+The core visual idea of the setting is not merely "cool neon dystopia". It is a world that abolished war and night, enclosed humanity inside corporate Arcologies, and taught people to fear the outside.
+
+That means project imagery should often reinforce:
+
+- sealed corporate habitats
+- impossible artificial light
+- oppressive verticality
+- surveillance and ownership systems
+- false cleanliness hiding systemic violence
+- the contrast between controlled interiors and the forbidden reality outside
+- the emotional shock of encountering true darkness
+
+As a rule, project images should feel like they belong to a world of:
+
+- corporate containment
+- synthetic daylight and nocturnal deprivation
+- technological dependence
+- managed fear
+- urban decay beneath polished control
+
+The style should avoid drifting into:
+
+- rainbow-neon visual noise
+- clean commercial sci-fi
+- heroic action-poster posing
+- glossy futurism without grime or dread
+- images that feel playful, ironic, or too visually loud for long-form reading
+
 ## Light and dark modes
 
 The project should support both:

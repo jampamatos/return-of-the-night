@@ -1,0 +1,49 @@
+---
+import "../styles/global.css";
+import "../styles/landing.css";
+import { getLocaleOrDefault, type Locale } from "../config/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: string;
+}
+
+const {
+  title,
+  description = "Return of the Night - a cyberpunk digital book platform.",
+  lang,
+} = Astro.props as Props;
+
+const documentLang: Locale = getLocaleOrDefault(lang);
+---
+
+<!doctype html>
+<html lang={documentLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#060b11" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+    />
+
+    <slot name="head" />
+    <title>{title}</title>
+  </head>
+
+  <body class="landing-page">
+    <main id="main-content" class="landing-main">
+      <slot />
+    </main>
+  </body>
+</html>

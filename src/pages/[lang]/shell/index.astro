@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { LOCALES, getLocaleOrDefault, type Locale } from "../../../config/site";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const langParam = Astro.params.lang;
+const lang: Locale = getLocaleOrDefault(langParam);
+
+const pageCopy = {
+  en: {
+    title: "Return of the Night Shell",
+    description: "The shared shell entry point for Return of the Night.",
+    heading: "Shell Online",
+    body: "This is the first internal checkpoint of the site shell. Language-prefixed routing and the shared frame are already in place, and the deeper reading experience will expand from here.",
+  },
+  "pt-BR": {
+    title: "Shell de Return of the Night",
+    description:
+      "O ponto de entrada da shell compartilhada de Return of the Night.",
+    heading: "Shell Online",
+    body: "Este e o primeiro ponto interno da shell do site. A rota com prefixo de idioma e a moldura compartilhada ja estao no lugar, e a experiencia de leitura mais profunda vai crescer a partir daqui.",
+  },
+} as const;
+
+const copy = pageCopy[lang];
+---
+
+<BaseLayout title={copy.title} description={copy.description} lang={lang}>
+  <section>
+    <h1>{copy.heading}</h1>
+    <p>{copy.body}</p>
+  </section>
+</BaseLayout>
