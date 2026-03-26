@@ -1,6 +1,11 @@
 ---
 import "../styles/global.css";
-import { getLocaleOrDefault, type Locale } from "../config/site";
+import {
+  AUDIENCE_STORAGE_KEY,
+  DEFAULT_AUDIENCE,
+  getLocaleOrDefault,
+  type Locale,
+} from "../config/site";
 
 interface Props {
   title: string;
@@ -18,11 +23,30 @@ const documentLang: Locale = getLocaleOrDefault(lang);
 ---
 
 <!doctype html>
-<html lang={documentLang}>
+<html lang={documentLang} data-audience={DEFAULT_AUDIENCE}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <script
+      is:inline
+      define:vars={{
+        storageKey: AUDIENCE_STORAGE_KEY,
+        fallbackAudience: DEFAULT_AUDIENCE,
+      }}
+    >
+      try {
+        const rawValue = window.localStorage.getItem(storageKey);
+        const audience =
+          rawValue === "player" || rawValue === "gm"
+            ? rawValue
+            : fallbackAudience;
+
+        document.documentElement.dataset.audience = audience;
+      } catch {
+        document.documentElement.dataset.audience = fallbackAudience;
+      }
+    </script>
     <title>{title}</title>
   </head>
   <body>

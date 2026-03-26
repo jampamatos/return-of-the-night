@@ -273,9 +273,15 @@ button {
   transform: translateY(1px);
 }
 
-.site-controls button[aria-pressed="true"],
 .site-controls a[aria-current="page"],
-.site-controls [data-active="true"] {
+html[data-audience="player"]
+  .site-controls
+  [data-audience-selector]
+  [data-audience-option="player"],
+html[data-audience="gm"]
+  .site-controls
+  [data-audience-selector]
+  [data-audience-option="gm"] {
   background: linear-gradient(
     180deg,
     rgba(56, 189, 248, 0.18),
