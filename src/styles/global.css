@@ -338,13 +338,21 @@ button {
   margin-bottom: 0;
 }
 
-.locale-switcher {
+.shell-header-controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.shell-control {
   display: grid;
   justify-items: end;
   gap: var(--space-2);
 }
 
-.locale-switcher__label {
+.shell-control__label {
   font-family: var(--font-ui);
   font-size: 0.8rem;
   font-weight: 700;
@@ -353,7 +361,7 @@ button {
   color: var(--muted-text-color);
 }
 
-.locale-switcher__links {
+.shell-control__options {
   display: inline-flex;
   align-items: stretch;
   gap: 0;
@@ -364,7 +372,7 @@ button {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
-.locale-switcher__links a {
+.shell-control__options > :where(a, button) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -376,11 +384,11 @@ button {
   box-shadow: none;
 }
 
-.locale-switcher__links a:last-child {
+.shell-control__options > :where(a, button):last-child {
   border-right: 0;
 }
 
-.locale-switcher__links a:focus-visible {
+.shell-control__options > :where(a, button):focus-visible {
   position: relative;
   z-index: 1;
   outline: 2px solid var(--focus-ring-color);
@@ -388,16 +396,20 @@ button {
 }
 
 @media (max-width: 40rem) {
-  .locale-switcher {
+  .shell-header-controls {
+    width: 100%;
+  }
+
+  .shell-control {
     justify-items: start;
     width: 100%;
   }
 
-  .locale-switcher__links {
+  .shell-control__options {
     width: 100%;
   }
 
-  .locale-switcher__links a {
+  .shell-control__options > :where(a, button) {
     flex: 1;
     min-width: 0;
     width: auto;

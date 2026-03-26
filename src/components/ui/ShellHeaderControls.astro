@@ -1,0 +1,71 @@
+---
+import { LOCALES, type Audience, type Locale } from "../../config/site";
+import { buildLocalHref } from "../../utils/locale-routing";
+
+interface AudienceOption {
+  value: Audience;
+  label: string;
+  isActive: boolean;
+}
+
+interface Props {
+  lang: Locale;
+  pathname: string;
+  languageSwitcherLabel: string;
+  audienceSwitcherLabel: string;
+  audienceOptions: AudienceOption[];
+}
+
+const {
+  lang,
+  pathname,
+  languageSwitcherLabel,
+  audienceSwitcherLabel,
+  audienceOptions,
+} = Astro.props as Props;
+
+const localeLinks = LOCALES.map((locale) => ({
+  locale,
+  href: buildLocalHref(locale, pathname),
+}));
+---
+
+<div class="shell-header-controls">
+  <div class="shell-control">
+    <span class="shell-control__label">{languageSwitcherLabel}</span>
+
+    <nav class="shell-control__options" aria-label={languageSwitcherLabel}>
+      {
+        localeLinks.map(({ locale, href }) => (
+          <a href={href} aria-current={locale === lang ? "page" : undefined}>
+            {locale}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+
+  <div class="shell-control">
+    <span class="shell-control__label">{audienceSwitcherLabel}</span>
+
+    <div
+      class="shell-control__options"
+      data-audience-selector
+      role="group"
+      aria-label={audienceSwitcherLabel}
+    >
+      {
+        audienceOptions.map((audience) => (
+          <button
+            type="button"
+            data-audience-option={audience.value}
+            data-active={audience.isActive}
+            aria-pressed={audience.isActive ? "true" : "false"}
+          >
+            {audience.label}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</div>
