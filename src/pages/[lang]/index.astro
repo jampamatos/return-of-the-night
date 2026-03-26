@@ -2,7 +2,6 @@
 import LandingLayout from "../../layouts/LandingLayout.astro";
 import {
   AUDIENCES,
-  AUDIENCE_STORAGE_KEY,
   LOCALES,
   getLocaleOrDefault,
   type Audience,
@@ -293,74 +292,9 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     </div>
   </section>
 
-  <script is:inline data-storage-key={AUDIENCE_STORAGE_KEY}>
-    const STORAGE_KEY =
-      document.currentScript?.getAttribute("data-storage-key") ??
-      "rotn:audience";
-    const VALID_AUDIENCES = new Set(["player", "gm"]);
-    const DEFAULT_AUDIENCE = "player";
+  <script>
+    import { initLandingAudienceSelector } from "../../lib/audience/landing-selector";
 
-    const selector = document.querySelector("[data-audience-selector]");
-
-    if (selector instanceof HTMLElement) {
-      const buttons = Array.from(
-        selector.querySelectorAll("[data-audience-option]"),
-      );
-
-      const applyAudience = (value) => {
-        buttons.forEach((button) => {
-          if (!(button instanceof HTMLButtonElement)) {
-            return;
-          }
-
-          const isActive = button.dataset.audienceOption === value;
-
-          button.dataset.active = String(isActive);
-          button.classList.toggle("is-active", isActive);
-          button.setAttribute("aria-pressed", String(isActive));
-        });
-
-        document.documentElement.dataset.audience = value;
-      };
-
-      const readAudience = () => {
-        try {
-          const storedValue = window.localStorage.getItem(STORAGE_KEY);
-
-          if (storedValue && VALID_AUDIENCES.has(storedValue)) {
-            return storedValue;
-          }
-        } catch {}
-
-        return DEFAULT_AUDIENCE;
-      };
-
-      const writeAudience = (value) => {
-        try {
-          window.localStorage.setItem(STORAGE_KEY, value);
-        } catch {}
-      };
-
-      const initialAudience = readAudience();
-      writeAudience(initialAudience);
-      applyAudience(initialAudience);
-
-      buttons.forEach((button) => {
-        if (!(button instanceof HTMLButtonElement)) {
-          return;
-        }
-
-        button.addEventListener("click", () => {
-          const nextAudience = button.dataset.audienceOption;
-
-          if (!nextAudience || !VALID_AUDIENCES.has(nextAudience)) {
-            return;
-          }
-
-          writeAudience(nextAudience);
-          applyAudience(nextAudience);
-        });
-      });
-    }
+    initLandingAudienceSelector();
   </script>
 </LandingLayout>
