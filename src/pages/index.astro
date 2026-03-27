@@ -1,7 +1,6 @@
 ---
-import { DEFAULT_LOCALE } from "../config/site";
+import { getDefaultLocaleHref } from "../utils/locale-routing";
 
-const defaultLocale = DEFAULT_LOCALE;
-
-return Astro.redirect(`/${defaultLocale}/`);
+Astro.response.headers.set("Location", getDefaultLocaleHref());
+Astro.response.status = 302;
 ---

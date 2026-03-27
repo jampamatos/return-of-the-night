@@ -24,6 +24,10 @@ export function buildLocalHref(targetLocale: Locale, pathname: string): string {
   return `/${targetLocale}${suffix}`;
 }
 
+export function getDefaultLocaleHref(pathname = "/"): string {
+  return buildLocalHref(DEFAULT_LOCALE, pathname);
+}
+
 export function getSafeLocaleFromPath(pathname: string): Locale {
   const segments = pathname.split("/").filter(Boolean);
   const maybeLocale = segments[0];
