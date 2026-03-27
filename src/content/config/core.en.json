@@ -1,0 +1,21 @@
+{
+  "book": "core",
+  "lang": "en",
+  "bookTitle": "Return of the Night",
+  "bookSubtitle": "Placeholder Core Book Configuration",
+  "navigation": {
+    "tableOfContents": "Table of Contents",
+    "previousChapter": "Previous Chapter",
+    "nextChapter": "Next Chapter",
+    "glossary": "Glossary"
+  },
+  "chapterGroups": [
+    {
+      "id": "test-group",
+      "label": "Test Group",
+      "description": "Placeholder chapter group used to validate book configuration loading.",
+      "order": 0,
+      "chapterNumbers": [0]
+    }
+  ]
+}
