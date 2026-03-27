@@ -6,23 +6,23 @@ Create the structure that turns content files into a navigable book.
 
 ## Deliverables
 
-* content collections
-* typed schemas
-* first `chapters` collection
-* first `glossary` collection
-* book config
-* metadata reading utilities
-* book-order generation  
+- content collections
+- typed schemas
+- first `chapters` collection
+- first `glossary` collection
+- book config
+- metadata reading utilities
+- book-order generation
 
 ## Definition of Done
 
-* chapters are loaded from content
-* glossary entries are loaded from content
-* the app understands ordering, language, and logical identity of entries
+- chapters are loaded from content
+- glossary entries are loaded from content
+- the app understands ordering, language, and logical identity of entries
 
 ## Phase boundary
 
-This milestone includes the **typed content system and metadata utilities only**. It does **not** include the real Table of Contents page, book-home rendering, chapter reader pages, heading anchors, chapter sidebar UI, glossary hover cards, or full localization behavior. Those belong to later phases.  
+This milestone includes the **typed content system and metadata utilities only**. It does **not** include the real Table of Contents page, book-home rendering, chapter reader pages, heading anchors, chapter sidebar UI, glossary hover cards, or full localization behavior. Those belong to later phases.
 
 ---
 
@@ -35,11 +35,11 @@ This milestone includes the **typed content system and metadata utilities only**
 **Depends on:** Phase 2 being complete.
 **Done when:** there is a small implementation note or constants module defining:
 
-* supported locales: `en`, `pt-BR`
-* collection names: `chapters`, `glossary`, `book-config`
-* single-book baseline for MVP
-* shared logical `id` rule across languages
-* explicit non-goals for Phase 3.  
+- supported locales: `en`, `pt-BR`
+- collection names: `chapters`, `glossary`, `book-config`
+- single-book baseline for MVP
+- shared logical `id` rule across languages
+- explicit non-goals for Phase 3.
 
 ### 33) `P3-33 [S] Create the base content directory scaffold`
 
@@ -102,7 +102,7 @@ This milestone includes the **typed content system and metadata utilities only**
 **Objective:** create the first reusable content metadata utilities.
 **Scope:** utilities to load chapter entries, filter by locale, and scope by book.
 **Depends on:** P3-35, P3-38, P3-40.
-**Done when:** the app can programmatically list chapter entries for a given language and book, returning typed results from content.  
+**Done when:** the app can programmatically list chapter entries for a given language and book, returning typed results from content.
 
 ### 42) `P3-42 [S] Add ordered chapter utilities`
 
@@ -123,7 +123,7 @@ This milestone includes the **typed content system and metadata utilities only**
 **Objective:** create the first reusable glossary lookup layer.
 **Scope:** glossary listing by language, lookup by logical `id`, and minimal typed access patterns needed by later phases.
 **Depends on:** P3-36, P3-39.
-**Done when:** the app can load glossary entries from content and resolve them by language and logical identity.  
+**Done when:** the app can load glossary entries from content and resolve them by language and logical identity.
 
 ### 45) `P3-45 [XS] Validate shared logical identity rules across localized content`
 
@@ -137,7 +137,7 @@ This milestone includes the **typed content system and metadata utilities only**
 **Objective:** close the milestone with a real end-to-end metadata sanity check.
 **Scope:** schema validation, typed loading, ordering checks, glossary loading checks, and explicit review of Phase 3 boundaries.
 **Depends on:** P3-41 through P3-45.
-**Done when:** chapter entries load from content, glossary entries load from content, ordering works, identity rules are clear, and no Phase 4 or Phase 5 UI work has leaked into the milestone.  
+**Done when:** chapter entries load from content, glossary entries load from content, ordering works, identity rules are clear, and no Phase 4 or Phase 5 UI work has leaked into the milestone.
 
 ---
 
@@ -145,21 +145,21 @@ This milestone includes the **typed content system and metadata utilities only**
 
 `P3-32 → P3-33 → P3-34 → P3-35 → P3-36 → P3-37 → P3-38 → P3-39 → P3-40 → P3-41 → P3-42 → P3-43 → P3-44 → P3-45 → P3-46`
 
-This follows the approved Phase 3 sequence from the roadmap and blueprint: create the content configuration layer, define schemas, seed example entries, then build the metadata utilities that later phases will consume.  
+This follows the approved Phase 3 sequence from the roadmap and blueprint: create the content configuration layer, define schemas, seed example entries, then build the metadata utilities that later phases will consume.
 
 ---
 
 ## Suggested labels
 
-* `phase:3`
-* `type:feat`
-* `type:content`
-* `type:schema`
-* `type:i18n`
-* `type:architecture`
-* `priority:p0`
-* `size:xs`
-* `size:s`
+- `phase:3`
+- `type:feat`
+- `type:content`
+- `type:schema`
+- `type:i18n`
+- `type:architecture`
+- `priority:p0`
+- `size:xs`
+- `size:s`
 
 ---
 
@@ -167,15 +167,15 @@ This follows the approved Phase 3 sequence from the roadmap and blueprint: creat
 
 Phase 3 should be considered complete only when all of the following are true:
 
-* the project has working typed content collections
-* chapter entries load from content
-* glossary entries load from content
-* book config exists as content
-* the app can list chapter entries by language and book
-* the app can compute ordered chapters
-* the app can compute previous/next chapter metadata
-* localized content follows shared logical identity rules
-* the milestone still contains **no Phase 4/5 leakage** such as TOC rendering, book-home UI, chapter pages, or MDX reader layout.  
+- the project has working typed content collections
+- chapter entries load from content
+- glossary entries load from content
+- book config exists as content
+- the app can list chapter entries by language and book
+- the app can compute ordered chapters
+- the app can compute previous/next chapter metadata
+- localized content follows shared logical identity rules
+- the milestone still contains **no Phase 4/5 leakage** such as TOC rendering, book-home UI, chapter pages, or MDX reader layout.
 
 There’s one small architectural choice worth flagging early: whether `book-config` should be designed as a true collection from day one, or as a single structured config entry that only later grows into multiple book records. The blueprint clearly wants **book config as content** and wants the architecture future-ready for multiple books while still targeting one book first, so I kept that tension explicit inside **P3-37** rather than hiding it.
 
