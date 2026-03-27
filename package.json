@@ -30,6 +30,7 @@
   "homepage": "https://github.com/jampamatos/return-of-the-night#readme",
   "packageManager": "npm@11.7.0",
   "dependencies": {
+    "@astrojs/mdx": "^5.0.3",
     "astro": "^6.0.7"
   },
   "devDependencies": {
