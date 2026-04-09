@@ -9,10 +9,15 @@ import {
   glossarySchema,
 } from "./lib/content/schemas";
 
+function generateLocalizedContentEntryId(entry: string): string {
+  return entry.replace(/\.[^.]+$/, "");
+}
+
 const chaptersCollection = defineCollection({
   loader: glob({
     base: `./${CONTENT_PATHS.chaptersRoot}`,
     pattern: "**/*.{md,mdx}",
+    generateId: ({ entry }) => generateLocalizedContentEntryId(entry),
   }),
   schema: chaptersSchema,
 });

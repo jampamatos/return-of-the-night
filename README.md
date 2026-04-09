@@ -2,7 +2,7 @@
 
 Return of the Night is an open-source web platform for reading RPG rulebooks, setting books, campaign books, and compendiums through a content-first digital-book experience.
 
-The repository has completed **Phase 2 — Base site structure**. The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, language and audience controls, and client-side audience persistence. The next approved implementation step is **Phase 3 — Content engine**.
+The repository has completed **Phase 3 — Content engine**. The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, and metadata utilities for chapter ordering and glossary lookup. The next approved implementation step is **Phase 4 — Book home / Table of Contents**.
 
 ## Current status
 
@@ -13,7 +13,11 @@ The repository has completed **Phase 2 — Base site structure**. The current co
 - Locale switching preserves the current route suffix when possible instead of always returning to the site root.
 - The audience preference persists in `localStorage` under the approved key `rotn:audience`.
 - The root route `/` redirects to the current default locale, `en`.
-- The repository already includes the initial Phase 3 directory scaffold under `src/content/` plus placeholder utility areas under `src/lib/`, but the content engine itself is not implemented yet.
+- The project registers Astro content collections for `chapters`, `glossary`, and `book-config` in [`src/content.config.ts`](src/content.config.ts).
+- Chapters, glossary entries, and book config are validated through typed Zod schemas under [`src/lib/content/schemas/`](src/lib/content/schemas/).
+- The repository includes seeded English content plus localized PT-BR mirrors that demonstrate shared logical IDs across languages.
+- Metadata utilities now support chapter listing by language and book, stable reading order, adjacent chapter resolution, glossary listing by language, and glossary lookup by logical ID.
+- Phase 3 can be validated end-to-end with `npm run verify:phase-3`.
 - **Starlight is intentionally deferred** at this stage.
 - The repository language is **English-first** for code and contributor-facing artifacts.
 
@@ -25,16 +29,18 @@ The repository has completed **Phase 2 — Base site structure**. The current co
 - `/en/shell/`
 - `/pt-BR/shell/`
 
-## Phase 3 scaffold already present
+## Content Engine Status
 
-- `src/content/chapters/en/`
-- `src/content/chapters/pt-BR/`
-- `src/content/glossary/en/`
-- `src/content/glossary/pt-BR/`
-- `src/content/config/`
-- placeholder utility areas in `src/lib/content/`, `src/lib/glossary/`, `src/lib/i18n/`, and `src/lib/reader/`
+- `src/content/chapters/en/` contains seeded chapter content for the MVP book.
+- `src/content/chapters/pt-BR/` contains a localized mirror that demonstrates the shared logical `id` rule.
+- `src/content/glossary/en/` contains seeded glossary entries.
+- `src/content/glossary/pt-BR/` contains a localized mirror that demonstrates the shared logical `id` rule.
+- `src/content/config/` contains the first book-level config entry for the MVP book.
+- `src/lib/content/chapters.ts` provides chapter listing, ordering, and adjacent-entry utilities.
+- `src/lib/glossary/entries.ts` provides glossary listing and lookup utilities.
+- `scripts/verify-phase-3.mjs` performs the Phase 3 metadata sanity check against the synchronized Astro content store.
 
-These directories are only the approved scaffold for the next milestone. The app does not yet register Astro content collections, validate schemas, or load chapters and glossary entries from content files.
+The app still does not render the real Table of Contents, chapter pages, sidebar navigation, or interactive glossary UI. Those remain part of later phases.
 
 ## Source of truth
 
@@ -78,30 +84,36 @@ The development server starts the current Phase 2 shell. Useful routes to verify
 - `/en/shell/`
 - `/pt-BR/shell/`
 
+To validate the completed Phase 3 content engine, run:
+
+```bash
+npm run verify:phase-3
+```
+
 ## Available scripts
 
-| Script                 | Purpose                                                                     |
-| ---------------------- | --------------------------------------------------------------------------- |
-| `npm run dev`          | Start the local Astro development server.                                   |
-| `npm run build`        | Create a production build in `dist/`.                                       |
-| `npm run preview`      | Preview the production build locally.                                       |
-| `npm run typecheck`    | Run Astro and TypeScript project checks.                                    |
-| `npm run lint`         | Run ESLint across the repository.                                           |
-| `npm run format`       | Format repository files with Prettier.                                      |
-| `npm run format:check` | Verify that files match the configured Prettier style.                      |
-| `npm run check`        | Run the aggregate quality checks: format check, lint, typecheck, and build. |
+| Script                   | Purpose                                                                      |
+| ------------------------ | ---------------------------------------------------------------------------- |
+| `npm run dev`            | Start the local Astro development server.                                    |
+| `npm run build`          | Create a production build in `dist/`.                                        |
+| `npm run preview`        | Preview the production build locally.                                        |
+| `npm run typecheck`      | Run Astro and TypeScript project checks.                                     |
+| `npm run verify:phase-3` | Run the Phase 3 content verification pass: sync, build, and metadata checks. |
+| `npm run lint`           | Run ESLint across the repository.                                            |
+| `npm run format`         | Format repository files with Prettier.                                       |
+| `npm run format:check`   | Verify that files match the configured Prettier style.                       |
+| `npm run check`          | Run the aggregate quality checks: format check, lint, typecheck, and build.  |
 
 ## Current boundaries
 
-The current implementation intentionally stops at the Phase 2 landing page and shared shell. The repository does **not** yet include:
+The current implementation intentionally stops at the end of Phase 3. The repository does **not** yet include:
 
-- `content.config.ts` or registered Astro content collections
-- typed content schemas or real chapter / glossary / book-config entries
-- content loading, ordering, or previous/next metadata utilities
-- book home / Table of Contents generation
-- chapter routes or MDX rendering
-- glossary parsing or interactive glossary behavior
-- mirrored multilingual content by shared IDs
+- the real book home / Table of Contents page
+- generated chapter routes or reader page UI
+- heading anchors or chapter-local sidebar navigation
+- glossary hover cards or glossary-linked reader interactions
+- full translation parity across localized content
+- localization-aware book rendering beyond the current shared shell routes
 - reader layouts beyond the current landing page and shell
 
 ## Project direction
@@ -115,7 +127,7 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has finished its foundation and base shell phases. The next implementation milestone is to turn the existing Phase 3 scaffold into real content collections, schemas, and metadata utilities.
+The repository has finished its foundation, base shell, and content engine phases. The next implementation milestone is to turn the Phase 3 metadata layer into the real book home and Table of Contents experience.
 
 ## Licensing
 
