@@ -17,7 +17,6 @@ The repository has completed **Phase 3 — Content engine**. The current codebas
 - Chapters, glossary entries, and book config are validated through typed Zod schemas under [`src/lib/content/schemas/`](src/lib/content/schemas/).
 - The repository includes seeded English content plus localized PT-BR mirrors that demonstrate shared logical IDs across languages.
 - Metadata utilities now support chapter listing by language and book, stable reading order, adjacent chapter resolution, glossary listing by language, and glossary lookup by logical ID.
-- Phase 3 can be validated end-to-end with `npm run verify:phase-3`.
 - **Starlight is intentionally deferred** at this stage.
 - The repository language is **English-first** for code and contributor-facing artifacts.
 
@@ -38,7 +37,6 @@ The repository has completed **Phase 3 — Content engine**. The current codebas
 - `src/content/config/` contains the first book-level config entry for the MVP book.
 - `src/lib/content/chapters.ts` provides chapter listing, ordering, and adjacent-entry utilities.
 - `src/lib/glossary/entries.ts` provides glossary listing and lookup utilities.
-- `scripts/verify-phase-3.mjs` performs the Phase 3 metadata sanity check against the synchronized Astro content store.
 
 The app still does not render the real Table of Contents, chapter pages, sidebar navigation, or interactive glossary UI. Those remain part of later phases.
 
@@ -84,25 +82,18 @@ The development server starts the current Phase 2 shell. Useful routes to verify
 - `/en/shell/`
 - `/pt-BR/shell/`
 
-To validate the completed Phase 3 content engine, run:
-
-```bash
-npm run verify:phase-3
-```
-
 ## Available scripts
 
-| Script                   | Purpose                                                                      |
-| ------------------------ | ---------------------------------------------------------------------------- |
-| `npm run dev`            | Start the local Astro development server.                                    |
-| `npm run build`          | Create a production build in `dist/`.                                        |
-| `npm run preview`        | Preview the production build locally.                                        |
-| `npm run typecheck`      | Run Astro and TypeScript project checks.                                     |
-| `npm run verify:phase-3` | Run the Phase 3 content verification pass: sync, build, and metadata checks. |
-| `npm run lint`           | Run ESLint across the repository.                                            |
-| `npm run format`         | Format repository files with Prettier.                                       |
-| `npm run format:check`   | Verify that files match the configured Prettier style.                       |
-| `npm run check`          | Run the aggregate quality checks: format check, lint, typecheck, and build.  |
+| Script                 | Purpose                                                                     |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `npm run dev`          | Start the local Astro development server.                                   |
+| `npm run build`        | Create a production build in `dist/`.                                       |
+| `npm run preview`      | Preview the production build locally.                                       |
+| `npm run typecheck`    | Run Astro and TypeScript project checks.                                    |
+| `npm run lint`         | Run ESLint across the repository.                                           |
+| `npm run format`       | Format repository files with Prettier.                                      |
+| `npm run format:check` | Verify that files match the configured Prettier style.                      |
+| `npm run check`        | Run the aggregate quality checks: format check, lint, typecheck, and build. |
 
 ## Current boundaries
 

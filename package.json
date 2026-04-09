@@ -11,7 +11,6 @@
     "build": "astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
-    "verify:phase-3": "npm run typecheck && npm run build && node scripts/verify-phase-3.mjs",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "lint": "eslint .",
