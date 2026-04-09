@@ -4,9 +4,9 @@ import {
   type ContentLocale,
 } from "../content/conventions";
 
-type GlossaryConnectionName = typeof CONTENT_COLLECTIONS.glossary;
+type GlossaryCollectionName = typeof CONTENT_COLLECTIONS.glossary;
 
-export type GlossaryEntry = CollectionEntry<GlossaryConnectionName>;
+export type GlossaryEntry = CollectionEntry<GlossaryCollectionName>;
 
 export function isGlossaryEntryInLanguage(
   entry: GlossaryEntry,
