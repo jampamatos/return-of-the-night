@@ -14,6 +14,12 @@ export interface ChapterScope {
   book: BookId;
 }
 
+export interface AdjacentChapterEntries {
+  previous: ChapterEntry | undefined;
+  current: ChapterEntry;
+  next: ChapterEntry | undefined;
+}
+
 export function isChapterEntryInScope(
   entry: ChapterEntry,
   scope: ChapterScope,
@@ -53,4 +59,23 @@ export async function listOrderedChapterEntriesByLanguageAndBook(
   const chapters = await listChapterEntriesByLanguageAndBook(scope);
 
   return [...chapters].sort(compareChapterEntriesByReadingOrder);
+}
+
+export async function getAdjacentChapterEntriesByLanguageAndBook(
+  scope: ChapterScope,
+  currentChapterId: ChapterEntry["data"]["id"],
+): Promise<AdjacentChapterEntries | undefined> {
+  const chapters = await listOrderedChapterEntriesByLanguageAndBook(scope);
+
+  const currentIndex = chapters.findIndex(
+    (entry) => entry.data.id === currentChapterId,
+  );
+
+  if (currentIndex === -1) return undefined;
+
+  return {
+    previous: chapters[currentIndex - 1],
+    current: chapters[currentIndex],
+    next: chapters[currentIndex + 1],
+  };
 }
