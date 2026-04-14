@@ -12,7 +12,7 @@ export const CONTENT_COLLECTIONS = {
 export type ContentCollectionName =
   (typeof CONTENT_COLLECTIONS)[keyof typeof CONTENT_COLLECTIONS];
 
-// Phase 3 targets one MVP book, but keeps the identifier typed for future growth.
+// The current product scope targets one MVP book, while keeping the identifier typed for future growth.
 export const BOOK_IDS = ["core"] as const;
 export type BookId = (typeof BOOK_IDS)[number];
 export const MVP_BOOK_ID: BookId = "core";
