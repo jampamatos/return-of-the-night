@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
+import {
+  AUDIENCES,
+  LOCALES,
+  getLocaleOrDefault,
+  type Audience,
+  type Locale,
+} from "../../../config/site";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const langParam = Astro.params.lang;
+const lang: Locale = getLocaleOrDefault(langParam);
+
+const audienceLabels = {
+  en: {
+    player: "Player",
+    gm: "GM",
+  },
+  "pt-BR": {
+    player: "Jogador",
+    gm: "Mestre",
+  },
+} as const satisfies Record<Locale, Record<Audience, string>>;
+
+const pageCopy = {
+  en: {
+    title: "Return of the Night Book",
+    description: "The book home for Return of the Night",
+    heading: "Book Home",
+    body: "This is the first scaffold for the book home route. The generated Table of Contents will be connected here next.",
+    languageSwitcherLabel: "Language",
+    audienceSwitcherLabel: "Audience",
+  },
+  "pt-BR": {
+    title: "Livro de Return of the Night",
+    description: "A página inicial do livro de Return of the Night",
+    heading: "Home do Livro",
+    body: "Este é o primeiro esboço para a rota inicial do livro. O Índice gerado será conectado aqui em seguida.",
+    languageSwitcherLabel: "Idioma",
+    audienceSwitcherLabel: "Público",
+  },
+} as const;
+
+const copy = pageCopy[lang];
+
+const audienceOptions = AUDIENCES.map((audience) => ({
+  value: audience,
+  label: audienceLabels[lang][audience],
+  isActive: audience === "player",
+}));
+---
+
+<BaseLayout title={copy.title} description={copy.description} lang={lang}>
+  <ShellHeaderControls
+    slot="header-controls"
+    lang={lang}
+    pathname={Astro.url.pathname}
+    languageSwitcherLabel={copy.languageSwitcherLabel}
+    audienceSwitcherLabel={copy.audienceSwitcherLabel}
+    audienceOptions={audienceOptions}
+  />
+  <section>
+    <h1>{copy.heading}</h1>
+    <p>{copy.body}</p>
+  </section>
+
+  <script>
+    import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
+
+    initAudienceSwitchers();
+  </script>
+</BaseLayout>
