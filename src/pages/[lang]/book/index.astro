@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
-import { listChapterEntriesByLanguageAndBook } from "../../../lib/content/chapters";
+import { listOrderedChapterEntriesByLanguageAndBook } from "../../../lib/content/chapters";
 import { TOC_SCOPE } from "../../../lib/content/toc-conventions";
 import {
   AUDIENCES,
@@ -20,7 +20,7 @@ export function getStaticPaths() {
 const langParam = Astro.params.lang;
 const lang: Locale = getLocaleOrDefault(langParam);
 
-const chapterEntries = await listChapterEntriesByLanguageAndBook({
+const chapterEntries = await listOrderedChapterEntriesByLanguageAndBook({
   lang,
   book: TOC_SCOPE.book,
 });
@@ -41,7 +41,7 @@ const pageCopy = {
     title: "Return of the Night Book",
     description: "The book home for Return of the Night",
     heading: "Book Home",
-    body: "This book home now loads real chapter entries for the active language. Ordering and grouping will be added next.",
+    body: "This book home now loads real chapter entries for the active language.",
     languageSwitcherLabel: "Language",
     audienceSwitcherLabel: "Audience",
   },
@@ -49,7 +49,7 @@ const pageCopy = {
     title: "Livro de Return of the Night",
     description: "A página inicial do livro de Return of the Night",
     heading: "Home do Livro",
-    body: "Esta página inicial do livro agora carrega capítulos reais para o idioma ativo. Ordenação e agrupamento entram na sequência.",
+    body: "Esta página inicial do livro agora carrega capítulos reais para o idioma ativo.",
     languageSwitcherLabel: "Idioma",
     audienceSwitcherLabel: "Público",
   },
@@ -82,7 +82,9 @@ const audienceOptions = AUDIENCES.map((audience) => ({
       chapterEntries.length > 0 && (
         <ul>
           {chapterEntries.map((entry) => (
-            <li>{entry.data.pageTitle}</li>
+            <li>
+              {entry.data.order}. {entry.data.pageTitle}
+            </li>
           ))}
         </ul>
       )
