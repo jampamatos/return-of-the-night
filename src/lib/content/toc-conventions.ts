@@ -4,6 +4,9 @@ export const BOOK_HOME_SEGMENT = "book" as const;
 
 export const BOOK_HOME_ROUTE_PATTERN = `/{lang}/${BOOK_HOME_SEGMENT}/` as const;
 
+export const CHAPTER_READER_ROUTE_PATTERN =
+  `/{lang}/${BOOK_HOME_SEGMENT}/{slug}/` as const;
+
 export const TOC_SCOPE = {
   book: MVP_BOOK_ID,
   localeMode: "active-only",

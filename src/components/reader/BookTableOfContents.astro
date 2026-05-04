@@ -1,10 +1,12 @@
 ---
-import type { Audience } from "../../config/site";
+import type { Audience, Locale } from "../../config/site";
 import type { TocGroup } from "../../lib/content/toc";
+import { buildChapterReaderHref } from "../../lib/content/chapter-routes";
 
 type ChapterAudience = Audience | "all";
 
 interface Props {
+  lang: Locale;
   bookTitle: string;
   bookSubtitle?: string;
   tocLabel: string;
@@ -12,7 +14,7 @@ interface Props {
   audienceLabels: Record<ChapterAudience, string>;
 }
 
-const { bookTitle, bookSubtitle, tocLabel, groups, audienceLabels } =
+const { lang, bookTitle, bookSubtitle, tocLabel, groups, audienceLabels } =
   Astro.props as Props;
 ---
 
@@ -51,7 +53,14 @@ const { bookTitle, bookSubtitle, tocLabel, groups, audienceLabels } =
                     {entry.data.chapterTitle}
                   </p>
 
-                  <h3 class="book-toc-entry__title">{entry.data.pageTitle}</h3>
+                  <h3 class="book-toc-entry__title">
+                    <a
+                      class="book-toc-entry__link"
+                      href={buildChapterReaderHref(lang, entry)}
+                    >
+                      {entry.data.pageTitle}
+                    </a>
+                  </h3>
 
                   <p class="book-toc-entry__summary">{entry.data.summary}</p>
 
@@ -170,6 +179,18 @@ const { bookTitle, bookSubtitle, tocLabel, groups, audienceLabels } =
   .book-toc-entry__title {
     margin: 0;
     font-size: 1.2rem;
+  }
+
+  .book-toc-entry__link {
+    color: var(--heading-color);
+    text-decoration: none;
+  }
+
+  .book-toc-entry__link:hover {
+    color: var(--accent-primary-strong);
+    text-decoration: underline;
+    text-decoration-thickness: 0.08rem;
+    text-underline-offset: 0.2rem;
   }
 
   .book-toc-entry__summary {
