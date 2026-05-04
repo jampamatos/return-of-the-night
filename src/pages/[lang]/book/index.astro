@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BookTableOfContents from "../../../components/reader/BookTableOfContents.astro";
 import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
 import { getBookConfigEntryByLanguageAndBook } from "../../../lib/content/book-config";
 import { groupOrderedChapterEntriesForToc } from "../../../lib/content/toc";
@@ -37,18 +38,18 @@ const tocGroups = groupOrderedChapterEntriesForToc(
   bookConfigEntry,
 );
 
-const hasBookConfig = bookConfigEntry !== undefined;
-
 const audienceLabels = {
   en: {
+    all: "All readers",
     player: "Player",
     gm: "GM",
   },
   "pt-BR": {
+    all: "Todos",
     player: "Jogador",
     gm: "Mestre",
   },
-} as const satisfies Record<Locale, Record<Audience, string>>;
+} as const satisfies Record<Locale, Record<"all" | Audience, string>>;
 
 const pageCopy = {
   en: {
@@ -56,6 +57,7 @@ const pageCopy = {
     description: "The book home for Return of the Night",
     heading: "Book Home",
     body: "This book home now loads real chapter entries for the active language.",
+    tocLabel: "Table of Contents",
     languageSwitcherLabel: "Language",
     audienceSwitcherLabel: "Audience",
   },
@@ -64,12 +66,18 @@ const pageCopy = {
     description: "A página inicial do livro de Return of the Night",
     heading: "Home do Livro",
     body: "Esta página inicial do livro agora carrega capítulos reais para o idioma ativo.",
+    tocLabel: "Sumário",
     languageSwitcherLabel: "Idioma",
     audienceSwitcherLabel: "Público",
   },
 } as const;
 
 const copy = pageCopy[lang];
+
+const bookTitle = bookConfigEntry?.data.bookTitle ?? copy.heading;
+const bookSubtitle = bookConfigEntry?.data.bookSubtitle ?? copy.body;
+const tocLabel =
+  bookConfigEntry?.data.navigation.tableOfContents ?? copy.tocLabel;
 
 const audienceOptions = AUDIENCES.map((audience) => ({
   value: audience,
@@ -87,32 +95,13 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     audienceSwitcherLabel={copy.audienceSwitcherLabel}
     audienceOptions={audienceOptions}
   />
-  <section>
-    <h1>{copy.heading}</h1>
-    <p>{copy.body}</p>
-    <p>{chapterEntries.length} chapter entries loaded for this language.</p>
-
-    <p>{tocGroups.length} TOC groups prepared for this language.</p>
-    <p>
-      {
-        hasBookConfig
-          ? "Book config found for this language."
-          : "No book config found for this language; using safe fallback grouping."
-      }
-    </p>
-
-    {
-      chapterEntries.length > 0 && (
-        <ul>
-          {chapterEntries.map((entry) => (
-            <li>
-              {entry.data.order}. {entry.data.pageTitle}
-            </li>
-          ))}
-        </ul>
-      )
-    }
-  </section>
+  <BookTableOfContents
+    bookTitle={bookTitle}
+    bookSubtitle={bookSubtitle}
+    tocLabel={tocLabel}
+    groups={tocGroups}
+    audienceLabels={audienceLabels[lang]}
+  />
 
   <script>
     import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
