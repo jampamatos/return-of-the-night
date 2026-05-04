@@ -58,6 +58,10 @@ const pageCopy = {
     heading: "Book Home",
     body: "Browse the current book structure and choose where to start reading.",
     tocLabel: "Table of Contents",
+    emptyStateTitle: "No chapters available yet",
+    emptyStateBody:
+      "This book does not have published chapter entries for the current language yet.",
+    emptyGroupLabel: "No entries are available in this group yet.",
     languageSwitcherLabel: "Language",
     audienceSwitcherLabel: "Audience",
   },
@@ -67,6 +71,10 @@ const pageCopy = {
     heading: "Home do Livro",
     body: "Explore a estrutura atual do livro e escolha por onde começar a leitura.",
     tocLabel: "Sumário",
+    emptyStateTitle: "Ainda não há capítulos disponíveis",
+    emptyStateBody:
+      "Este livro ainda não tem capítulos publicados para o idioma atual.",
+    emptyGroupLabel: "Ainda não há entradas disponíveis neste grupo.",
     languageSwitcherLabel: "Idioma",
     audienceSwitcherLabel: "Público",
   },
@@ -102,6 +110,9 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     tocLabel={tocLabel}
     groups={tocGroups}
     audienceLabels={audienceLabels[lang]}
+    emptyStateTitle={copy.emptyStateTitle}
+    emptyStateBody={copy.emptyStateBody}
+    emptyGroupLabel={copy.emptyGroupLabel}
   />
 
   <script>
