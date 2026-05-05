@@ -1,23 +1,18 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getLocaleOrDefault, type Locale } from "../../../config/site";
+import { listChapterEntries } from "../../../lib/content/chapters";
 import { READER_ROUTE } from "../../../lib/content/reader-conventions";
 
-export function getStaticPaths() {
-  return [
-    {
-      params: {
-        lang: "en",
-        slug: "test/test-1",
-      },
+export async function getStaticPaths() {
+  const chapterEntries = await listChapterEntries();
+
+  return chapterEntries.map((entry) => ({
+    params: {
+      lang: entry.data.lang,
+      slug: entry.data.slug,
     },
-    {
-      params: {
-        lang: "pt-BR",
-        slug: "teste/teste-1",
-      },
-    },
-  ];
+  }));
 }
 
 const langParam = Astro.params.lang;
