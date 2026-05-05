@@ -2,7 +2,7 @@
   "book": "core",
   "lang": "en",
   "bookTitle": "Return of the Night",
-  "bookSubtitle": "Placeholder Core Book Configuration",
+  "bookSubtitle": "Browse the current core book structure and choose where to start reading.",
   "navigation": {
     "tableOfContents": "Table of Contents",
     "previousChapter": "Previous Chapter",
@@ -12,8 +12,8 @@
   "chapterGroups": [
     {
       "id": "test-group",
-      "label": "Test Group",
-      "description": "Placeholder chapter group used to validate book configuration loading.",
+      "label": "Opening Material",
+      "description": "Introductory and early reference material for the current book draft.",
       "order": 0,
       "chapterNumbers": [0]
     }

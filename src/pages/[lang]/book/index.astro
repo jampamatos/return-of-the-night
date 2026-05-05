@@ -40,12 +40,12 @@ const tocGroups = groupOrderedChapterEntriesForToc(
 
 const audienceLabels = {
   en: {
-    all: "All readers",
+    all: "Player and GM",
     player: "Player",
     gm: "GM",
   },
   "pt-BR": {
-    all: "Todos",
+    all: "Jogador e Mestre",
     player: "Jogador",
     gm: "Mestre",
   },
@@ -53,30 +53,31 @@ const audienceLabels = {
 
 const pageCopy = {
   en: {
-    title: "Return of the Night Book",
-    description: "The book home for Return of the Night",
-    heading: "Book Home",
-    body: "Browse the current book structure and choose where to start reading.",
+    title: "Return of the Night — Table of Contents",
+    description:
+      "Browse the current Table of Contents for the Return of the Night core book.",
+    heading: "Return of the Night",
+    body: "Browse the current core book structure and choose where to start reading.",
     tocLabel: "Table of Contents",
     emptyStateTitle: "No chapters available yet",
     emptyStateBody:
-      "This book does not have published chapter entries for the current language yet.",
-    emptyGroupLabel: "No entries are available in this group yet.",
+      "This book does not have chapter entries for the current language yet.",
+    emptyGroupLabel: "No entries are available in this section yet.",
     languageSwitcherLabel: "Language",
-    audienceSwitcherLabel: "Audience",
+    audienceSwitcherLabel: "Reading Mode",
   },
   "pt-BR": {
-    title: "Livro de Return of the Night",
-    description: "A página inicial do livro de Return of the Night",
-    heading: "Home do Livro",
-    body: "Explore a estrutura atual do livro e escolha por onde começar a leitura.",
+    title: "Return of the Night — Sumário",
+    description:
+      "Explore o sumário atual do livro principal de Return of the Night.",
+    heading: "Return of the Night",
+    body: "Explore a estrutura atual do livro principal e escolha por onde começar a leitura.",
     tocLabel: "Sumário",
     emptyStateTitle: "Ainda não há capítulos disponíveis",
-    emptyStateBody:
-      "Este livro ainda não tem capítulos publicados para o idioma atual.",
-    emptyGroupLabel: "Ainda não há entradas disponíveis neste grupo.",
+    emptyStateBody: "Este livro ainda não tem capítulos para o idioma atual.",
+    emptyGroupLabel: "Ainda não há entradas disponíveis nesta seção.",
     languageSwitcherLabel: "Idioma",
-    audienceSwitcherLabel: "Público",
+    audienceSwitcherLabel: "Modo de Leitura",
   },
 } as const;
 
