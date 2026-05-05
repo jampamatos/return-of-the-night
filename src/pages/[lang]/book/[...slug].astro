@@ -1,0 +1,137 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getLocaleOrDefault, type Locale } from "../../../config/site";
+import { READER_ROUTE } from "../../../lib/content/reader-conventions";
+
+export function getStaticPaths() {
+  return [
+    {
+      params: {
+        lang: "en",
+        slug: "test/test-1",
+      },
+    },
+    {
+      params: {
+        lang: "pt-BR",
+        slug: "teste/teste-1",
+      },
+    },
+  ];
+}
+
+const langParam = Astro.params.lang;
+const slugParam = Astro.params.slug;
+
+const lang: Locale = getLocaleOrDefault(langParam);
+const slug = slugParam ?? "";
+
+const copy = {
+  en: {
+    title: "Chapter Reader",
+    description: "Temporary chapter reader route scaffold.",
+    eyebrow: "Reader route scaffold",
+    heading: "Chapter reader route",
+    body: "This temporary page confirms that the chapter reader route exists and matches the Table of Contents link contract.",
+    routeLabel: "Route pattern",
+    slugLabel: "Current slug",
+  },
+  "pt-BR": {
+    title: "Leitor de Capítulo",
+    description: "Estrutura temporária da rota de leitura de capítulo.",
+    eyebrow: "Estrutura da rota de leitura",
+    heading: "Rota de leitura de capítulo",
+    body: "Esta página temporária confirma que a rota de leitura de capítulo existe e corresponde ao contrato de links do Sumário.",
+    routeLabel: "Padrão da rota",
+    slugLabel: "Slug atual",
+  },
+} as const satisfies Record<
+  Locale,
+  {
+    title: string;
+    description: string;
+    eyebrow: string;
+    heading: string;
+    body: string;
+    routeLabel: string;
+    slugLabel: string;
+  }
+>;
+
+const pageCopy = copy[lang];
+---
+
+<BaseLayout
+  title={pageCopy.title}
+  description={pageCopy.description}
+  lang={lang}
+>
+  <section class="reader-route-scaffold" aria-labelledby="reader-route-title">
+    <p class="reader-route-scaffold__eyebrow">{pageCopy.eyebrow}</p>
+
+    <h1 id="reader-route-title">{pageCopy.heading}</h1>
+
+    <p>{pageCopy.body}</p>
+
+    <dl class="reader-route-scaffold__meta">
+      <div>
+        <dt>{pageCopy.routeLabel}</dt>
+        <dd><code>{READER_ROUTE.pattern}</code></dd>
+      </div>
+
+      <div>
+        <dt>{pageCopy.slugLabel}</dt>
+        <dd><code>{slug}</code></dd>
+      </div>
+    </dl>
+  </section>
+</BaseLayout>
+
+<style>
+  .reader-route-scaffold {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 48rem;
+  }
+
+  .reader-route-scaffold__eyebrow {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+  }
+
+  .reader-route-scaffold h1 {
+    margin-bottom: 0;
+  }
+
+  .reader-route-scaffold__meta {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-2) 0 0;
+  }
+
+  .reader-route-scaffold__meta div {
+    padding: var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.28);
+  }
+
+  .reader-route-scaffold__meta dt {
+    margin-bottom: var(--space-1);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+  }
+
+  .reader-route-scaffold__meta dd {
+    margin: 0;
+  }
+</style>
