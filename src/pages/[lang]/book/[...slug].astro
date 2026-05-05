@@ -1,7 +1,11 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getLocaleOrDefault, type Locale } from "../../../config/site";
-import { listChapterEntries } from "../../../lib/content/chapters";
+import { MVP_BOOK_ID } from "../../../lib/content/conventions";
+import {
+  getChapterEntryByLanguageBookAndSlug,
+  listChapterEntries,
+} from "../../../lib/content/chapters";
 import { READER_ROUTE } from "../../../lib/content/reader-conventions";
 
 export async function getStaticPaths() {
@@ -21,6 +25,22 @@ const slugParam = Astro.params.slug;
 const lang: Locale = getLocaleOrDefault(langParam);
 const slug = slugParam ?? "";
 
+const chapterEntry = await getChapterEntryByLanguageBookAndSlug({
+  lang,
+  book: MVP_BOOK_ID,
+  slug,
+});
+
+const resolvedChapter = chapterEntry
+  ? {
+      chapterTitle: chapterEntry.data.chapterTitle,
+      pageTitle: chapterEntry.data.pageTitle,
+      summary: chapterEntry.data.summary,
+      status: chapterEntry.data.status,
+      audience: chapterEntry.data.audience,
+    }
+  : undefined;
+
 const copy = {
   en: {
     title: "Chapter Reader",
@@ -30,6 +50,13 @@ const copy = {
     body: "This temporary page confirms that the chapter reader route exists and matches the Table of Contents link contract.",
     routeLabel: "Route pattern",
     slugLabel: "Current slug",
+    resolvedChapterLabel: "Resolved chapter",
+    chapterTitleLabel: "Chapter title",
+    statusLabel: "Status",
+    audienceLabel: "Audience",
+    missingTitle: "Chapter entry not found",
+    missingBody:
+      "The route exists, but the chapter entry could not be resolved from the current language and slug.",
   },
   "pt-BR": {
     title: "Leitor de Capítulo",
@@ -39,6 +66,13 @@ const copy = {
     body: "Esta página temporária confirma que a rota de leitura de capítulo existe e corresponde ao contrato de links do Sumário.",
     routeLabel: "Padrão da rota",
     slugLabel: "Slug atual",
+    resolvedChapterLabel: "Capítulo resolvido",
+    chapterTitleLabel: "Título do capítulo",
+    statusLabel: "Status",
+    audienceLabel: "Público",
+    missingTitle: "Entrada de capítulo não encontrada",
+    missingBody:
+      "A rota existe, mas a entrada do capítulo não pôde ser resolvida a partir do idioma e do slug atuais.",
   },
 } as const satisfies Record<
   Locale,
@@ -50,17 +84,22 @@ const copy = {
     body: string;
     routeLabel: string;
     slugLabel: string;
+    resolvedChapterLabel: string;
+    chapterTitleLabel: string;
+    statusLabel: string;
+    audienceLabel: string;
+    missingTitle: string;
+    missingBody: string;
   }
 >;
 
 const pageCopy = copy[lang];
+
+const pageTitle = resolvedChapter?.pageTitle ?? pageCopy.title;
+const pageDescription = resolvedChapter?.summary ?? pageCopy.description;
 ---
 
-<BaseLayout
-  title={pageCopy.title}
-  description={pageCopy.description}
-  lang={lang}
->
+<BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
   <section class="reader-route-scaffold" aria-labelledby="reader-route-title">
     <p class="reader-route-scaffold__eyebrow">{pageCopy.eyebrow}</p>
 
@@ -78,6 +117,45 @@ const pageCopy = copy[lang];
         <dt>{pageCopy.slugLabel}</dt>
         <dd><code>{slug}</code></dd>
       </div>
+
+      {
+        resolvedChapter ? (
+          <>
+            <div>
+              <dt>{pageCopy.resolvedChapterLabel}</dt>
+              <dd>
+                <code>{resolvedChapter.pageTitle}</code>
+              </dd>
+            </div>
+
+            <div>
+              <dt>{pageCopy.chapterTitleLabel}</dt>
+              <dd>
+                <code>{resolvedChapter.chapterTitle}</code>
+              </dd>
+            </div>
+
+            <div>
+              <dt>{pageCopy.statusLabel}</dt>
+              <dd>
+                <code>{resolvedChapter.status}</code>
+              </dd>
+            </div>
+
+            <div>
+              <dt>{pageCopy.audienceLabel}</dt>
+              <dd>
+                <code>{resolvedChapter.audience}</code>
+              </dd>
+            </div>
+          </>
+        ) : (
+          <div class="reader-route-scaffold__missing" role="status">
+            <dt>{pageCopy.missingTitle}</dt>
+            <dd>{pageCopy.missingBody}</dd>
+          </div>
+        )
+      }
     </dl>
   </section>
 </BaseLayout>
