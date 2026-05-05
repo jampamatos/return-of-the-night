@@ -890,7 +890,10 @@ Generate the book home page automatically from the content model.
 
 - the book page shows the real chapters from content
 - the order matches the metadata
-- links open the correct pages
+- chapter grouping works from book configuration and safe fallback behavior
+- links point to the correct future chapter reader destinations
+- the page handles sparse or missing content safely
+- the page provides basic orientation cues and mobile-readable TOC behavior
 
 ### Suggested sub-steps
 
@@ -1073,18 +1076,14 @@ Prepare the project to grow without turning into chaos.
 
 ## 23. Recommended implementation order now
 
-The recommended sequence to begin with is:
+The project has completed the first four implementation phases. The current recommended sequence from this point is:
 
-1. Phase 1 — Repository foundation
-2. Phase 2 — Base site structure
-3. Phase 3 — Content engine
-4. Phase 4 — Book home
-5. Phase 5 — Chapter reader
-6. Phase 6 — Rich content features
-7. Phase 7 — Interactive glossary
-8. Phase 8 — Real localization
-9. Phase 9 — UX/layout refinement
-10. Phase 10 — Contribution docs and hardening
+1. Phase 5 — Chapter reader
+2. Phase 6 — Rich content features
+3. Phase 7 — Interactive glossary
+4. Phase 8 — Real localization
+5. Phase 9 — UX/layout refinement
+6. Phase 10 — Contribution docs and hardening
 
 ---
 
@@ -1116,16 +1115,17 @@ For each step:
 
 The next concrete milestone is:
 
-### **Phase 1 — Repository foundation**
+### **Phase 5 — Chapter reader**
 
 That means the next practical tasks should be, in order:
 
-1. initialize the Astro project
-2. understand the structure created by Astro
-3. configure basic quality tooling
-4. create the project directory structure
-5. write the initial README
-6. create the initial open-source documentation base
+1. create the dynamic chapter reader route
+2. generate static paths from chapter content metadata
+3. render MDX chapter content for the active language
+4. preserve the existing locale and reading-mode shell controls
+5. add chapter-level orientation around the reader page
+6. compute previous and next chapter navigation from metadata
+7. keep sidebar, heading anchors, and deeper reader polish scoped carefully to Phase 5 sub-steps
 
 ---
 
@@ -1148,9 +1148,13 @@ Core decisions must not change silently.
 - initial vision defined
 - MVP scope outlined
 - initial stack chosen
-- initial architecture proposed
+- initial architecture established
 - macro roadmap defined
-- ready to start Phase 1
+- repository foundation completed
+- base site structure completed
+- content engine completed
+- book home / Table of Contents completed
+- ready to start Phase 5 — Chapter reader
 
 ---
 
@@ -1158,6 +1162,6 @@ Core decisions must not change silently.
 
 We are building **Return of the Night**, an open-source RPG digital-book platform with MDX-based content, rich navigation, interactive glossary behavior, player/GM reading modes, and support for English and PT-BR.
 
-The implementation strategy is incremental: start with a solid repository foundation, then build the site shell, then the content engine, then the reader, and only after that move into rich authoring features, glossary interactions, localization consolidation, and visual refinement.
+The implementation strategy is incremental: the repository foundation, site shell, content engine, and book home / Table of Contents are now in place. The next step is to turn chapter content into a real reader experience before moving into rich authoring features, glossary interactions, localization consolidation, and visual refinement.
 
 The priorities are understanding, clarity, maintainability, and real open-source readiness — not speed or premature complexity.

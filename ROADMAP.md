@@ -6,11 +6,13 @@ The source of truth for detailed scope, architecture direction, and implementati
 
 ## Current phase
 
-The repository is currently in **Phase 1 — Repository foundation**.
+The repository has completed **Phase 4 — Book home / Table of Contents**.
+
+The next implementation milestone is **Phase 5 — Chapter reader**.
 
 ## Planned phases
 
-### Phase 1 — Repository foundation
+### Phase 1 — Repository foundation ✅
 
 Establish the technical and organizational base of the project:
 
@@ -21,7 +23,7 @@ Establish the technical and organizational base of the project:
 - issue and pull request templates
 - minimum CI
 
-### Phase 2 — Base site structure
+### Phase 2 — Base site structure ✅
 
 Build the initial navigable shell of the product:
 
@@ -32,7 +34,7 @@ Build the initial navigable shell of the product:
 - audience switcher
 - local persistence
 
-### Phase 3 — Content engine
+### Phase 3 — Content engine ✅
 
 Create the content model and typed collection layer:
 
@@ -42,15 +44,18 @@ Create the content model and typed collection layer:
 - book configuration
 - content metadata utilities
 
-### Phase 4 — Book home / Table of Contents
+### Phase 4 — Book home / Table of Contents ✅
 
 Generate the book home page from real content:
 
 - automatic Table of Contents
 - chapter grouping
-- correct route generation
+- correct future reader link generation
+- empty states and missing-data safeguards
+- book-home orientation cues
+- basic responsive behavior for the TOC layout
 
-### Phase 5 — Chapter reader
+### Phase 5 — Chapter reader ← Next
 
 Turn chapters into a real reading experience:
 
@@ -112,3 +117,4 @@ Prepare the project to scale safely with outside contributors:
 - The roadmap is intentionally incremental.
 - The approved implementation order is Phase 1 through Phase 10.
 - If the roadmap changes materially, the supporting documents in `docs/` should be updated as well.
+- Completed phases are marked with ✅, and the next implementation milestone is marked with ← Next.

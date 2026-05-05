@@ -2,7 +2,7 @@
 
 Return of the Night is an open-source web platform for reading RPG rulebooks, setting books, campaign books, and compendiums through a content-first digital-book experience.
 
-The repository has completed **Phase 3 — Content engine**. The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, and metadata utilities for chapter ordering and glossary lookup. The next approved implementation step is **Phase 4 — Book home / Table of Contents**.
+The repository has completed **Phase 4 — Book home / Table of Contents**. The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, and a content-backed book home page with an automatically generated Table of Contents. The next approved implementation step is **Phase 5 — Chapter reader**.
 
 ## Current status
 
@@ -17,6 +17,8 @@ The repository has completed **Phase 3 — Content engine**. The current codebas
 - Chapters, glossary entries, and book config are validated through typed Zod schemas under [`src/lib/content/schemas/`](src/lib/content/schemas/).
 - The repository includes seeded English content plus localized PT-BR mirrors that demonstrate shared logical IDs across languages.
 - Metadata utilities now support chapter listing by language and book, stable reading order, adjacent chapter resolution, glossary listing by language, and glossary lookup by logical ID.
+- The route `/{lang}/book/` renders the current book home and Table of Contents from real content metadata.
+- The Table of Contents supports metadata-driven ordering, book-config grouping, fallback grouping for sparse localized content, future chapter-reader links, empty states, orientation cues, and basic responsive behavior.
 - **Starlight is intentionally deferred** at this stage.
 - The repository language is **English-first** for code and contributor-facing artifacts.
 
@@ -27,8 +29,10 @@ The repository has completed **Phase 3 — Content engine**. The current codebas
 - `/pt-BR/`
 - `/en/shell/`
 - `/pt-BR/shell/`
+- `/en/book/`
+- `/pt-BR/book/`
 
-## Content Engine Status
+## Content and Table of Contents status
 
 - `src/content/chapters/en/` contains seeded chapter content for the MVP book.
 - `src/content/chapters/pt-BR/` contains a localized mirror that demonstrates the shared logical `id` rule.
@@ -36,9 +40,12 @@ The repository has completed **Phase 3 — Content engine**. The current codebas
 - `src/content/glossary/pt-BR/` contains a localized mirror that demonstrates the shared logical `id` rule.
 - `src/content/config/` contains the first book-level config entry for the MVP book.
 - `src/lib/content/chapters.ts` provides chapter listing, ordering, and adjacent-entry utilities.
+- `src/lib/content/toc.ts` provides metadata-driven grouping for the Table of Contents.
+- `src/lib/content/chapter-routes.ts` provides future chapter-reader href generation from chapter slugs.
 - `src/lib/glossary/entries.ts` provides glossary listing and lookup utilities.
+- `src/components/reader/BookTableOfContents.astro` renders the current book home and Table of Contents experience.
 
-The app still does not render the real Table of Contents, chapter pages, sidebar navigation, or interactive glossary UI. Those remain part of later phases.
+The app now renders the real book home and Table of Contents. It still does not render chapter reader pages, sidebar navigation, heading anchors, previous/next chapter navigation, or interactive glossary UI. Those remain part of later phases.
 
 ## Source of truth
 
@@ -74,13 +81,15 @@ npm install
 npm run dev
 ```
 
-The development server starts the current Phase 2 shell. Useful routes to verify locally:
+The development server starts the current application shell and content-backed book home. Useful routes to verify locally:
 
 - `/`
 - `/en/`
 - `/pt-BR/`
 - `/en/shell/`
 - `/pt-BR/shell/`
+- `/en/book/`
+- `/pt-BR/book/`
 
 ## Available scripts
 
@@ -97,15 +106,15 @@ The development server starts the current Phase 2 shell. Useful routes to verify
 
 ## Current boundaries
 
-The current implementation intentionally stops at the end of Phase 3. The repository does **not** yet include:
+The current implementation intentionally stops at the end of Phase 4. The repository does **not** yet include:
 
-- the real book home / Table of Contents page
 - generated chapter routes or reader page UI
 - heading anchors or chapter-local sidebar navigation
+- previous/next chapter navigation in the reader
 - glossary hover cards or glossary-linked reader interactions
 - full translation parity across localized content
-- localization-aware book rendering beyond the current shared shell routes
-- reader layouts beyond the current landing page and shell
+- localization-aware reader behavior beyond the current shared shell and book home routes
+- polished reader layouts beyond the current landing page, shell, and book home
 
 ## Project direction
 
@@ -118,7 +127,7 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has finished its foundation, base shell, and content engine phases. The next implementation milestone is to turn the Phase 3 metadata layer into the real book home and Table of Contents experience.
+The repository has finished its foundation, base shell, content engine, and book home / Table of Contents phases. The next implementation milestone is to turn chapter content into a real reader experience.
 
 ## Licensing
 
