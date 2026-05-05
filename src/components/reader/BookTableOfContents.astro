@@ -15,6 +15,13 @@ interface Props {
   emptyStateTitle: string;
   emptyStateBody: string;
   emptyGroupLabel: string;
+  breadcrumbLabel: string;
+  homeHref: string;
+  homeLabel: string;
+  currentPageLabel: string;
+  overviewLabel: string;
+  sectionsCountLabel: string;
+  entriesCountLabel: string;
 }
 
 const {
@@ -27,17 +34,47 @@ const {
   emptyStateTitle,
   emptyStateBody,
   emptyGroupLabel,
+  breadcrumbLabel,
+  homeHref,
+  homeLabel,
+  currentPageLabel,
+  overviewLabel,
+  sectionsCountLabel,
+  entriesCountLabel,
 } = Astro.props as Props;
 
 const hasTocEntries = groups.some((group) => group.entries.length > 0);
+
+const tocEntryCount = groups.reduce(
+  (total, group) => total + group.entries.length,
+  0,
+);
 ---
 
 <section class="book-toc" aria-labelledby="book-toc-title">
+  <nav class="book-toc__context" aria-label={breadcrumbLabel}>
+    <a href={homeHref}>{homeLabel}</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{currentPageLabel}</span>
+  </nav>
+
   <header class="book-toc__header">
     <p class="book-toc__eyebrow">{tocLabel}</p>
     <h1 id="book-toc-title">{bookTitle}</h1>
 
     {bookSubtitle && <p class="book-toc__subtitle">{bookSubtitle}</p>}
+
+    <dl class="book-toc__overview" aria-label={overviewLabel}>
+      <div>
+        <dt>{sectionsCountLabel}</dt>
+        <dd>{groups.length}</dd>
+      </div>
+
+      <div>
+        <dt>{entriesCountLabel}</dt>
+        <dd>{tocEntryCount}</dd>
+      </div>
+    </dl>
   </header>
 
   {
@@ -116,6 +153,34 @@ const hasTocEntries = groups.some((group) => group.entries.length > 0);
     gap: var(--space-6);
   }
 
+  .book-toc__context {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+  }
+
+  .book-toc__context a {
+    color: var(--muted-text-color);
+    text-decoration: none;
+  }
+
+  .book-toc__context a:hover {
+    color: var(--accent-primary-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .book-toc__context [aria-current="page"] {
+    color: var(--accent-primary);
+  }
+
   .book-toc__header {
     padding-bottom: var(--space-5);
     border-bottom: 1px solid var(--border-color);
@@ -134,6 +199,39 @@ const hasTocEntries = groups.some((group) => group.entries.length > 0);
   .book-toc__subtitle {
     margin-bottom: 0;
     font-size: 1.1rem;
+  }
+
+  .book-toc__overview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-5) 0 0;
+  }
+
+  .book-toc__overview div {
+    min-width: 8rem;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.28);
+  }
+
+  .book-toc__overview dt {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+  }
+
+  .book-toc__overview dd {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--heading-color);
   }
 
   .book-toc__groups {
