@@ -1,13 +1,19 @@
 ---
-import { render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { getLocaleOrDefault, type Locale } from "../../../config/site";
+import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
+import { render } from "astro:content";
 import { MVP_BOOK_ID } from "../../../lib/content/conventions";
+import { READER_ROUTE } from "../../../lib/content/reader-conventions";
 import {
   getChapterEntryByLanguageBookAndSlug,
   listChapterEntries,
 } from "../../../lib/content/chapters";
-import { READER_ROUTE } from "../../../lib/content/reader-conventions";
+import {
+  AUDIENCES,
+  getLocaleOrDefault,
+  type Audience,
+  type Locale,
+} from "../../../config/site";
 
 export async function getStaticPaths() {
   const chapterEntries = await listChapterEntries();
@@ -42,6 +48,19 @@ const resolvedChapter = chapterEntry
     }
   : undefined;
 
+const audienceLabels = {
+  en: {
+    all: "Player and GM",
+    player: "Player",
+    gm: "GM",
+  },
+  "pt-BR": {
+    all: "Jogador e Mestre",
+    player: "Jogador",
+    gm: "Mestre",
+  },
+} as const satisfies Record<Locale, Record<"all" | Audience, string>>;
+
 const renderedChapter = chapterEntry ? await render(chapterEntry) : undefined;
 const ChapterContent = renderedChapter?.Content;
 
@@ -62,6 +81,8 @@ const copy = {
     missingBody:
       "The route exists, but the chapter entry could not be resolved from the current language and slug.",
     contentLabel: "Chapter content",
+    languageSwitcherLabel: "Language",
+    audienceSwitcherLabel: "Reading Mode",
   },
   "pt-BR": {
     title: "Leitor de Capítulo",
@@ -79,6 +100,8 @@ const copy = {
     missingBody:
       "A rota existe, mas a entrada do capítulo não pôde ser resolvida a partir do idioma e do slug atuais.",
     contentLabel: "Conteúdo do capítulo",
+    languageSwitcherLabel: "Idioma",
+    audienceSwitcherLabel: "Modo de Leitura",
   },
 } as const satisfies Record<
   Locale,
@@ -97,6 +120,8 @@ const copy = {
     missingTitle: string;
     missingBody: string;
     contentLabel: string;
+    languageSwitcherLabel: string;
+    audienceSwitcherLabel: string;
   }
 >;
 
@@ -104,9 +129,23 @@ const pageCopy = copy[lang];
 
 const pageTitle = resolvedChapter?.pageTitle ?? pageCopy.title;
 const pageDescription = resolvedChapter?.summary ?? pageCopy.description;
+const audienceOptions = AUDIENCES.map((audience) => ({
+  value: audience,
+  label: audienceLabels[lang][audience],
+  isActive: audience === "player",
+}));
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
+  <ShellHeaderControls
+    slot="header-controls"
+    lang={lang}
+    pathname={Astro.url.pathname}
+    languageSwitcherLabel={pageCopy.languageSwitcherLabel}
+    audienceSwitcherLabel={pageCopy.audienceSwitcherLabel}
+    audienceOptions={audienceOptions}
+  />
+
   <section class="reader-route-scaffold" aria-labelledby="reader-route-title">
     <p class="reader-route-scaffold__eyebrow">{pageCopy.eyebrow}</p>
 
@@ -176,6 +215,12 @@ const pageDescription = resolvedChapter?.summary ?? pageCopy.description;
       )
     }
   </section>
+
+  <script>
+    import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
+
+    initAudienceSwitchers();
+  </script>
 </BaseLayout>
 
 <style>
