@@ -28,12 +28,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Book home route at `/{lang}/book/`.
 - Content-backed Table of Contents rendering.
 - Metadata-driven TOC ordering and grouping.
-- Future chapter-reader link generation from chapter slugs.
+- Chapter-reader link generation from chapter slugs.
 - Empty states and missing-data safeguards for sparse book content.
 - Book-home orientation cues and TOC overview metadata.
 - Basic responsive behavior for the Table of Contents layout.
+- Generated chapter reader route at `/{lang}/book/{slug}/`.
+- Static chapter reader paths generated from content metadata.
+- Chapter MDX rendering inside the shared shell.
+- Chapter-level orientation, return-to-TOC navigation, and reader metadata.
+- Current-chapter sidebar navigation generated from chapter headings.
+- Previous and next chapter links computed from content metadata.
+- Stable heading anchors and working section deep links.
+- Responsive fallback behavior for chapter-local navigation.
+- Sparse-heading safeguards for chapters with minimal structure.
 
 ### Changed
 
-- Updated the project status to reflect completion of Phase 4 — Book home / Table of Contents.
-- Updated the next implementation milestone to Phase 5 — Chapter reader.
+- Updated the project status to reflect completion of Phase 5 — Chapter reader.
+- Updated the next implementation milestone to Phase 6 — Rich content features.
+- Aligned repository documentation with the implemented reader scope and deferred Phase 6/7/8 boundaries.

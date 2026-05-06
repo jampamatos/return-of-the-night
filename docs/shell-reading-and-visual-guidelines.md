@@ -1,8 +1,8 @@
-# Phase 2 Shell, Reading Experience, and Visual Direction Guidelines
+# Shell, Reading Experience, and Visual Direction Guidelines
 
 ## Purpose
 
-This document captures the current functional and visual direction for the **Return of the Night** site shell and future reading experience. It is intended to guide implementation decisions starting in **Phase 2** while preserving a clear boundary between what is being established now and what belongs to later phases.
+This document captures the current functional and visual direction for the **Return of the Night** site shell and reading experience. It is intended to guide implementation decisions as the product evolves while preserving a clear boundary between what exists now and what belongs to later phases.
 
 The goal is not to fully design the final product yet, but to define the **experience principles, interface expectations, visual identity, and early design constraints** that should shape the shell from this point onward.
 
@@ -70,7 +70,7 @@ The system should therefore be designed as a **reading platform**, not just as a
 
 ## Global shell
 
-The upper part of the site should eventually support:
+The upper part of the site supports or should remain compatible with:
 
 - site branding
 - a home/landing entry point
@@ -99,7 +99,7 @@ When the platform eventually supports multiple books or multiple major sources, 
 - site / source / book / chapter
 - or equivalent breadcrumb-like orientation
 
-This does not need to be fully implemented in Phase 2, but the shell should be compatible with this future direction.
+This does not need to be fully implemented while the project supports one book, but the shell should remain compatible with this future direction.
 
 ### Reader layout
 
@@ -126,7 +126,7 @@ This means the reader navigation should be **useful but dismissible**, not alway
 
 ### Table of Contents
 
-The Table of Contents should eventually be:
+The Table of Contents should be:
 
 - generated automatically from book structure and content metadata
 - procedural rather than hand-maintained
@@ -604,9 +604,9 @@ Spacing should support:
 
 ---
 
-## Practical Design Guidance for Phase 2 Shell
+## Practical Design Guidance for the Shell and Reader
 
-When implementing the shell in Phase 2, the design should already suggest:
+When evolving the shell and reader, the design should suggest:
 
 - a product, not a bare starter app
 - reading seriousness
@@ -635,4 +635,4 @@ The intended design direction for **Return of the Night** is:
 - immersive but still highly usable
 - flexible enough to support both simple reading pages and more expressive layouts later
 
-This document should guide shell-level decisions from Phase 2 onward so that the product grows in a coherent direction rather than feeling visually or structurally improvised.
+This document should guide shell- and reader-level decisions so that the product grows in a coherent direction rather than feeling visually or structurally improvised.

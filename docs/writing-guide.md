@@ -2,11 +2,11 @@
 
 ## Purpose
 
-This document defines the minimum writing standards for the repository during Phase 1.
+This document defines the minimum writing standards for the repository.
 
-Its goal is to keep project artifacts understandable, consistent, and maintainable while the repository is still establishing its foundation.
+Its goal is to keep project artifacts understandable, consistent, and maintainable as the project grows through the roadmap.
 
-For product direction and long-term editorial goals, see [`docs/open_rulebook_platform_blueprint.md`](./open_rulebook_platform_blueprint.md). For current Phase 1 scope, see [`docs/phase-1.md`](./phase-1.md).
+For product direction and long-term editorial goals, see [`docs/open_rulebook_platform_blueprint.md`](./open_rulebook_platform_blueprint.md). For current implementation status, see [`ROADMAP.md`](../ROADMAP.md) and [`docs/architecture.md`](./architecture.md).
 
 ## Repository language policy
 
@@ -51,7 +51,7 @@ Use plain Markdown when:
 - no interactive behavior is needed
 - the content should stay easy to edit in any text editor
 
-MDX should only be introduced when it provides a clear benefit that plain Markdown cannot cover cleanly. In Phase 1, that benefit is expected to be rare.
+MDX should only be introduced when it provides a clear benefit that plain Markdown cannot cover cleanly. Chapter content can use MDX, but repository documentation should stay plain Markdown unless there is a deliberate reason otherwise.
 
 General expectations:
 
@@ -81,7 +81,7 @@ The documents in `docs/` are the source of truth for repository direction. If im
 
 ## Future editorial expansion
 
-This guide is intentionally minimal for Phase 1.
+This guide is intentionally minimal.
 
 Later phases may extend it with more detailed rules for:
 

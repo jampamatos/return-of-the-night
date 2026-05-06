@@ -6,9 +6,9 @@ The source of truth for detailed scope, architecture direction, and implementati
 
 ## Current phase
 
-The repository has completed **Phase 4 — Book home / Table of Contents**.
+The repository has completed **Phase 5 — Chapter reader**.
 
-The next implementation milestone is **Phase 5 — Chapter reader**.
+The next implementation milestone is **Phase 6 — Rich content features**.
 
 ## Planned phases
 
@@ -55,7 +55,7 @@ Generate the book home page from real content:
 - book-home orientation cues
 - basic responsive behavior for the TOC layout
 
-### Phase 5 — Chapter reader ← Next
+### Phase 5 — Chapter reader ✅
 
 Turn chapters into a real reading experience:
 
@@ -65,7 +65,7 @@ Turn chapters into a real reading experience:
 - previous and next navigation
 - deep links and heading anchors
 
-### Phase 6 — Rich content features
+### Phase 6 — Rich content features ← Next
 
 Add expressive content blocks and reader features:
 

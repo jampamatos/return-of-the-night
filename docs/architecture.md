@@ -10,7 +10,7 @@ For detailed product scope and long-term roadmap, see [`docs/open_rulebook_platf
 
 ## Current architectural direction
 
-The repository is currently structured around a **plain Astro** foundation with the Phase 2 shell, Phase 3 content engine, and Phase 4 book home / Table of Contents implemented.
+The repository is currently structured around a **plain Astro** foundation with the Phase 2 shell, Phase 3 content engine, Phase 4 book home / Table of Contents, and Phase 5 chapter reader implemented.
 
 That choice is intentional for Phase 1. The current architecture prioritizes:
 
@@ -19,7 +19,7 @@ That choice is intentional for Phase 1. The current architecture prioritizes:
 - progressive complexity over premature abstraction
 - open-source readiness over fast visual polish
 
-At the moment, the project is a static Astro application with repository-quality tooling, locale-prefixed shell routes, Astro content collections, typed schemas, initial content seeds, metadata utilities for chapters and glossary entries, and a content-backed book home route that renders an automatically generated Table of Contents.
+At the moment, the project is a static Astro application with repository-quality tooling, locale-prefixed shell routes, Astro content collections, typed schemas, initial content seeds, metadata utilities for chapters and glossary entries, a content-backed book home route that renders an automatically generated Table of Contents, and generated chapter reader pages that render MDX content.
 
 ## Core system layers
 
@@ -35,11 +35,11 @@ This layer currently provides:
 - the shared shell
 - language and audience controls
 - the book home and Table of Contents
+- the chapter reader
+- chapter-local navigation controls
 
 In later phases, this layer is expected to provide:
 
-- the chapter reader
-- chapter-local navigation controls
 - glossary interactions
 - richer reader layouts
 
@@ -67,7 +67,7 @@ Expected responsibilities include:
 - localization utilities
 - reader-specific navigation logic
 
-In the current repository, this layer includes implemented utilities for content loading, chapter ordering, TOC grouping, future chapter-reader link generation, glossary listing, glossary lookup, locale routing, and audience preference handling. Later-phase reader-specific behavior still remains deferred.
+In the current repository, this layer includes implemented utilities for content loading, chapter ordering, adjacent chapter resolution, TOC grouping, chapter-reader link generation, glossary listing, glossary lookup, locale routing, and audience preference handling. Later-phase rich content, glossary interaction, and localization consolidation behavior still remains deferred.
 
 ### 4. Repository and governance layer
 
@@ -93,7 +93,7 @@ Important directories and files:
 - `public/images/`: public-facing image asset location
 - `src/pages/`: Astro route entry points
 - `src/pages/[lang]/`: language-prefixed route space, including landing, shell, and book home routes
-- `src/components/`: UI and reader component area, including the current `BookTableOfContents` component
+- `src/components/`: UI and reader component area, including the current `BookTableOfContents` and reader heading components
 - `src/content/`: implemented content collections for chapters, glossary, and book config
 - `src/layouts/`: future shared layout area
 - `src/lib/`: reusable domain and utility logic, including content, TOC, glossary, locale-routing, and audience helpers
@@ -104,15 +104,16 @@ Current implementation status:
 
 - `src/pages/index.astro`, `src/pages/[lang]/index.astro`, and `src/pages/[lang]/shell/index.astro` provide the current landing and shell entry routes
 - `src/pages/[lang]/book/index.astro` provides the current book home route
+- `src/pages/[lang]/book/[...slug].astro` provides generated chapter reader routes
 - Astro content collections are registered in `src/content.config.ts`
 - typed schemas exist for `chapters`, `glossary`, and `book-config`
 - seed content exists for English chapters, English glossary entries, an English book config entry, and mirrored PT-BR examples for logical identity validation
 - chapter metadata utilities support listing by language/book, stable ordering, and previous/next resolution
 - TOC utilities support metadata-driven grouping, configured groups, and fallback ungrouped entries
-- chapter route utilities generate future reader links from content slugs
+- chapter route utilities generate reader links from content slugs
 - glossary metadata utilities support listing by language and lookup by logical `id`
 - the book home renders a content-backed Table of Contents with empty states, orientation cues, and basic responsive behavior
-- there is still no implemented reader route, MDX reader rendering, chapter sidebar, heading anchors, glossary interaction UI, or full localization layer
+- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, and section deep links
 
 ## Current boundaries
 
@@ -123,20 +124,19 @@ The current implementation includes:
 - audience preference persistence and shell controls
 - typed Astro content collections for chapters, glossary, and book config
 - initial content seeds in English plus mirrored PT-BR examples for shared logical IDs
-- metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, future reader link generation, and glossary lookup
+- metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, and glossary lookup
 - a content-backed book home / Table of Contents with empty states, orientation cues, and basic responsive behavior
+- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, and sparse-heading safeguards
 
 The current implementation does **not** yet include:
 
-- generated chapter reader routes
-- MDX reader page rendering
-- chapter-local sidebar UI or heading anchors
-- previous/next chapter navigation in the reader
+- Phase 6 rich content blocks such as figure/caption systems, styled tables, columns, and callouts
+- expanded audience-conditional block rendering
 - glossary hover cards or reader-side glossary interactions
 - full translation parity or complete localization behavior
 - authentication, authorization, or backend infrastructure
 
-This means the repository now reflects the first real content-driven presentation layer of the system, while the chapter reader and richer interaction features remain planned rather than implemented.
+This means the repository now reflects the first complete content-driven reader layer of the system, while richer content blocks, glossary interactions, and localization consolidation remain planned rather than implemented.
 
 ## Planned evolution
 
@@ -146,8 +146,12 @@ The intended implementation order remains incremental:
 2. base site structure and route shell — completed
 3. content engine and schemas — completed
 4. book home and Table of Contents generation — completed
-5. chapter reader — next
-6. rich content features, glossary behavior, and localization refinement — planned
+5. chapter reader — completed
+6. rich content features — next
+7. interactive glossary — planned
+8. real localization — planned
+9. UX and layout refinement — planned
+10. contribution docs and hardening — planned
 
 The architecture should continue to follow these principles as the project grows:
 

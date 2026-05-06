@@ -13,7 +13,7 @@
 **Portuguese title:** A Volta da Noite
 
 **Current format:** a private, player-facing campaign wiki and rules reference for our table  
-**Platform plan:** Astro + Starlight  
+**Platform plan:** plain Astro digital-book/wiki experience; Starlight is deferred by ADR 0001  
 **System base:** Cities Without Number (CWN)
 
 This is **not** currently planned as a public commercial RPG product. It is a **private campaign setting + table hack + player resource** built for our own use, using the core engine of CWN and adapting it to an original dystopian cyberpunk world.
@@ -1038,7 +1038,7 @@ If campaigns move beyond the Arcologies, the outside should support a distinct m
 
 ## 25. Wiki direction
 
-The project’s player-facing presentation should take the form of a private **Astro/Starlight wiki**.
+The project’s player-facing presentation should take the form of a private **Astro-based digital-book/wiki experience**. Starlight remains a deferred option rather than the current implementation plan.
 
 ### 25.1 Why this format
 

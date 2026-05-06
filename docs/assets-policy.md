@@ -1,6 +1,6 @@
 # Asset Policy
 
-This document defines the minimum asset provenance and licensing policy for the repository during Phase 1.
+This document defines the minimum asset provenance and licensing policy for the repository.
 
 ## Purpose
 
@@ -57,4 +57,4 @@ Every repository-tracked asset must have an entry in [`docs/assets-register.md`]
 
 ## Current register location
 
-The authoritative provenance register for Phase 1 is [`docs/assets-register.md`](./assets-register.md).
+The authoritative provenance register is [`docs/assets-register.md`](./assets-register.md).
