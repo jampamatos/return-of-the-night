@@ -6,7 +6,7 @@ This document explains how to ask for help, when to open an issue, and when to u
 
 ## Project stage
 
-The repository is still in **Phase 1: repository foundation**.
+The repository is still early and evolving quickly.
 
 That means support is currently handled on a best-effort basis. The project is still setting up its documentation, contribution flow, and governance baseline.
 

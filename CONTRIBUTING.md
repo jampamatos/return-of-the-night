@@ -123,4 +123,4 @@ At the current stage of the project:
 - keep documentation aligned with implementation
 - avoid introducing extra complexity before it is justified by the roadmap
 
-If you are unsure whether a change fits the current phase, open an issue or draft pull request first so the scope can be discussed before deeper implementation work.
+If you are unsure whether a change fits the current roadmap scope, open an issue or draft pull request first so the scope can be discussed before deeper implementation work.

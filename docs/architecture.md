@@ -4,15 +4,15 @@
 
 This document explains the current architectural shape of the repository and the intended direction defined by the project blueprint.
 
-Its goal is to describe the repository as it exists now without pretending that later-phase systems already exist.
+Its goal is to describe the repository as it exists now without pretending that planned systems already exist.
 
-For detailed product scope and long-term roadmap, see [`docs/open_rulebook_platform_blueprint.md`](./open_rulebook_platform_blueprint.md). For the Phase 1 bootstrap decision, see [`docs/adr/0001-bootstrap-strategy.md`](./adr/0001-bootstrap-strategy.md).
+For detailed product scope and long-term roadmap, see [`docs/open_rulebook_platform_blueprint.md`](./open_rulebook_platform_blueprint.md). For the bootstrap decision, see [`docs/adr/0001-bootstrap-strategy.md`](./adr/0001-bootstrap-strategy.md).
 
 ## Current architectural direction
 
-The repository is currently structured around a **plain Astro** foundation with the Phase 2 shell, Phase 3 content engine, Phase 4 book home / Table of Contents, and Phase 5 chapter reader implemented.
+The repository is currently structured around a **plain Astro** foundation with the shared shell, content engine, book home / Table of Contents, and chapter reader implemented.
 
-That choice is intentional for Phase 1. The current architecture prioritizes:
+That choice is intentional. The current architecture prioritizes:
 
 - clarity over feature richness
 - maintainability over early convenience
@@ -38,7 +38,7 @@ This layer currently provides:
 - the chapter reader
 - chapter-local navigation controls
 
-In later phases, this layer is expected to provide:
+Planned additions to this layer include:
 
 - glossary interactions
 - richer reader layouts
@@ -67,7 +67,7 @@ Expected responsibilities include:
 - localization utilities
 - reader-specific navigation logic
 
-In the current repository, this layer includes implemented utilities for content loading, chapter ordering, adjacent chapter resolution, TOC grouping, chapter-reader link generation, glossary listing, glossary lookup, locale routing, and audience preference handling. Later-phase rich content, glossary interaction, and localization consolidation behavior still remains deferred.
+In the current repository, this layer includes implemented utilities for content loading, chapter ordering, adjacent chapter resolution, TOC grouping, chapter-reader link generation, glossary listing, glossary lookup, locale routing, and audience preference handling. Rich content, glossary interaction, and localization consolidation behavior still remains deferred.
 
 ### 4. Repository and governance layer
 
@@ -130,7 +130,7 @@ The current implementation includes:
 
 The current implementation does **not** yet include:
 
-- Phase 6 rich content blocks such as figure/caption systems, styled tables, columns, and callouts
+- rich content blocks such as figure/caption systems, styled tables, columns, and callouts
 - expanded audience-conditional block rendering
 - glossary hover cards or reader-side glossary interactions
 - full translation parity or complete localization behavior

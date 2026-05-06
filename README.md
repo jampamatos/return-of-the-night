@@ -2,7 +2,7 @@
 
 Return of the Night is an open-source web platform for reading RPG rulebooks, setting books, campaign books, and compendiums through a content-first digital-book experience.
 
-The repository has completed **Phase 5 — Chapter reader**. The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, a content-backed book home page with an automatically generated Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, and section deep links. The next approved implementation step is **Phase 6 — Rich content features**.
+The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, a content-backed book home page with an automatically generated Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, and section deep links. The next approved implementation focus is rich content support for reader pages.
 
 ## Current status
 
@@ -52,7 +52,7 @@ The repository has completed **Phase 5 — Chapter reader**. The current codebas
 - `src/components/reader/ReaderHeading2.astro` and `src/components/reader/ReaderHeading3.astro` render linkable reader headings for MDX content.
 - `src/pages/[lang]/book/[...slug].astro` renders generated chapter reader pages.
 
-The app now renders the real book home, Table of Contents, and chapter reader. Interactive glossary UI, rich content blocks, full localization parity, and visual refinement remain part of later phases.
+The app now renders the real book home, Table of Contents, and chapter reader. Interactive glossary UI, rich content blocks, full localization parity, and broader visual refinement remain planned roadmap work.
 
 ## Source of truth
 
@@ -60,9 +60,8 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 
 - [`docs/open_rulebook_platform_blueprint.md`](docs/open_rulebook_platform_blueprint.md): product vision, scope, architecture direction, and implementation roadmap for the open-source platform.
 - [`docs/return-of-the-night-source-of-truth-v0.2.md`](docs/return-of-the-night-source-of-truth-v0.2.md): setting canon and project background for Return of the Night.
-- [`docs/adr/0001-bootstrap-strategy.md`](docs/adr/0001-bootstrap-strategy.md): accepted Phase 1 decision to use plain Astro and defer Starlight.
+- [`docs/adr/0001-bootstrap-strategy.md`](docs/adr/0001-bootstrap-strategy.md): accepted bootstrap decision to use plain Astro and defer Starlight.
 - [`docs/architecture.md`](docs/architecture.md): repository architecture direction, system layers, and planned implementation order.
-- [`docs/phase-5.md`](docs/phase-5.md): implemented Phase 5 reader milestone scope, boundary, and exit criteria.
 - [`docs/assets-policy.md`](docs/assets-policy.md): repository policy for asset provenance and licensing.
 - [`docs/assets-register.md`](docs/assets-register.md): current register for asset source, author, license, and usage notes.
 - [`docs/shell-reading-and-visual-guidelines.md`](docs/shell-reading-and-visual-guidelines.md): the current visual and reading-direction guide for the shell.
@@ -118,9 +117,9 @@ The development server starts the current application shell, content-backed book
 
 ## Current boundaries
 
-The current implementation intentionally stops at the end of Phase 5. The repository does **not** yet include:
+The current implementation intentionally stops at a functional chapter reader. The repository does **not** yet include:
 
-- Phase 6 rich content blocks such as figures with captions, styled tables, columns, and callouts
+- rich content blocks such as figures with captions, styled tables, columns, and callouts
 - expanded audience-conditional block rendering
 - glossary hover cards or glossary-linked reader interactions
 - full translation parity across localized content
@@ -138,7 +137,7 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has finished its foundation, base shell, content engine, book home / Table of Contents, and chapter reader phases. The next implementation milestone is to add rich content features while preserving the Markdown/MDX-first authoring model.
+The repository has a working foundation, base shell, content engine, book home / Table of Contents, and chapter reader. The next implementation focus is to add rich content features while preserving the Markdown/MDX-first authoring model.
 
 ## Licensing
 
@@ -158,5 +157,5 @@ If a specific file, directory, or asset declares different licensing terms, thos
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md): expected behavior and enforcement standards for project spaces
 - [SECURITY.md](SECURITY.md): how to report security issues responsibly
 - [SUPPORT.md](SUPPORT.md): where to ask for help and when to open a public issue
-- [ROADMAP.md](ROADMAP.md): summary of the approved project phases
+- [ROADMAP.md](ROADMAP.md): summary of the approved implementation roadmap
 - [CHANGELOG.md](CHANGELOG.md): notable repository changes over time

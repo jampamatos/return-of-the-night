@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document captures the current functional and visual direction for the **Return of the Night** site shell and reading experience. It is intended to guide implementation decisions as the product evolves while preserving a clear boundary between what exists now and what belongs to later phases.
+This document captures the current functional and visual direction for the **Return of the Night** site shell and reading experience. It is intended to guide implementation decisions as the product evolves while preserving a clear boundary between what exists now and what remains planned roadmap work.
 
 The goal is not to fully design the final product yet, but to define the **experience principles, interface expectations, visual identity, and early design constraints** that should shape the shell from this point onward.
 

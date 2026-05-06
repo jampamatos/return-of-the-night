@@ -44,6 +44,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated the project status to reflect completion of Phase 5 — Chapter reader.
-- Updated the next implementation milestone to Phase 6 — Rich content features.
-- Aligned repository documentation with the implemented reader scope and deferred Phase 6/7/8 boundaries.
+- Updated the project status to reflect the implemented chapter reader.
+- Updated the next implementation focus to rich content features.
+- Aligned repository documentation with the implemented reader scope and deferred rich content, glossary, and localization work.

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document defines how to report security issues for this repository during Phase 1.
+This document defines how to report security issues for this repository.
 
 Even though the project is still early, security concerns are still important. Reports are welcome for vulnerabilities in repository code, dependencies, build tooling, project configuration, or any published project material that could create a meaningful security risk.
 
@@ -10,7 +10,7 @@ Even though the project is still early, security concerns are still important. R
 
 Please do **not** open a public GitHub issue for a suspected vulnerability.
 
-For the current Phase 1 stage of the project, report security concerns privately via [email](mailto:jp.coutm@gmail.com).
+For now, report security concerns privately via [email](mailto:jp.coutm@gmail.com).
 
 If a report is accidentally made in public, reduce further disclosure as much as possible and notify the maintainer privately.
 
@@ -39,7 +39,7 @@ Please keep reports private until the maintainer has had a reasonable chance to 
 
 ## Current project scope
 
-At the current Phase 1 stage, the repository is primarily:
+At the current stage, the repository is primarily:
 
 - a static Astro application
 - repository infrastructure and documentation

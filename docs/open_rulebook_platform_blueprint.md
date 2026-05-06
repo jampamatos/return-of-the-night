@@ -642,7 +642,7 @@ Examples:
 
 - `feat(reader): add chapter sidebar`
 - `feat(glossary): support hover cards`
-- `docs(roadmap): define milestone 1`
+- `docs(roadmap): define initial roadmap`
 - `chore(repo): add issue templates`
 
 ## 17.4 Community expectations
@@ -751,7 +751,7 @@ A public repository without contribution standards, licensing clarity, and docum
 
 This roadmap goes from zero to an initially mature product.
 
-## Phase 0 — Direction and preparation
+## Direction and Preparation
 
 ### Goal
 
@@ -773,7 +773,7 @@ Define clearly what we are building and how we will work.
 
 ---
 
-## Phase 1 — Repository foundation
+## Repository Foundation
 
 ### Goal
 
@@ -807,7 +807,7 @@ Create the technical and organizational foundation of the project.
 
 ---
 
-## Phase 2 — Base site structure
+## Base Site Structure
 
 ### Goal
 
@@ -840,7 +840,7 @@ Create the navigable shell of the product before building the content engine.
 
 ---
 
-## Phase 3 — Content engine
+## Content Engine
 
 ### Goal
 
@@ -873,7 +873,7 @@ Create the structure that turns content files into a navigable book.
 
 ---
 
-## Phase 4 — Book home / Table of Contents
+## Book Home / Table of Contents
 
 ### Goal
 
@@ -905,7 +905,7 @@ Generate the book home page automatically from the content model.
 
 ---
 
-## Phase 5 — Chapter reader
+## Chapter Reader
 
 ### Goal
 
@@ -938,7 +938,7 @@ Turn content pages into a real reading experience.
 
 ---
 
-## Phase 6 — Rich content features
+## Rich Content Features
 
 ### Goal
 
@@ -969,7 +969,7 @@ Add the features that make the reader more powerful and closer to the intended v
 
 ---
 
-## Phase 7 — Interactive glossary
+## Interactive Glossary
 
 ### Goal
 
@@ -1001,7 +1001,7 @@ Create a system of inline-reference glossary entries with contextual visual feed
 
 ---
 
-## Phase 8 — Real localization
+## Real Localization
 
 ### Goal
 
@@ -1029,7 +1029,7 @@ Consolidate multilingual support consistently across the product.
 
 ---
 
-## Phase 9 — UX and layout refinement
+## UX and Layout Refinement
 
 ### Goal
 
@@ -1052,7 +1052,7 @@ Move the interface closer to the intended product experience without sacrificing
 
 ---
 
-## Phase 10 — Contribution docs and hardening
+## Contribution Docs and Hardening
 
 ### Goal
 
@@ -1076,13 +1076,13 @@ Prepare the project to grow without turning into chaos.
 
 ## 23. Recommended implementation order now
 
-The project has completed the first five implementation phases. The current recommended sequence from this point is:
+The project has completed the foundation, shell, content engine, book home, and chapter reader work. The current recommended sequence from this point is:
 
-1. Phase 6 — Rich content features
-2. Phase 7 — Interactive glossary
-3. Phase 8 — Real localization
-4. Phase 9 — UX/layout refinement
-5. Phase 10 — Contribution docs and hardening
+1. Rich content features
+2. Interactive glossary
+3. Real localization
+4. UX/layout refinement
+5. Contribution docs and hardening
 
 ---
 
@@ -1110,11 +1110,11 @@ For each step:
 
 ---
 
-## 25. Next concrete milestone
+## 25. Next Concrete Focus
 
-The next concrete milestone is:
+The next concrete focus is:
 
-### **Phase 6 — Rich content features**
+### **Rich Content Features**
 
 That means the next practical tasks should be, in order:
 
@@ -1123,8 +1123,8 @@ That means the next practical tasks should be, in order:
 3. add styled table support
 4. add side-by-side layout support
 5. add callout support
-6. keep audience-conditional block rendering scoped to the Phase 6 boundary
-7. avoid glossary hover cards, localization fallback logic, and broad visual polish until their later phases
+6. keep audience-conditional block rendering scoped to the current rich-content boundary
+7. avoid glossary hover cards, localization fallback logic, and broad visual polish until their planned roadmap work
 
 ---
 
@@ -1154,7 +1154,7 @@ Core decisions must not change silently.
 - content engine completed
 - book home / Table of Contents completed
 - chapter reader completed
-- ready to start Phase 6 — Rich content features
+- ready to start rich content features
 
 ---
 

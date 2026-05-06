@@ -33,7 +33,7 @@ All repository writing should follow these principles:
 - **Describe the current reality honestly.** Do not document future systems as if they already exist.
 - **Keep scope explicit.** State what a document covers and what it does not cover.
 - **Favor maintainability.** Shorter, direct guidance is better than aspirational but vague prose.
-- **Stay aligned with the source of truth.** If the blueprint, ADRs, or milestone docs define a decision, repository writing should reflect that decision accurately.
+- **Stay aligned with the source of truth.** If the blueprint, ADRs, or roadmap docs define a decision, repository writing should reflect that decision accurately.
 
 When possible, explain decisions in a way that helps future contributors answer three questions quickly:
 
@@ -75,7 +75,7 @@ In particular:
 - update `CONTRIBUTING.md` when contribution workflow expectations change
 - add or update an ADR when a repository-level technical decision is being made
 - update support docs when reporting, conduct, or security guidance changes
-- keep `ROADMAP.md` and `CHANGELOG.md` aligned with meaningful project milestones
+- keep `ROADMAP.md` and `CHANGELOG.md` aligned with meaningful project changes
 
 The documents in `docs/` are the source of truth for repository direction. If implementation temporarily diverges, either the implementation should be corrected or the documentation should be intentionally updated to reflect the new decision.
 
@@ -83,7 +83,7 @@ The documents in `docs/` are the source of truth for repository direction. If im
 
 This guide is intentionally minimal.
 
-Later phases may extend it with more detailed rules for:
+Future documentation may extend it with more detailed rules for:
 
 - content collection structure
 - chapter metadata and ordering
