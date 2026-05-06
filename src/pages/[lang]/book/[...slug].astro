@@ -15,6 +15,24 @@ import {
   type Locale,
 } from "../../../config/site";
 
+interface ReaderHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+function normalizeReaderHeadings(
+  headings: ReaderHeading[] | undefined,
+): ReaderHeading[] {
+  return (headings ?? [])
+    .filter((heading) => heading.depth >= 2 && heading.depth <= 3)
+    .map((heading) => ({
+      depth: heading.depth,
+      slug: heading.slug,
+      text: heading.text,
+    }));
+}
+
 export async function getStaticPaths() {
   const chapterEntries = await listChapterEntries();
 
@@ -64,6 +82,7 @@ const audienceLabels = {
 
 const renderedChapter = chapterEntry ? await render(chapterEntry) : undefined;
 const ChapterContent = renderedChapter?.Content;
+const readerHeadings = normalizeReaderHeadings(renderedChapter?.headings);
 
 const copy = {
   en: {
@@ -89,6 +108,8 @@ const copy = {
     tocLabel: "Table of Contents",
     chapterLabel: "Chapter",
     backToTocLabel: "Back to Table of Contents",
+    headingsLabel: "Current chapter sections",
+    emptyHeadingsLabel: "No sidebar-ready sections found yet.",
   },
   "pt-BR": {
     title: "Leitor de Capítulo",
@@ -113,6 +134,9 @@ const copy = {
     tocLabel: "Sumário",
     chapterLabel: "Capítulo",
     backToTocLabel: "Voltar ao Sumário",
+    headingsLabel: "Seções do capítulo atual",
+    emptyHeadingsLabel:
+      "Nenhuma seção pronta para navegação lateral foi encontrada ainda.",
   },
 } as const satisfies Record<
   Locale,
@@ -138,6 +162,8 @@ const copy = {
     tocLabel: string;
     chapterLabel: string;
     backToTocLabel: string;
+    headingsLabel: string;
+    emptyHeadingsLabel: string;
   }
 >;
 
@@ -254,6 +280,28 @@ const tocHref = `/${lang}/book/`;
       }
     </dl>
 
+    <section
+      class="reader-route-scaffold__heading-check"
+      aria-labelledby="reader-heading-check-title"
+    >
+      <h2 id="reader-heading-check-title">{pageCopy.headingsLabel}</h2>
+
+      {
+        readerHeadings.length > 0 ? (
+          <ol>
+            {readerHeadings.map((heading) => (
+              <li>
+                <code>{`h${heading.depth}`}</code> <span>{heading.text}</span>{" "}
+                <code>{heading.slug}</code>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p>{pageCopy.emptyHeadingsLabel}</p>
+        )
+      }
+    </section>
+
     {
       ChapterContent && (
         <article
@@ -365,6 +413,35 @@ const tocHref = `/${lang}/book/`;
 
   .reader-route-scaffold__meta dd {
     margin: 0;
+  }
+
+  .reader-route-scaffold__heading-check {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.2);
+  }
+
+  .reader-route-scaffold__heading-check h2 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .reader-route-scaffold__heading-check ol {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: var(--space-5);
+  }
+
+  .reader-route-scaffold__heading-check li {
+    color: var(--muted-text-color);
+  }
+
+  .reader-route-scaffold__heading-check code {
+    color: var(--heading-color);
   }
 
   .reader-route-scaffold__content {
