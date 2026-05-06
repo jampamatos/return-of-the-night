@@ -40,6 +40,7 @@ const chapterEntry = await getChapterEntryByLanguageBookAndSlug({
 
 const resolvedChapter = chapterEntry
   ? {
+      chapterNumber: chapterEntry.data.chapterNumber,
       chapterTitle: chapterEntry.data.chapterTitle,
       pageTitle: chapterEntry.data.pageTitle,
       summary: chapterEntry.data.summary,
@@ -83,6 +84,11 @@ const copy = {
     contentLabel: "Chapter content",
     languageSwitcherLabel: "Language",
     audienceSwitcherLabel: "Reading Mode",
+    breadcrumbLabel: "Book location",
+    homeLabel: "Home",
+    tocLabel: "Table of Contents",
+    chapterLabel: "Chapter",
+    backToTocLabel: "Back to Table of Contents",
   },
   "pt-BR": {
     title: "Leitor de Capítulo",
@@ -102,6 +108,11 @@ const copy = {
     contentLabel: "Conteúdo do capítulo",
     languageSwitcherLabel: "Idioma",
     audienceSwitcherLabel: "Modo de Leitura",
+    breadcrumbLabel: "Localização no livro",
+    homeLabel: "Início",
+    tocLabel: "Sumário",
+    chapterLabel: "Capítulo",
+    backToTocLabel: "Voltar ao Sumário",
   },
 } as const satisfies Record<
   Locale,
@@ -122,6 +133,11 @@ const copy = {
     contentLabel: string;
     languageSwitcherLabel: string;
     audienceSwitcherLabel: string;
+    breadcrumbLabel: string;
+    homeLabel: string;
+    tocLabel: string;
+    chapterLabel: string;
+    backToTocLabel: string;
   }
 >;
 
@@ -134,6 +150,9 @@ const audienceOptions = AUDIENCES.map((audience) => ({
   label: audienceLabels[lang][audience],
   isActive: audience === "player",
 }));
+
+const homeHref = `/${lang}/`;
+const tocHref = `/${lang}/book/`;
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
@@ -147,11 +166,42 @@ const audienceOptions = AUDIENCES.map((audience) => ({
   />
 
   <section class="reader-route-scaffold" aria-labelledby="reader-route-title">
-    <p class="reader-route-scaffold__eyebrow">{pageCopy.eyebrow}</p>
+    <nav
+      class="reader-route-scaffold__context"
+      aria-label={pageCopy.breadcrumbLabel}
+    >
+      <a href={homeHref}>{pageCopy.homeLabel}</a>
+      <span aria-hidden="true">/</span>
+      <a href={tocHref}>{pageCopy.tocLabel}</a>
+      {
+        resolvedChapter && (
+          <>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{resolvedChapter.pageTitle}</span>
+          </>
+        )
+      }
+    </nav>
 
-    <h1 id="reader-route-title">{pageCopy.heading}</h1>
+    <header class="reader-route-scaffold__header">
+      <p class="reader-route-scaffold__eyebrow">
+        {
+          resolvedChapter
+            ? `${pageCopy.chapterLabel} ${resolvedChapter.chapterNumber} · ${resolvedChapter.chapterTitle}`
+            : pageCopy.eyebrow
+        }
+      </p>
 
-    <p>{pageCopy.body}</p>
+      <h1 id="reader-route-title">
+        {resolvedChapter?.pageTitle ?? pageCopy.heading}
+      </h1>
+
+      <p>{resolvedChapter?.summary ?? pageCopy.body}</p>
+
+      <a class="reader-route-scaffold__toc-link" href={tocHref}>
+        {pageCopy.backToTocLabel}
+      </a>
+    </header>
 
     <dl class="reader-route-scaffold__meta">
       <div>
@@ -230,6 +280,56 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     max-width: 48rem;
   }
 
+  .reader-route-scaffold__context {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+  }
+
+  .reader-route-scaffold__context a {
+    color: var(--muted-text-color);
+    text-decoration: none;
+  }
+
+  .reader-route-scaffold__context a:hover {
+    color: var(--accent-primary-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .reader-route-scaffold__context [aria-current="page"] {
+    color: var(--accent-primary);
+  }
+
+  .reader-route-scaffold__header {
+    display: grid;
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .reader-route-scaffold__header h1 {
+    margin-bottom: 0;
+  }
+
+  .reader-route-scaffold__header p {
+    margin: 0;
+  }
+
+  .reader-route-scaffold__toc-link {
+    width: fit-content;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
   .reader-route-scaffold__eyebrow {
     margin: 0;
     font-family: var(--font-ui);
@@ -240,14 +340,10 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     color: var(--accent-primary);
   }
 
-  .reader-route-scaffold h1 {
-    margin-bottom: 0;
-  }
-
   .reader-route-scaffold__meta {
     display: grid;
     gap: var(--space-3);
-    margin: var(--space-2) 0 0;
+    margin: 0;
   }
 
   .reader-route-scaffold__meta div {
