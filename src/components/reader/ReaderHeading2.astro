@@ -1,0 +1,63 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id, class: className, ...attrs } = Astro.props as Props;
+---
+
+<h2 {...attrs} id={id} class:list={["reader-heading", className]}>
+  <slot />
+  {
+    id && (
+      <a
+        class="reader-heading__anchor"
+        href={`#${id}`}
+        aria-label="Link to this section"
+      >
+        <span aria-hidden="true">#</span>
+      </a>
+    )
+  }
+</h2>
+
+<style>
+  .reader-heading {
+    scroll-margin-top: calc(5rem + var(--space-6));
+  }
+
+  .reader-heading__anchor {
+    margin-left: var(--space-2);
+    color: var(--muted-text-color);
+    font-family: var(--font-ui);
+    font-size: 0.85em;
+    font-weight: 700;
+    opacity: 0;
+    text-decoration: none;
+    transition:
+      color 160ms ease,
+      opacity 160ms ease;
+  }
+
+  .reader-heading:hover .reader-heading__anchor,
+  .reader-heading:focus-within .reader-heading__anchor {
+    opacity: 1;
+  }
+
+  .reader-heading__anchor:hover,
+  .reader-heading__anchor:focus-visible {
+    color: var(--accent-primary-strong);
+    opacity: 1;
+  }
+
+  @media (max-width: 40rem) {
+    .reader-heading {
+      scroll-margin-top: calc(8rem + var(--space-6));
+    }
+
+    .reader-heading__anchor {
+      opacity: 1;
+    }
+  }
+</style>

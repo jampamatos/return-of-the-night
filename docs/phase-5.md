@@ -20,6 +20,12 @@ Turn content pages into a real reading experience.
 - prev/next works
 - links to specific sections work
 
+## Implementation status
+
+Phase 5 is implemented in the reader route under `src/pages/[lang]/book/[...slug].astro`.
+
+The implementation keeps the Phase 5 boundary intact: it renders plain MDX chapters, derives local navigation from the current chapter headings, adds previous/next chapter links from content metadata, exposes stable section anchors, supports section deep links, and includes responsive and sparse-heading fallbacks. It does not add Phase 6 rich content blocks, Phase 7 glossary hover cards, or Phase 8 localization fallback logic.
+
 ## Phase boundary
 
 This milestone includes the **reader route and chapter-reading experience only**. It does **not** include Phase 6 rich content blocks like figures/captions, styled tables, columns, callouts, or audience-conditional block rendering beyond whatever already exists in plain MDX. It also does **not** include Phase 7 glossary hover cards or Phase 8 localization consolidation work.
@@ -151,7 +157,7 @@ This milestone includes the **reader route and chapter-reading experience only**
 
 `P5-60 → P5-61 → P5-62 → P5-63 → P5-64 → P5-65 → P5-66 → P5-67 → P5-68 → P5-69 → P5-70 → P5-71 → P5-72 → P5-73 → P5-74 → P5-75`
 
-This order follows the current roadmap and the live repo state: first fulfill the existing future reader link contract, then load and render real chapter content, then add orientation and sidebar behavior, then wire previous/next and deep links, and only then close the milestone.
+This order follows the roadmap and the reader link contract established by the Table of Contents: first match the generated chapter URLs, then load and render real chapter content, then add orientation and sidebar behavior, then wire previous/next and deep links, and only then close the milestone.
 
 ---
 

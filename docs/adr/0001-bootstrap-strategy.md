@@ -10,7 +10,7 @@ Accepted
 
 The main platform blueprint defines the project as an open-source RPG digital-book platform built with strong repository hygiene, architectural decision tracking, progressive complexity, and a learning-oriented approach. It favors understanding and maintainability over immediate convenience.
 
-At the same time, the current Return of the Night source-of-truth describes the project in its present form as a private, player-facing campaign wiki and rules reference, with an Astro + Starlight platform plan.
+At the time this ADR was written, the Return of the Night source-of-truth described the project in its present form as a private, player-facing campaign wiki and rules reference, with an Astro + Starlight platform plan.
 
 Because of that, there is a real early-stage tension between two valid directions:
 

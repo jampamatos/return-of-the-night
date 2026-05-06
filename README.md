@@ -2,7 +2,7 @@
 
 Return of the Night is an open-source web platform for reading RPG rulebooks, setting books, campaign books, and compendiums through a content-first digital-book experience.
 
-The repository has completed **Phase 4 — Book home / Table of Contents**. The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, and a content-backed book home page with an automatically generated Table of Contents. The next approved implementation step is **Phase 5 — Chapter reader**.
+The repository has completed **Phase 5 — Chapter reader**. The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, a content-backed book home page with an automatically generated Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, and section deep links. The next approved implementation step is **Phase 6 — Rich content features**.
 
 ## Current status
 
@@ -18,7 +18,9 @@ The repository has completed **Phase 4 — Book home / Table of Contents**. The 
 - The repository includes seeded English content plus localized PT-BR mirrors that demonstrate shared logical IDs across languages.
 - Metadata utilities now support chapter listing by language and book, stable reading order, adjacent chapter resolution, glossary listing by language, and glossary lookup by logical ID.
 - The route `/{lang}/book/` renders the current book home and Table of Contents from real content metadata.
-- The Table of Contents supports metadata-driven ordering, book-config grouping, fallback grouping for sparse localized content, future chapter-reader links, empty states, orientation cues, and basic responsive behavior.
+- The Table of Contents supports metadata-driven ordering, book-config grouping, fallback grouping for sparse localized content, chapter-reader links, empty states, orientation cues, and basic responsive behavior.
+- The route `/{lang}/book/{slug}/` renders generated chapter reader pages from content entries.
+- Chapter reader pages support plain MDX content, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, sparse-heading safeguards, and responsive fallback behavior.
 - **Starlight is intentionally deferred** at this stage.
 - The repository language is **English-first** for code and contributor-facing artifacts.
 
@@ -31,8 +33,11 @@ The repository has completed **Phase 4 — Book home / Table of Contents**. The 
 - `/pt-BR/shell/`
 - `/en/book/`
 - `/pt-BR/book/`
+- `/en/book/test/test-1/`
+- `/en/book/test/test-2/`
+- `/pt-BR/book/teste/teste-1/`
 
-## Content and Table of Contents status
+## Content and Reader Status
 
 - `src/content/chapters/en/` contains seeded chapter content for the MVP book.
 - `src/content/chapters/pt-BR/` contains a localized mirror that demonstrates the shared logical `id` rule.
@@ -41,11 +46,13 @@ The repository has completed **Phase 4 — Book home / Table of Contents**. The 
 - `src/content/config/` contains the first book-level config entry for the MVP book.
 - `src/lib/content/chapters.ts` provides chapter listing, ordering, and adjacent-entry utilities.
 - `src/lib/content/toc.ts` provides metadata-driven grouping for the Table of Contents.
-- `src/lib/content/chapter-routes.ts` provides future chapter-reader href generation from chapter slugs.
+- `src/lib/content/chapter-routes.ts` provides chapter-reader href generation from chapter slugs.
 - `src/lib/glossary/entries.ts` provides glossary listing and lookup utilities.
 - `src/components/reader/BookTableOfContents.astro` renders the current book home and Table of Contents experience.
+- `src/components/reader/ReaderHeading2.astro` and `src/components/reader/ReaderHeading3.astro` render linkable reader headings for MDX content.
+- `src/pages/[lang]/book/[...slug].astro` renders generated chapter reader pages.
 
-The app now renders the real book home and Table of Contents. It still does not render chapter reader pages, sidebar navigation, heading anchors, previous/next chapter navigation, or interactive glossary UI. Those remain part of later phases.
+The app now renders the real book home, Table of Contents, and chapter reader. Interactive glossary UI, rich content blocks, full localization parity, and visual refinement remain part of later phases.
 
 ## Source of truth
 
@@ -55,6 +62,7 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/return-of-the-night-source-of-truth-v0.2.md`](docs/return-of-the-night-source-of-truth-v0.2.md): setting canon and project background for Return of the Night.
 - [`docs/adr/0001-bootstrap-strategy.md`](docs/adr/0001-bootstrap-strategy.md): accepted Phase 1 decision to use plain Astro and defer Starlight.
 - [`docs/architecture.md`](docs/architecture.md): repository architecture direction, system layers, and planned implementation order.
+- [`docs/phase-5.md`](docs/phase-5.md): implemented Phase 5 reader milestone scope, boundary, and exit criteria.
 - [`docs/assets-policy.md`](docs/assets-policy.md): repository policy for asset provenance and licensing.
 - [`docs/assets-register.md`](docs/assets-register.md): current register for asset source, author, license, and usage notes.
 - [`docs/shell-reading-and-visual-guidelines.md`](docs/shell-reading-and-visual-guidelines.md): the current visual and reading-direction guide for the shell.
@@ -81,7 +89,7 @@ npm install
 npm run dev
 ```
 
-The development server starts the current application shell and content-backed book home. Useful routes to verify locally:
+The development server starts the current application shell, content-backed book home, and generated reader pages. Useful routes to verify locally:
 
 - `/`
 - `/en/`
@@ -90,6 +98,10 @@ The development server starts the current application shell and content-backed b
 - `/pt-BR/shell/`
 - `/en/book/`
 - `/pt-BR/book/`
+- `/en/book/test/test-1/`
+- `/en/book/test/test-1/#test-section`
+- `/en/book/test/test-2/`
+- `/pt-BR/book/teste/teste-1/`
 
 ## Available scripts
 
@@ -106,15 +118,14 @@ The development server starts the current application shell and content-backed b
 
 ## Current boundaries
 
-The current implementation intentionally stops at the end of Phase 4. The repository does **not** yet include:
+The current implementation intentionally stops at the end of Phase 5. The repository does **not** yet include:
 
-- generated chapter routes or reader page UI
-- heading anchors or chapter-local sidebar navigation
-- previous/next chapter navigation in the reader
+- Phase 6 rich content blocks such as figures with captions, styled tables, columns, and callouts
+- expanded audience-conditional block rendering
 - glossary hover cards or glossary-linked reader interactions
 - full translation parity across localized content
-- localization-aware reader behavior beyond the current shared shell and book home routes
-- polished reader layouts beyond the current landing page, shell, and book home
+- localization fallback behavior or equivalent cross-locale reader routes
+- broader UX polish beyond the current functional reader, shell, landing page, and book home
 
 ## Project direction
 
@@ -127,7 +138,7 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has finished its foundation, base shell, content engine, and book home / Table of Contents phases. The next implementation milestone is to turn chapter content into a real reader experience.
+The repository has finished its foundation, base shell, content engine, book home / Table of Contents, and chapter reader phases. The next implementation milestone is to add rich content features while preserving the Markdown/MDX-first authoring model.
 
 ## Licensing
 

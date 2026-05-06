@@ -2,9 +2,9 @@
 
 ## Purpose
 
-This document explains how to contribute to the repository in its current Phase 1 state.
+This document explains how to contribute to the repository in its current state.
 
-The project is still building its open-source foundation, so the contribution process is intentionally simple and explicit.
+The project is still early and intentionally incremental, so the contribution process is simple and explicit.
 
 ## Before you contribute
 
@@ -17,8 +17,8 @@ The project is still building its open-source foundation, so the contribution pr
 
 Requirements:
 
-- a Node.js version supported by the current Astro release used in this repository
-- `npm`
+- Node.js `>=22.13.0 <23`
+- npm `>=11.7.0`
 
 Install dependencies:
 
