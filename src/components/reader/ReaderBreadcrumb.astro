@@ -1,0 +1,57 @@
+---
+interface Props {
+  label: string;
+  homeHref: string;
+  homeLabel: string;
+  tocHref: string;
+  tocLabel: string;
+  currentPageLabel?: string;
+}
+
+const { label, homeHref, homeLabel, tocHref, tocLabel, currentPageLabel } =
+  Astro.props as Props;
+---
+
+<nav class="reader-breadcrumb" aria-label={label}>
+  <a href={homeHref}>{homeLabel}</a>
+  <span aria-hidden="true">/</span>
+  <a href={tocHref}>{tocLabel}</a>
+  {
+    currentPageLabel && (
+      <>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{currentPageLabel}</span>
+      </>
+    )
+  }
+</nav>
+
+<style>
+  .reader-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+  }
+
+  .reader-breadcrumb a {
+    color: var(--muted-text-color);
+    text-decoration: none;
+  }
+
+  .reader-breadcrumb a:hover {
+    color: var(--accent-primary-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .reader-breadcrumb [aria-current="page"] {
+    color: var(--accent-primary);
+  }
+</style>

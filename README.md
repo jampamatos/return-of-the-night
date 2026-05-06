@@ -62,6 +62,7 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/return-of-the-night-source-of-truth-v0.2.md`](docs/return-of-the-night-source-of-truth-v0.2.md): setting canon and project background for Return of the Night.
 - [`docs/adr/0001-bootstrap-strategy.md`](docs/adr/0001-bootstrap-strategy.md): accepted bootstrap decision to use plain Astro and defer Starlight.
 - [`docs/architecture.md`](docs/architecture.md): repository architecture direction, system layers, and planned implementation order.
+- [`docs/code-organization.md`](docs/code-organization.md): code organization conventions for routes, components, domain logic, and styles.
 - [`docs/assets-policy.md`](docs/assets-policy.md): repository policy for asset provenance and licensing.
 - [`docs/assets-register.md`](docs/assets-register.md): current register for asset source, author, license, and usage notes.
 - [`docs/shell-reading-and-visual-guidelines.md`](docs/shell-reading-and-visual-guidelines.md): the current visual and reading-direction guide for the shell.

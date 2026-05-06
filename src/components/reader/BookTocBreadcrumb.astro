@@ -1,0 +1,53 @@
+---
+interface Props {
+  label: string;
+  homeHref: string;
+  homeLabel: string;
+  currentPageLabel: string;
+}
+
+const { label, homeHref, homeLabel, currentPageLabel } = Astro.props as Props;
+---
+
+<nav class="book-toc-breadcrumb" aria-label={label}>
+  <a href={homeHref}>{homeLabel}</a>
+  <span aria-hidden="true">/</span>
+  <span aria-current="page">{currentPageLabel}</span>
+</nav>
+
+<style>
+  .book-toc-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+  }
+
+  .book-toc-breadcrumb a {
+    color: var(--muted-text-color);
+    text-decoration: none;
+  }
+
+  .book-toc-breadcrumb a:hover {
+    color: var(--accent-primary-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .book-toc-breadcrumb [aria-current="page"] {
+    color: var(--accent-primary);
+  }
+
+  @media (max-width: 40rem) {
+    .book-toc-breadcrumb {
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+    }
+  }
+</style>

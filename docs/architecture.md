@@ -6,7 +6,7 @@ This document explains the current architectural shape of the repository and the
 
 Its goal is to describe the repository as it exists now without pretending that planned systems already exist.
 
-For detailed product scope and long-term roadmap, see [`docs/open_rulebook_platform_blueprint.md`](./open_rulebook_platform_blueprint.md). For the bootstrap decision, see [`docs/adr/0001-bootstrap-strategy.md`](./adr/0001-bootstrap-strategy.md).
+For detailed product scope and long-term roadmap, see [`docs/open_rulebook_platform_blueprint.md`](./open_rulebook_platform_blueprint.md). For the bootstrap decision, see [`docs/adr/0001-bootstrap-strategy.md`](./adr/0001-bootstrap-strategy.md). For code-level organization conventions, see [`docs/code-organization.md`](./code-organization.md).
 
 ## Current architectural direction
 
@@ -96,7 +96,7 @@ Important directories and files:
 - `src/components/`: UI and reader component area, including the current `BookTableOfContents` and reader heading components
 - `src/content/`: implemented content collections for chapters, glossary, and book config
 - `src/layouts/`: future shared layout area
-- `src/lib/`: reusable domain and utility logic, including content, TOC, glossary, locale-routing, and audience helpers
+- `src/lib/`: reusable domain and utility logic, including content, TOC, reader, glossary, locale-routing, and audience helpers
 - `src/styles/`: future shared style area
 - `docs/`: source-of-truth and support documentation
 
@@ -111,6 +111,7 @@ Current implementation status:
 - chapter metadata utilities support listing by language/book, stable ordering, and previous/next resolution
 - TOC utilities support metadata-driven grouping, configured groups, and fallback ungrouped entries
 - chapter route utilities generate reader links from content slugs
+- reader utilities normalize headings, build sidebar data, define reader copy, and create adjacent-reader links
 - glossary metadata utilities support listing by language and lookup by logical `id`
 - the book home renders a content-backed Table of Contents with empty states, orientation cues, and basic responsive behavior
 - the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, and section deep links
@@ -158,5 +159,6 @@ The architecture should continue to follow these principles as the project grows
 - keep content as the source of navigation truth
 - keep authoring workflows close to Markdown and MDX
 - isolate reusable logic from page rendering when complexity grows
+- keep route files focused on orchestration and move stable UI/logic into named components and `src/lib/`
 - avoid introducing framework layers or abstractions before they are justified
 - keep repository documentation aligned with implementation reality

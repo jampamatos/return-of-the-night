@@ -1,9 +1,11 @@
 ---
-import type { Audience, Locale } from "../../config/site";
+import type { Locale } from "../../config/site";
 import type { TocGroup } from "../../lib/content/toc";
-import { buildChapterReaderHref } from "../../lib/content/chapter-routes";
-
-type ChapterAudience = Audience | "all";
+import type { ChapterAudience } from "../../lib/reader/types";
+import BookTocBreadcrumb from "./BookTocBreadcrumb.astro";
+import BookTocEmptyState from "./BookTocEmptyState.astro";
+import BookTocGroup from "./BookTocGroup.astro";
+import BookTocHeader from "./BookTocHeader.astro";
 
 interface Props {
   lang: Locale;
@@ -44,7 +46,6 @@ const {
 } = Astro.props as Props;
 
 const hasTocEntries = groups.some((group) => group.entries.length > 0);
-
 const tocEntryCount = groups.reduce(
   (total, group) => total + group.entries.length,
   0,
@@ -52,97 +53,38 @@ const tocEntryCount = groups.reduce(
 ---
 
 <section class="book-toc" aria-labelledby="book-toc-title">
-  <nav class="book-toc__context" aria-label={breadcrumbLabel}>
-    <a href={homeHref}>{homeLabel}</a>
-    <span aria-hidden="true">/</span>
-    <span aria-current="page">{currentPageLabel}</span>
-  </nav>
+  <BookTocBreadcrumb
+    label={breadcrumbLabel}
+    homeHref={homeHref}
+    homeLabel={homeLabel}
+    currentPageLabel={currentPageLabel}
+  />
 
-  <header class="book-toc__header">
-    <p class="book-toc__eyebrow">{tocLabel}</p>
-    <h1 id="book-toc-title">{bookTitle}</h1>
-
-    {bookSubtitle && <p class="book-toc__subtitle">{bookSubtitle}</p>}
-
-    <dl class="book-toc__overview" aria-label={overviewLabel}>
-      <div>
-        <dt>{sectionsCountLabel}</dt>
-        <dd>{groups.length}</dd>
-      </div>
-
-      <div>
-        <dt>{entriesCountLabel}</dt>
-        <dd>{tocEntryCount}</dd>
-      </div>
-    </dl>
-  </header>
+  <BookTocHeader
+    title={bookTitle}
+    subtitle={bookSubtitle}
+    tocLabel={tocLabel}
+    overviewLabel={overviewLabel}
+    sectionsCountLabel={sectionsCountLabel}
+    entriesCountLabel={entriesCountLabel}
+    sectionCount={groups.length}
+    entryCount={tocEntryCount}
+  />
 
   {
     hasTocEntries ? (
       <div class="book-toc__groups">
         {groups.map((group) => (
-          <section
-            class="book-toc__group"
-            aria-labelledby={`toc-group-${group.id}`}
-          >
-            <header class="book-toc__group-header">
-              <h2 id={`toc-group-${group.id}`}>{group.label}</h2>
-
-              {group.description && (
-                <p class="book-toc__group-description">{group.description}</p>
-              )}
-            </header>
-
-            {group.entries.length > 0 ? (
-              <ol class="book-toc__entries">
-                {group.entries.map((entry, entryIndex) => (
-                  <li class="book-toc-entry">
-                    <span class="book-toc-entry__number">
-                      {String(entryIndex + 1).padStart(2, "0")}
-                    </span>
-
-                    <div class="book-toc-entry__body">
-                      <p class="book-toc-entry__chapter">
-                        {entry.data.chapterTitle}
-                      </p>
-
-                      <h3 class="book-toc-entry__title">
-                        <a
-                          class="book-toc-entry__link"
-                          href={buildChapterReaderHref(lang, entry)}
-                        >
-                          {entry.data.pageTitle}
-                        </a>
-                      </h3>
-
-                      <p class="book-toc-entry__summary">
-                        {entry.data.summary}
-                      </p>
-
-                      <div class="book-toc-entry__meta">
-                        <span class="book-toc-entry__meta-item">
-                          {audienceLabels[entry.data.audience]}
-                        </span>
-
-                        <span class="book-toc-entry__meta-item">
-                          {entry.data.status}
-                        </span>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <p class="book-toc__group-empty">{emptyGroupLabel}</p>
-            )}
-          </section>
+          <BookTocGroup
+            lang={lang}
+            group={group}
+            audienceLabels={audienceLabels}
+            emptyLabel={emptyGroupLabel}
+          />
         ))}
       </div>
     ) : (
-      <div class="book-toc__empty" role="status">
-        <h2>{emptyStateTitle}</h2>
-        <p>{emptyStateBody}</p>
-      </div>
+      <BookTocEmptyState title={emptyStateTitle} body={emptyStateBody} />
     )
   }
 </section>
@@ -153,221 +95,9 @@ const tocEntryCount = groups.reduce(
     gap: var(--space-6);
   }
 
-  .book-toc__context {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    font-family: var(--font-ui);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted-text-color);
-  }
-
-  .book-toc__context a {
-    color: var(--muted-text-color);
-    text-decoration: none;
-  }
-
-  .book-toc__context a:hover {
-    color: var(--accent-primary-strong);
-    text-decoration: underline;
-    text-underline-offset: 0.2rem;
-  }
-
-  .book-toc__context [aria-current="page"] {
-    color: var(--accent-primary);
-  }
-
-  .book-toc__header {
-    padding-bottom: var(--space-5);
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .book-toc__eyebrow {
-    margin: 0 0 var(--space-2);
-    font-family: var(--font-ui);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent-primary);
-  }
-
-  .book-toc__subtitle {
-    margin-bottom: 0;
-    font-size: 1.1rem;
-  }
-
-  .book-toc__overview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin: var(--space-5) 0 0;
-  }
-
-  .book-toc__overview div {
-    min-width: 8rem;
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.28);
-  }
-
-  .book-toc__overview dt {
-    margin: 0 0 var(--space-1);
-    font-family: var(--font-ui);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted-text-color);
-  }
-
-  .book-toc__overview dd {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--heading-color);
-  }
-
   .book-toc__groups {
     display: grid;
     gap: var(--space-5);
-  }
-
-  .book-toc__group {
-    padding: var(--space-5);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background: rgba(31, 41, 55, 0.34);
-  }
-
-  .book-toc__group-header {
-    display: grid;
-    gap: var(--space-2);
-    margin-bottom: var(--space-4);
-  }
-
-  .book-toc__group-header h2 {
-    margin: 0;
-    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.8rem);
-  }
-
-  .book-toc__group-description {
-    margin: 0;
-  }
-
-  .book-toc__group-empty {
-    margin: 0;
-    padding: var(--space-4);
-    border: 1px dashed var(--border-color);
-    border-radius: var(--radius-sm);
-    color: var(--muted-text-color);
-    background: rgba(10, 15, 20, 0.24);
-  }
-
-  .book-toc__entries {
-    display: grid;
-    gap: var(--space-3);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .book-toc-entry {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-4);
-    padding: var(--space-4);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.34);
-  }
-
-  .book-toc-entry__number {
-    font-family: var(--font-ui);
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--accent-primary-strong);
-  }
-
-  .book-toc-entry__body {
-    min-width: 0;
-  }
-
-  .book-toc-entry__chapter {
-    margin: 0 0 var(--space-1);
-    font-family: var(--font-ui);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted-text-color);
-  }
-
-  .book-toc-entry__title {
-    margin: 0;
-    font-size: 1.2rem;
-  }
-
-  .book-toc-entry__link {
-    color: var(--heading-color);
-    text-decoration: none;
-  }
-
-  .book-toc-entry__link:hover {
-    color: var(--accent-primary-strong);
-    text-decoration: underline;
-    text-decoration-thickness: 0.08rem;
-    text-underline-offset: 0.2rem;
-  }
-
-  .book-toc-entry__summary {
-    margin: var(--space-2) 0 0;
-  }
-
-  .book-toc__empty {
-    padding: var(--space-5);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background: rgba(31, 41, 55, 0.34);
-  }
-
-  .book-toc__empty h2 {
-    margin: 0 0 var(--space-2);
-    font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem);
-  }
-
-  .book-toc__empty p {
-    margin: 0;
-  }
-
-  .book-toc-entry__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-top: var(--space-3);
-  }
-
-  .book-toc-entry__meta-item {
-    display: inline-flex;
-    align-items: center;
-    min-height: 1.75rem;
-    padding: 0.25rem 0.55rem;
-    border: 1px solid var(--border-color);
-    border-radius: 999px;
-    font-family: var(--font-ui);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted-text-color);
-    background: rgba(22, 27, 34, 0.72);
   }
 
   @media (max-width: 40rem) {
@@ -375,78 +105,8 @@ const tocEntryCount = groups.reduce(
       gap: var(--space-5);
     }
 
-    .book-toc__context {
-      font-size: 0.8rem;
-      letter-spacing: 0.04em;
-    }
-
-    .book-toc__header {
-      padding-bottom: var(--space-4);
-    }
-
-    .book-toc__eyebrow {
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-    }
-
-    .book-toc__subtitle {
-      font-size: 1rem;
-    }
-
-    .book-toc__overview {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--space-2);
-      margin-top: var(--space-4);
-    }
-
-    .book-toc__overview div {
-      min-width: 0;
-      padding: var(--space-3);
-    }
-
     .book-toc__groups {
       gap: var(--space-4);
-    }
-
-    .book-toc__group {
-      padding: var(--space-4);
-    }
-
-    .book-toc__group-header h2 {
-      font-size: 1.25rem;
-    }
-
-    .book-toc-entry {
-      grid-template-columns: 1fr;
-      gap: var(--space-3);
-      padding: var(--space-3);
-    }
-
-    .book-toc-entry__number {
-      width: fit-content;
-    }
-
-    .book-toc-entry__title {
-      font-size: 1.1rem;
-    }
-
-    .book-toc-entry__link {
-      display: inline-block;
-      padding-block: var(--space-1);
-    }
-
-    .book-toc-entry__meta {
-      gap: var(--space-2);
-    }
-
-    .book-toc-entry__meta-item {
-      font-size: 0.75rem;
-    }
-
-    .book-toc__empty,
-    .book-toc__group-empty {
-      padding: var(--space-3);
     }
   }
 </style>

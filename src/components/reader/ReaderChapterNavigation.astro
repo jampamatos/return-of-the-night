@@ -1,0 +1,147 @@
+---
+import type { ReaderAdjacentLink } from "../../lib/reader/types";
+
+interface Props {
+  label: string;
+  chapterLabel: string;
+  previousChapterLabel: string;
+  nextChapterLabel: string;
+  previousChapterUnavailableLabel: string;
+  nextChapterUnavailableLabel: string;
+  previousChapter?: ReaderAdjacentLink;
+  nextChapter?: ReaderAdjacentLink;
+}
+
+const {
+  label,
+  chapterLabel,
+  previousChapterLabel,
+  nextChapterLabel,
+  previousChapterUnavailableLabel,
+  nextChapterUnavailableLabel,
+  previousChapter,
+  nextChapter,
+} = Astro.props as Props;
+---
+
+<footer class="reader-chapter-nav" aria-label={label}>
+  {
+    previousChapter ? (
+      <a
+        class="reader-chapter-nav__link reader-chapter-nav__link--previous"
+        href={previousChapter.href}
+      >
+        <span class="reader-chapter-nav__kicker">{previousChapterLabel}</span>
+        <span class="reader-chapter-nav__title">
+          {previousChapter.pageTitle}
+        </span>
+        <span class="reader-chapter-nav__context">
+          {`${chapterLabel} ${previousChapter.chapterNumber} · ${previousChapter.chapterTitle}`}
+        </span>
+      </a>
+    ) : (
+      <p class="reader-chapter-nav__empty">
+        <span class="reader-chapter-nav__kicker">{previousChapterLabel}</span>
+        <span>{previousChapterUnavailableLabel}</span>
+      </p>
+    )
+  }
+
+  {
+    nextChapter ? (
+      <a
+        class="reader-chapter-nav__link reader-chapter-nav__link--next"
+        href={nextChapter.href}
+      >
+        <span class="reader-chapter-nav__kicker">{nextChapterLabel}</span>
+        <span class="reader-chapter-nav__title">{nextChapter.pageTitle}</span>
+        <span class="reader-chapter-nav__context">
+          {`${chapterLabel} ${nextChapter.chapterNumber} · ${nextChapter.chapterTitle}`}
+        </span>
+      </a>
+    ) : (
+      <p class="reader-chapter-nav__empty">
+        <span class="reader-chapter-nav__kicker">{nextChapterLabel}</span>
+        <span>{nextChapterUnavailableLabel}</span>
+      </p>
+    )
+  }
+</footer>
+
+<style>
+  .reader-chapter-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    max-width: var(--reading-measure);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .reader-chapter-nav__link,
+  .reader-chapter-nav__empty {
+    display: grid;
+    gap: var(--space-1);
+    min-height: 7rem;
+    margin: 0;
+    padding: var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.28);
+    color: var(--muted-text-color);
+    text-decoration: none;
+  }
+
+  .reader-chapter-nav__link:hover {
+    border-color: var(--accent-primary);
+    color: var(--heading-color);
+    background: rgba(56, 189, 248, 0.1);
+  }
+
+  .reader-chapter-nav__link--next {
+    text-align: right;
+  }
+
+  .reader-chapter-nav__kicker {
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+  }
+
+  .reader-chapter-nav__title {
+    font-family: var(--font-ui);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--heading-color);
+  }
+
+  .reader-chapter-nav__context {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted-text-color);
+  }
+
+  .reader-chapter-nav__empty {
+    opacity: 0.72;
+  }
+
+  @media (max-width: 40rem) {
+    .reader-chapter-nav {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .reader-chapter-nav__link,
+    .reader-chapter-nav__empty {
+      min-height: 0;
+    }
+
+    .reader-chapter-nav__link--next {
+      text-align: left;
+    }
+  }
+</style>

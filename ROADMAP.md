@@ -8,7 +8,9 @@ The source of truth for detailed scope, architecture direction, and implementati
 
 The repository has completed **Phase 5 — Chapter reader**.
 
-The next implementation milestone is **Phase 6 — Rich content features**.
+The current maintenance checkpoint is **Code organization and contributor readiness**.
+
+The next implementation milestone after this checkpoint is **Phase 6 — Rich content features**.
 
 ## Planned phases
 
@@ -64,6 +66,15 @@ Turn chapters into a real reading experience:
 - current-chapter sidebar
 - previous and next navigation
 - deep links and heading anchors
+
+### Maintenance checkpoint — Code organization and contributor readiness ← Current
+
+Prepare the codebase to scale safely before the next feature layer:
+
+- split large reader route code into smaller components
+- move reader-specific data shaping into `src/lib/reader`
+- document code organization expectations for contributors
+- preserve existing behavior while improving readability and reviewability
 
 ### Phase 6 — Rich content features ← Next
 

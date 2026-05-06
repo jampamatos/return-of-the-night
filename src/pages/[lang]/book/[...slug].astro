@@ -1,110 +1,35 @@
 ---
+import { render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ChapterReader from "../../../components/reader/ChapterReader.astro";
+import ReaderBreadcrumb from "../../../components/reader/ReaderBreadcrumb.astro";
+import ReaderHeader from "../../../components/reader/ReaderHeader.astro";
 import ReaderHeading2 from "../../../components/reader/ReaderHeading2.astro";
 import ReaderHeading3 from "../../../components/reader/ReaderHeading3.astro";
 import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
-import { render } from "astro:content";
+import {
+  AUDIENCES,
+  getLocaleOrDefault,
+  type Locale,
+} from "../../../config/site";
 import { getBookConfigEntryByLanguageAndBook } from "../../../lib/content/book-config";
-import { buildChapterReaderHref } from "../../../lib/content/chapter-routes";
 import { MVP_BOOK_ID } from "../../../lib/content/conventions";
 import {
   getAdjacentChapterEntriesByLanguageAndBook,
   getChapterEntryByLanguageBookAndSlug,
   listChapterEntries,
-  type ChapterEntry,
 } from "../../../lib/content/chapters";
 import {
-  AUDIENCES,
-  getLocaleOrDefault,
-  type Audience,
-  type Locale,
-} from "../../../config/site";
-
-interface ReaderHeading {
-  depth: number;
-  slug: string;
-  text: string;
-}
-
-interface ReaderSidebarItem {
-  id: string;
-  label: string;
-  href: `#${string}`;
-  depth: number;
-  children: ReaderSidebarItem[];
-}
-
-interface ReaderAdjacentLink {
-  href: string;
-  chapterNumber: number;
-  chapterTitle: string;
-  pageTitle: string;
-}
-
-function normalizeReaderHeadings(
-  headings: ReaderHeading[] | undefined,
-): ReaderHeading[] {
-  return (headings ?? []).flatMap((heading) => {
-    const slug = heading.slug.trim();
-    const text = heading.text.trim();
-
-    if (heading.depth < 2 || heading.depth > 3 || !slug || !text) {
-      return [];
-    }
-
-    return [
-      {
-        depth: heading.depth,
-        slug,
-        text,
-      },
-    ];
-  });
-}
-
-function buildReaderSidebarItems(
-  headings: ReaderHeading[],
-): ReaderSidebarItem[] {
-  const items: ReaderSidebarItem[] = [];
-  let currentLevelTwo: ReaderSidebarItem | undefined;
-
-  for (const heading of headings) {
-    const item: ReaderSidebarItem = {
-      id: heading.slug,
-      label: heading.text,
-      href: `#${heading.slug}`,
-      depth: heading.depth,
-      children: [],
-    };
-
-    if (heading.depth === 2) {
-      items.push(item);
-      currentLevelTwo = item;
-      continue;
-    }
-
-    if (heading.depth === 3 && currentLevelTwo) {
-      currentLevelTwo.children.push(item);
-      continue;
-    }
-
-    items.push(item);
-  }
-
-  return items;
-}
-
-function buildReaderAdjacentLink(
-  lang: Locale,
-  chapter: ChapterEntry,
-): ReaderAdjacentLink {
-  return {
-    href: buildChapterReaderHref(lang, chapter),
-    chapterNumber: chapter.data.chapterNumber,
-    chapterTitle: chapter.data.chapterTitle,
-    pageTitle: chapter.data.pageTitle,
-  };
-}
+  getAudienceOptionsForReader,
+  getReaderAudienceLabels,
+  getReaderCopy,
+} from "../../../lib/reader/copy";
+import {
+  buildReaderSidebarItems,
+  normalizeReaderHeadings,
+} from "../../../lib/reader/headings";
+import { buildReaderAdjacentLink } from "../../../lib/reader/navigation";
+import type { ReaderChapterSummary } from "../../../lib/reader/types";
 
 export async function getStaticPaths() {
   const chapterEntries = await listChapterEntries();
@@ -117,11 +42,8 @@ export async function getStaticPaths() {
   }));
 }
 
-const langParam = Astro.params.lang;
-const slugParam = Astro.params.slug;
-
-const lang: Locale = getLocaleOrDefault(langParam);
-const slug = slugParam ?? "";
+const lang: Locale = getLocaleOrDefault(Astro.params.lang);
+const slug = Astro.params.slug ?? "";
 
 const chapterEntry = await getChapterEntryByLanguageBookAndSlug({
   lang,
@@ -144,7 +66,7 @@ const adjacentChapterEntries = chapterEntry
     )
   : undefined;
 
-const resolvedChapter = chapterEntry
+const chapter: ReaderChapterSummary | undefined = chapterEntry
   ? {
       chapterNumber: chapterEntry.data.chapterNumber,
       chapterTitle: chapterEntry.data.chapterTitle,
@@ -155,25 +77,13 @@ const resolvedChapter = chapterEntry
     }
   : undefined;
 
-const audienceLabels = {
-  en: {
-    all: "Player and GM",
-    player: "Player",
-    gm: "GM",
-  },
-  "pt-BR": {
-    all: "Jogador e Mestre",
-    player: "Jogador",
-    gm: "Mestre",
-  },
-} as const satisfies Record<Locale, Record<"all" | Audience, string>>;
-
 const renderedChapter = chapterEntry ? await render(chapterEntry) : undefined;
 const ChapterContent = renderedChapter?.Content;
 const readerMdxComponents = {
   h2: ReaderHeading2,
   h3: ReaderHeading3,
 };
+
 const readerHeadings = normalizeReaderHeadings(renderedChapter?.headings);
 const readerSidebarItems = buildReaderSidebarItems(readerHeadings);
 const previousChapter = adjacentChapterEntries?.previous
@@ -183,113 +93,22 @@ const nextChapter = adjacentChapterEntries?.next
   ? buildReaderAdjacentLink(lang, adjacentChapterEntries.next)
   : undefined;
 
-const copy = {
-  en: {
-    title: "Chapter Reader",
-    description: "Read a chapter from the Return of the Night core book.",
-    eyebrow: "Chapter reader",
-    heading: "Chapter reader",
-    body: "Choose a chapter from the Table of Contents to start reading.",
-    chapterMetadataLabel: "Chapter metadata",
-    statusLabel: "Status",
-    audienceLabel: "Audience",
-    missingTitle: "Chapter entry not found",
-    missingBody:
-      "The route exists, but the chapter entry could not be resolved from the current language and slug.",
-    contentLabel: "Chapter content",
-    languageSwitcherLabel: "Language",
-    audienceSwitcherLabel: "Reading Mode",
-    breadcrumbLabel: "Book location",
-    homeLabel: "Home",
-    tocLabel: "Table of Contents",
-    chapterLabel: "Chapter",
-    backToTocLabel: "Back to Table of Contents",
-    sidebarLabel: "On this page",
-    emptySidebarLabel:
-      "This chapter does not have local sections yet. Continue reading from the main content.",
-    chapterNavigationLabel: "Chapter navigation",
-    previousChapterLabel: "Previous Chapter",
-    nextChapterLabel: "Next Chapter",
-    previousChapterUnavailableLabel: "This is the first available chapter.",
-    nextChapterUnavailableLabel: "This is the last available chapter.",
-  },
-  "pt-BR": {
-    title: "Leitor de Capítulo",
-    description: "Leia um capítulo do livro principal de Return of the Night.",
-    eyebrow: "Leitor de capítulo",
-    heading: "Leitor de capítulo",
-    body: "Escolha um capítulo pelo Sumário para começar a leitura.",
-    chapterMetadataLabel: "Metadados do capítulo",
-    statusLabel: "Status",
-    audienceLabel: "Público",
-    missingTitle: "Entrada de capítulo não encontrada",
-    missingBody:
-      "A rota existe, mas a entrada do capítulo não pôde ser resolvida a partir do idioma e do slug atuais.",
-    contentLabel: "Conteúdo do capítulo",
-    languageSwitcherLabel: "Idioma",
-    audienceSwitcherLabel: "Modo de Leitura",
-    breadcrumbLabel: "Localização no livro",
-    homeLabel: "Início",
-    tocLabel: "Sumário",
-    chapterLabel: "Capítulo",
-    backToTocLabel: "Voltar ao Sumário",
-    sidebarLabel: "Nesta página",
-    emptySidebarLabel:
-      "Este capítulo ainda não tem seções locais. Continue a leitura pelo conteúdo principal.",
-    chapterNavigationLabel: "Navegação entre capítulos",
-    previousChapterLabel: "Capítulo Anterior",
-    nextChapterLabel: "Próximo Capítulo",
-    previousChapterUnavailableLabel: "Este é o primeiro capítulo disponível.",
-    nextChapterUnavailableLabel: "Este é o último capítulo disponível.",
-  },
-} as const satisfies Record<
-  Locale,
-  {
-    title: string;
-    description: string;
-    eyebrow: string;
-    heading: string;
-    body: string;
-    chapterMetadataLabel: string;
-    statusLabel: string;
-    audienceLabel: string;
-    missingTitle: string;
-    missingBody: string;
-    contentLabel: string;
-    languageSwitcherLabel: string;
-    audienceSwitcherLabel: string;
-    breadcrumbLabel: string;
-    homeLabel: string;
-    tocLabel: string;
-    chapterLabel: string;
-    backToTocLabel: string;
-    sidebarLabel: string;
-    emptySidebarLabel: string;
-    chapterNavigationLabel: string;
-    previousChapterLabel: string;
-    nextChapterLabel: string;
-    previousChapterUnavailableLabel: string;
-    nextChapterUnavailableLabel: string;
-  }
->;
+const copy = getReaderCopy(lang);
+const audienceLabels = getReaderAudienceLabels(lang);
+const audienceOptions = getAudienceOptionsForReader(lang, [...AUDIENCES]);
 
-const pageCopy = copy[lang];
 const tocLabel =
-  bookConfigEntry?.data.navigation.tableOfContents ?? pageCopy.tocLabel;
+  bookConfigEntry?.data.navigation.tableOfContents ?? copy.tocLabel;
 const previousChapterLabel =
-  bookConfigEntry?.data.navigation.previousChapter ??
-  pageCopy.previousChapterLabel;
+  bookConfigEntry?.data.navigation.previousChapter ?? copy.previousChapterLabel;
 const nextChapterLabel =
-  bookConfigEntry?.data.navigation.nextChapter ?? pageCopy.nextChapterLabel;
+  bookConfigEntry?.data.navigation.nextChapter ?? copy.nextChapterLabel;
 
-const pageTitle = resolvedChapter?.pageTitle ?? pageCopy.title;
-const pageDescription = resolvedChapter?.summary ?? pageCopy.description;
-const audienceOptions = AUDIENCES.map((audience) => ({
-  value: audience,
-  label: audienceLabels[lang][audience],
-  isActive: audience === "player",
-}));
-
+const pageTitle = chapter?.pageTitle ?? copy.title;
+const pageDescription = chapter?.summary ?? copy.description;
+const eyebrow = chapter
+  ? `${copy.chapterLabel} ${chapter.chapterNumber} · ${chapter.chapterTitle}`
+  : copy.eyebrow;
 const homeHref = `/${lang}/`;
 const tocHref = `/${lang}/book/`;
 ---
@@ -299,170 +118,51 @@ const tocHref = `/${lang}/book/`;
     slot="header-controls"
     lang={lang}
     pathname={Astro.url.pathname}
-    languageSwitcherLabel={pageCopy.languageSwitcherLabel}
-    audienceSwitcherLabel={pageCopy.audienceSwitcherLabel}
+    languageSwitcherLabel={copy.languageSwitcherLabel}
+    audienceSwitcherLabel={copy.audienceSwitcherLabel}
     audienceOptions={audienceOptions}
   />
 
-  <section class="reader-route-scaffold" aria-labelledby="reader-route-title">
-    <nav
-      class="reader-route-scaffold__context"
-      aria-label={pageCopy.breadcrumbLabel}
+  <section class="reader-page" aria-labelledby="reader-route-title">
+    <ReaderBreadcrumb
+      label={copy.breadcrumbLabel}
+      homeHref={homeHref}
+      homeLabel={copy.homeLabel}
+      tocHref={tocHref}
+      tocLabel={tocLabel}
+      currentPageLabel={chapter?.pageTitle}
+    />
+
+    <ReaderHeader
+      title={chapter?.pageTitle ?? copy.heading}
+      eyebrow={eyebrow}
+      summary={chapter?.summary ?? copy.body}
+      tocHref={tocHref}
+      backToTocLabel={copy.backToTocLabel}
+      chapter={chapter}
+      metadataLabel={copy.chapterMetadataLabel}
+      audienceLabel={copy.audienceLabel}
+      audienceValue={chapter ? audienceLabels[chapter.audience] : undefined}
+      statusLabel={copy.statusLabel}
+    />
+
+    <ChapterReader
+      copy={copy}
+      hasContent={Boolean(ChapterContent)}
+      sidebarItems={readerSidebarItems}
+      previousChapter={previousChapter}
+      nextChapter={nextChapter}
+      previousChapterLabel={previousChapterLabel}
+      nextChapterLabel={nextChapterLabel}
     >
-      <a href={homeHref}>{pageCopy.homeLabel}</a>
-      <span aria-hidden="true">/</span>
-      <a href={tocHref}>{tocLabel}</a>
       {
-        resolvedChapter && (
-          <>
-            <span aria-hidden="true">/</span>
-            <span aria-current="page">{resolvedChapter.pageTitle}</span>
-          </>
+        ChapterContent && (
+          <Fragment slot="content">
+            <ChapterContent components={readerMdxComponents} />
+          </Fragment>
         )
       }
-    </nav>
-
-    <header class="reader-route-scaffold__header">
-      <p class="reader-route-scaffold__eyebrow">
-        {
-          resolvedChapter
-            ? `${pageCopy.chapterLabel} ${resolvedChapter.chapterNumber} · ${resolvedChapter.chapterTitle}`
-            : pageCopy.eyebrow
-        }
-      </p>
-
-      <h1 id="reader-route-title">
-        {resolvedChapter?.pageTitle ?? pageCopy.heading}
-      </h1>
-
-      <p>{resolvedChapter?.summary ?? pageCopy.body}</p>
-
-      {
-        resolvedChapter && (
-          <ul
-            class="reader-route-scaffold__header-meta"
-            aria-label={pageCopy.chapterMetadataLabel}
-          >
-            <li>
-              <span>{pageCopy.audienceLabel}</span>
-              {audienceLabels[lang][resolvedChapter.audience]}
-            </li>
-            <li>
-              <span>{pageCopy.statusLabel}</span>
-              {resolvedChapter.status}
-            </li>
-          </ul>
-        )
-      }
-
-      <a class="reader-route-scaffold__toc-link" href={tocHref}>
-        {pageCopy.backToTocLabel}
-      </a>
-    </header>
-
-    {
-      ChapterContent ? (
-        <div class="reader-route-scaffold__body">
-          <div class="reader-route-scaffold__main">
-            <article
-              class="reader-route-scaffold__content"
-              aria-label={pageCopy.contentLabel}
-            >
-              <ChapterContent components={readerMdxComponents} />
-            </article>
-
-            <footer
-              class="reader-route-scaffold__chapter-nav"
-              aria-label={pageCopy.chapterNavigationLabel}
-            >
-              {previousChapter ? (
-                <a
-                  class="reader-route-scaffold__chapter-nav-link reader-route-scaffold__chapter-nav-link--previous"
-                  href={previousChapter.href}
-                >
-                  <span class="reader-route-scaffold__chapter-nav-kicker">
-                    {previousChapterLabel}
-                  </span>
-                  <span class="reader-route-scaffold__chapter-nav-title">
-                    {previousChapter.pageTitle}
-                  </span>
-                  <span class="reader-route-scaffold__chapter-nav-context">
-                    {`${pageCopy.chapterLabel} ${previousChapter.chapterNumber} · ${previousChapter.chapterTitle}`}
-                  </span>
-                </a>
-              ) : (
-                <p class="reader-route-scaffold__chapter-nav-empty">
-                  <span class="reader-route-scaffold__chapter-nav-kicker">
-                    {previousChapterLabel}
-                  </span>
-                  <span>{pageCopy.previousChapterUnavailableLabel}</span>
-                </p>
-              )}
-
-              {nextChapter ? (
-                <a
-                  class="reader-route-scaffold__chapter-nav-link reader-route-scaffold__chapter-nav-link--next"
-                  href={nextChapter.href}
-                >
-                  <span class="reader-route-scaffold__chapter-nav-kicker">
-                    {nextChapterLabel}
-                  </span>
-                  <span class="reader-route-scaffold__chapter-nav-title">
-                    {nextChapter.pageTitle}
-                  </span>
-                  <span class="reader-route-scaffold__chapter-nav-context">
-                    {`${pageCopy.chapterLabel} ${nextChapter.chapterNumber} · ${nextChapter.chapterTitle}`}
-                  </span>
-                </a>
-              ) : (
-                <p class="reader-route-scaffold__chapter-nav-empty">
-                  <span class="reader-route-scaffold__chapter-nav-kicker">
-                    {nextChapterLabel}
-                  </span>
-                  <span>{pageCopy.nextChapterUnavailableLabel}</span>
-                </p>
-              )}
-            </footer>
-          </div>
-
-          <aside
-            class="reader-route-scaffold__sidebar"
-            aria-labelledby="reader-sidebar-title"
-          >
-            <h2 id="reader-sidebar-title">{pageCopy.sidebarLabel}</h2>
-
-            {readerSidebarItems.length > 0 ? (
-              <nav aria-label={pageCopy.sidebarLabel}>
-                <ol>
-                  {readerSidebarItems.map((item) => (
-                    <li>
-                      <a href={item.href}>{item.label}</a>
-
-                      {item.children.length > 0 && (
-                        <ol>
-                          {item.children.map((child) => (
-                            <li>
-                              <a href={child.href}>{child.label}</a>
-                            </li>
-                          ))}
-                        </ol>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-              </nav>
-            ) : (
-              <p>{pageCopy.emptySidebarLabel}</p>
-            )}
-          </aside>
-        </div>
-      ) : (
-        <div class="reader-route-scaffold__missing" role="status">
-          <h2>{pageCopy.missingTitle}</h2>
-          <p>{pageCopy.missingBody}</p>
-        </div>
-      )
-    }
+    </ChapterReader>
   </section>
 
   <script>
@@ -473,330 +173,9 @@ const tocHref = `/${lang}/book/`;
 </BaseLayout>
 
 <style>
-  .reader-route-scaffold {
+  .reader-page {
     display: grid;
     gap: var(--space-4);
     width: 100%;
-  }
-
-  .reader-route-scaffold__context {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    font-family: var(--font-ui);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted-text-color);
-  }
-
-  .reader-route-scaffold__context a {
-    color: var(--muted-text-color);
-    text-decoration: none;
-  }
-
-  .reader-route-scaffold__context a:hover {
-    color: var(--accent-primary-strong);
-    text-decoration: underline;
-    text-underline-offset: 0.2rem;
-  }
-
-  .reader-route-scaffold__context [aria-current="page"] {
-    color: var(--accent-primary);
-  }
-
-  .reader-route-scaffold__header {
-    display: grid;
-    gap: var(--space-3);
-    padding-bottom: var(--space-4);
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .reader-route-scaffold__header h1 {
-    margin-bottom: 0;
-  }
-
-  .reader-route-scaffold__header p {
-    margin: 0;
-  }
-
-  .reader-route-scaffold__header-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .reader-route-scaffold__header-meta li {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    min-height: 2rem;
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.28);
-    color: var(--muted-text-color);
-    font-family: var(--font-ui);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-  }
-
-  .reader-route-scaffold__header-meta span {
-    color: var(--accent-primary);
-    text-transform: uppercase;
-  }
-
-  .reader-route-scaffold__toc-link {
-    width: fit-content;
-    font-family: var(--font-ui);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-  }
-
-  .reader-route-scaffold__eyebrow {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent-primary);
-  }
-
-  .reader-route-scaffold__body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem);
-    gap: var(--space-6);
-    align-items: start;
-  }
-
-  .reader-route-scaffold__main {
-    display: grid;
-    gap: var(--space-5);
-    min-width: 0;
-  }
-
-  .reader-route-scaffold__sidebar {
-    position: sticky;
-    top: calc(var(--space-6) + 5rem);
-    display: grid;
-    gap: var(--space-3);
-    padding: var(--space-4);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.28);
-  }
-
-  .reader-route-scaffold__sidebar h2 {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent-primary);
-  }
-
-  .reader-route-scaffold__sidebar nav {
-    display: grid;
-    gap: var(--space-2);
-  }
-
-  .reader-route-scaffold__sidebar ol {
-    display: grid;
-    gap: var(--space-2);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .reader-route-scaffold__sidebar ol ol {
-    gap: var(--space-1);
-    margin-top: var(--space-2);
-    padding-left: var(--space-3);
-    border-left: 1px solid var(--border-color);
-  }
-
-  .reader-route-scaffold__sidebar a {
-    display: inline-flex;
-    color: var(--muted-text-color);
-    font-family: var(--font-ui);
-    font-size: 0.9rem;
-    font-weight: 700;
-    line-height: 1.25;
-    text-decoration: none;
-  }
-
-  .reader-route-scaffold__sidebar a:hover {
-    color: var(--accent-primary-strong);
-    text-decoration: underline;
-    text-underline-offset: 0.2rem;
-  }
-
-  .reader-route-scaffold__sidebar p {
-    margin: 0;
-    font-size: 0.95rem;
-  }
-
-  .reader-route-scaffold__content {
-    display: grid;
-    gap: var(--space-4);
-    max-width: var(--reading-measure);
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--border-color);
-  }
-
-  .reader-route-scaffold__content :global(*) {
-    margin-bottom: 0;
-  }
-
-  .reader-route-scaffold__content :global(* + *) {
-    margin-top: var(--space-4);
-  }
-
-  .reader-route-scaffold__content :global(h1),
-  .reader-route-scaffold__content :global(h2),
-  .reader-route-scaffold__content :global(h3) {
-    max-width: var(--reading-measure);
-  }
-
-  .reader-route-scaffold__content :global([id]) {
-    scroll-margin-top: calc(5rem + var(--space-6));
-  }
-
-  .reader-route-scaffold__content :global(p) {
-    max-width: var(--reading-measure);
-  }
-
-  .reader-route-scaffold__chapter-nav {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-3);
-    max-width: var(--reading-measure);
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--border-color);
-  }
-
-  .reader-route-scaffold__chapter-nav-link,
-  .reader-route-scaffold__chapter-nav-empty {
-    display: grid;
-    gap: var(--space-1);
-    min-height: 7rem;
-    margin: 0;
-    padding: var(--space-4);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.28);
-    color: var(--muted-text-color);
-    text-decoration: none;
-  }
-
-  .reader-route-scaffold__chapter-nav-link:hover {
-    border-color: var(--accent-primary);
-    color: var(--heading-color);
-    background: rgba(56, 189, 248, 0.1);
-  }
-
-  .reader-route-scaffold__chapter-nav-link--next {
-    text-align: right;
-  }
-
-  .reader-route-scaffold__chapter-nav-kicker {
-    font-family: var(--font-ui);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent-primary);
-  }
-
-  .reader-route-scaffold__chapter-nav-title {
-    font-family: var(--font-ui);
-    font-size: 1.15rem;
-    font-weight: 700;
-    line-height: 1.15;
-    color: var(--heading-color);
-  }
-
-  .reader-route-scaffold__chapter-nav-context {
-    font-family: var(--font-ui);
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--muted-text-color);
-  }
-
-  .reader-route-scaffold__chapter-nav-empty {
-    opacity: 0.72;
-  }
-
-  .reader-route-scaffold__missing {
-    display: grid;
-    gap: var(--space-2);
-    max-width: var(--reading-measure);
-    padding: var(--space-4);
-    border: 1px dashed var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.24);
-  }
-
-  .reader-route-scaffold__missing h2,
-  .reader-route-scaffold__missing p {
-    margin: 0;
-  }
-
-  @media (max-width: 58rem) {
-    .reader-route-scaffold__body {
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-5);
-    }
-
-    .reader-route-scaffold__sidebar {
-      order: -1;
-      position: static;
-      max-height: 16rem;
-      overflow: auto;
-    }
-
-    .reader-route-scaffold__sidebar nav > ol {
-      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-      align-items: start;
-    }
-  }
-
-  @media (max-width: 40rem) {
-    .reader-route-scaffold__header-meta {
-      display: grid;
-    }
-
-    .reader-route-scaffold__header-meta li {
-      width: 100%;
-    }
-
-    .reader-route-scaffold__content :global([id]) {
-      scroll-margin-top: calc(8rem + var(--space-6));
-    }
-
-    .reader-route-scaffold__chapter-nav {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .reader-route-scaffold__chapter-nav-link,
-    .reader-route-scaffold__chapter-nav-empty {
-      min-height: 0;
-    }
-
-    .reader-route-scaffold__chapter-nav-link--next {
-      text-align: left;
-    }
-
-    .reader-route-scaffold__sidebar {
-      max-height: 14rem;
-    }
   }
 </style>
