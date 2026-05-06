@@ -1,0 +1,133 @@
+---
+import ReaderChapterNavigation from "./ReaderChapterNavigation.astro";
+import ReaderSidebar from "./ReaderSidebar.astro";
+import type {
+  ReaderAdjacentLink,
+  ReaderCopy,
+  ReaderSidebarItem,
+} from "../../lib/reader/types";
+
+interface Props {
+  copy: ReaderCopy;
+  hasContent: boolean;
+  sidebarItems: ReaderSidebarItem[];
+  previousChapter?: ReaderAdjacentLink;
+  nextChapter?: ReaderAdjacentLink;
+  previousChapterLabel: string;
+  nextChapterLabel: string;
+}
+
+const {
+  copy,
+  hasContent,
+  sidebarItems,
+  previousChapter,
+  nextChapter,
+  previousChapterLabel,
+  nextChapterLabel,
+} = Astro.props as Props;
+---
+
+{
+  hasContent ? (
+    <div class="chapter-reader">
+      <div class="chapter-reader__main">
+        <article class="chapter-reader__content" aria-label={copy.contentLabel}>
+          <slot name="content" />
+        </article>
+
+        <ReaderChapterNavigation
+          label={copy.chapterNavigationLabel}
+          chapterLabel={copy.chapterLabel}
+          previousChapterLabel={previousChapterLabel}
+          nextChapterLabel={nextChapterLabel}
+          previousChapterUnavailableLabel={copy.previousChapterUnavailableLabel}
+          nextChapterUnavailableLabel={copy.nextChapterUnavailableLabel}
+          previousChapter={previousChapter}
+          nextChapter={nextChapter}
+        />
+      </div>
+
+      <ReaderSidebar
+        label={copy.sidebarLabel}
+        emptyLabel={copy.emptySidebarLabel}
+        items={sidebarItems}
+      />
+    </div>
+  ) : (
+    <div class="chapter-reader__missing" role="status">
+      <h2>{copy.missingTitle}</h2>
+      <p>{copy.missingBody}</p>
+    </div>
+  )
+}
+
+<style>
+  .chapter-reader {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem);
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .chapter-reader__main {
+    display: grid;
+    gap: var(--space-5);
+    min-width: 0;
+  }
+
+  .chapter-reader__content {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--reading-measure);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .chapter-reader__content :global(*) {
+    margin-bottom: 0;
+  }
+
+  .chapter-reader__content :global(* + *) {
+    margin-top: var(--space-4);
+  }
+
+  .chapter-reader__content :global(h1),
+  .chapter-reader__content :global(h2),
+  .chapter-reader__content :global(h3),
+  .chapter-reader__content :global(p) {
+    max-width: var(--reading-measure);
+  }
+
+  .chapter-reader__content :global([id]) {
+    scroll-margin-top: calc(5rem + var(--space-6));
+  }
+
+  .chapter-reader__missing {
+    display: grid;
+    gap: var(--space-2);
+    max-width: var(--reading-measure);
+    padding: var(--space-4);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.24);
+  }
+
+  .chapter-reader__missing h2,
+  .chapter-reader__missing p {
+    margin: 0;
+  }
+
+  @media (max-width: 58rem) {
+    .chapter-reader {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .chapter-reader__content :global([id]) {
+      scroll-margin-top: calc(8rem + var(--space-6));
+    }
+  }
+</style>

@@ -1,0 +1,126 @@
+---
+import type { ReaderChapterSummary } from "../../lib/reader/types";
+
+interface Props {
+  title: string;
+  eyebrow: string;
+  summary: string;
+  tocHref: string;
+  backToTocLabel: string;
+  chapter?: ReaderChapterSummary;
+  metadataLabel: string;
+  audienceLabel: string;
+  audienceValue?: string;
+  statusLabel: string;
+}
+
+const {
+  title,
+  eyebrow,
+  summary,
+  tocHref,
+  backToTocLabel,
+  chapter,
+  metadataLabel,
+  audienceLabel,
+  audienceValue,
+  statusLabel,
+} = Astro.props as Props;
+---
+
+<header class="reader-header">
+  <p class="reader-header__eyebrow">{eyebrow}</p>
+
+  <h1 id="reader-route-title">{title}</h1>
+
+  <p>{summary}</p>
+
+  {
+    chapter && (
+      <ul class="reader-header__meta" aria-label={metadataLabel}>
+        <li>
+          <span>{audienceLabel}</span>
+          {audienceValue}
+        </li>
+        <li>
+          <span>{statusLabel}</span>
+          {chapter.status}
+        </li>
+      </ul>
+    )
+  }
+
+  <a class="reader-header__toc-link" href={tocHref}>
+    {backToTocLabel}
+  </a>
+</header>
+
+<style>
+  .reader-header {
+    display: grid;
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .reader-header h1,
+  .reader-header p {
+    margin: 0;
+  }
+
+  .reader-header__eyebrow {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+  }
+
+  .reader-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .reader-header__meta li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2rem;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.28);
+    color: var(--muted-text-color);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .reader-header__meta span {
+    color: var(--accent-primary);
+    text-transform: uppercase;
+  }
+
+  .reader-header__toc-link {
+    width: fit-content;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 40rem) {
+    .reader-header__meta {
+      display: grid;
+    }
+
+    .reader-header__meta li {
+      width: 100%;
+    }
+  }
+</style>

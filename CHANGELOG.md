@@ -41,9 +41,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Stable heading anchors and working section deep links.
 - Responsive fallback behavior for chapter-local navigation.
 - Sparse-heading safeguards for chapters with minimal structure.
+- Code organization guide for routes, components, domain logic, and styles.
 
 ### Changed
 
 - Updated the project status to reflect the implemented chapter reader.
 - Updated the next implementation focus to rich content features.
 - Aligned repository documentation with the implemented reader scope and deferred rich content, glossary, and localization work.
+- Refactored the chapter reader route into smaller reader components and typed reader utilities.

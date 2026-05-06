@@ -1,0 +1,151 @@
+---
+import type { Locale } from "../../config/site";
+import { buildChapterReaderHref } from "../../lib/content/chapter-routes";
+import type { ChapterAudience } from "../../lib/reader/types";
+import type { ChapterEntry } from "../../lib/content/chapters";
+
+interface Props {
+  lang: Locale;
+  entry: ChapterEntry;
+  index: number;
+  audienceLabels: Record<ChapterAudience, string>;
+}
+
+const { lang, entry, index, audienceLabels } = Astro.props as Props;
+---
+
+<li class="book-toc-entry">
+  <span class="book-toc-entry__number">
+    {String(index + 1).padStart(2, "0")}
+  </span>
+
+  <div class="book-toc-entry__body">
+    <p class="book-toc-entry__chapter">{entry.data.chapterTitle}</p>
+
+    <h3 class="book-toc-entry__title">
+      <a
+        class="book-toc-entry__link"
+        href={buildChapterReaderHref(lang, entry)}
+      >
+        {entry.data.pageTitle}
+      </a>
+    </h3>
+
+    <p class="book-toc-entry__summary">{entry.data.summary}</p>
+
+    <div class="book-toc-entry__meta">
+      <span class="book-toc-entry__meta-item">
+        {audienceLabels[entry.data.audience]}
+      </span>
+
+      <span class="book-toc-entry__meta-item">{entry.data.status}</span>
+    </div>
+  </div>
+</li>
+
+<style>
+  .book-toc-entry {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.34);
+  }
+
+  .book-toc-entry__number {
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent-primary-strong);
+  }
+
+  .book-toc-entry__body {
+    min-width: 0;
+  }
+
+  .book-toc-entry__chapter {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+  }
+
+  .book-toc-entry__title {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .book-toc-entry__link {
+    color: var(--heading-color);
+    text-decoration: none;
+  }
+
+  .book-toc-entry__link:hover {
+    color: var(--accent-primary-strong);
+    text-decoration: underline;
+    text-decoration-thickness: 0.08rem;
+    text-underline-offset: 0.2rem;
+  }
+
+  .book-toc-entry__summary {
+    margin: var(--space-2) 0 0;
+  }
+
+  .book-toc-entry__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .book-toc-entry__meta-item {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0.25rem 0.55rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+    background: rgba(22, 27, 34, 0.72);
+  }
+
+  @media (max-width: 40rem) {
+    .book-toc-entry {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+      padding: var(--space-3);
+    }
+
+    .book-toc-entry__number {
+      width: fit-content;
+    }
+
+    .book-toc-entry__title {
+      font-size: 1.1rem;
+    }
+
+    .book-toc-entry__link {
+      display: inline-block;
+      padding-block: var(--space-1);
+    }
+
+    .book-toc-entry__meta {
+      gap: var(--space-2);
+    }
+
+    .book-toc-entry__meta-item {
+      font-size: 0.75rem;
+    }
+  }
+</style>

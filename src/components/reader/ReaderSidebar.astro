@@ -1,0 +1,125 @@
+---
+import type { ReaderSidebarItem } from "../../lib/reader/types";
+
+interface Props {
+  label: string;
+  emptyLabel: string;
+  items: ReaderSidebarItem[];
+}
+
+const { label, emptyLabel, items } = Astro.props as Props;
+---
+
+<aside class="reader-sidebar" aria-labelledby="reader-sidebar-title">
+  <h2 id="reader-sidebar-title">{label}</h2>
+
+  {
+    items.length > 0 ? (
+      <nav aria-label={label}>
+        <ol>
+          {items.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+
+              {item.children.length > 0 && (
+                <ol>
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={child.href}>{child.label}</a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    ) : (
+      <p>{emptyLabel}</p>
+    )
+  }
+</aside>
+
+<style>
+  .reader-sidebar {
+    position: sticky;
+    top: calc(var(--space-6) + 5rem);
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.28);
+  }
+
+  .reader-sidebar h2 {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+  }
+
+  .reader-sidebar nav {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .reader-sidebar ol {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .reader-sidebar ol ol {
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--border-color);
+  }
+
+  .reader-sidebar a {
+    display: inline-flex;
+    color: var(--muted-text-color);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .reader-sidebar a:hover {
+    color: var(--accent-primary-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .reader-sidebar p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 58rem) {
+    .reader-sidebar {
+      order: -1;
+      position: static;
+      max-height: 16rem;
+      overflow: auto;
+    }
+
+    .reader-sidebar nav > ol {
+      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .reader-sidebar {
+      max-height: 14rem;
+    }
+  }
+</style>
