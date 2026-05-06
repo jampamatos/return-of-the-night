@@ -21,6 +21,14 @@ interface ReaderHeading {
   text: string;
 }
 
+interface ReaderSidebarItem {
+  id: string;
+  label: string;
+  href: `#${string}`;
+  depth: number;
+  children: ReaderSidebarItem[];
+}
+
 function normalizeReaderHeadings(
   headings: ReaderHeading[] | undefined,
 ): ReaderHeading[] {
@@ -31,6 +39,39 @@ function normalizeReaderHeadings(
       slug: heading.slug,
       text: heading.text,
     }));
+}
+
+function buildReaderSidebarItems(
+  headings: ReaderHeading[],
+): ReaderSidebarItem[] {
+  const items: ReaderSidebarItem[] = [];
+  let currentParent: ReaderSidebarItem | undefined;
+
+  for (const heading of headings) {
+    const item: ReaderSidebarItem = {
+      id: heading.slug,
+      label: heading.text,
+      href: `#${heading.slug}`,
+      depth: heading.depth,
+      children: [],
+    };
+
+    if (heading.depth === 2) {
+      items.push(item);
+      currentParent = item;
+      continue;
+    }
+
+    if (heading.depth === 3 && currentParent) {
+      currentParent.children.push(item);
+      continue;
+    }
+
+    items.push(item);
+    currentParent = item;
+  }
+
+  return items;
 }
 
 export async function getStaticPaths() {
@@ -83,6 +124,7 @@ const audienceLabels = {
 const renderedChapter = chapterEntry ? await render(chapterEntry) : undefined;
 const ChapterContent = renderedChapter?.Content;
 const readerHeadings = normalizeReaderHeadings(renderedChapter?.headings);
+const readerSidebarItems = buildReaderSidebarItems(readerHeadings);
 
 const copy = {
   en: {
@@ -110,6 +152,8 @@ const copy = {
     backToTocLabel: "Back to Table of Contents",
     headingsLabel: "Current chapter sections",
     emptyHeadingsLabel: "No sidebar-ready sections found yet.",
+    sidebarDataLabel: "Current chapter sidebar data",
+    emptySidebarDataLabel: "No current-chapter sidebar items were generated.",
   },
   "pt-BR": {
     title: "Leitor de Capítulo",
@@ -137,6 +181,9 @@ const copy = {
     headingsLabel: "Seções do capítulo atual",
     emptyHeadingsLabel:
       "Nenhuma seção pronta para navegação lateral foi encontrada ainda.",
+    sidebarDataLabel: "Dados da navegação do capítulo atual",
+    emptySidebarDataLabel:
+      "Nenhum item de navegação do capítulo atual foi gerado.",
   },
 } as const satisfies Record<
   Locale,
@@ -164,6 +211,8 @@ const copy = {
     backToTocLabel: string;
     headingsLabel: string;
     emptyHeadingsLabel: string;
+    sidebarDataLabel: string;
+    emptySidebarDataLabel: string;
   }
 >;
 
@@ -302,6 +351,37 @@ const tocHref = `/${lang}/book/`;
       }
     </section>
 
+    <section
+      class="reader-route-scaffold__sidebar-data-check"
+      aria-labelledby="reader-sidebar-data-check-title"
+    >
+      <h2 id="reader-sidebar-data-check-title">{pageCopy.sidebarDataLabel}</h2>
+
+      {
+        readerSidebarItems.length > 0 ? (
+          <ol>
+            {readerSidebarItems.map((item) => (
+              <li>
+                <a href={item.href}>{item.label}</a> <code>{item.href}</code>
+                {item.children.length > 0 && (
+                  <ol>
+                    {item.children.map((child) => (
+                      <li>
+                        <a href={child.href}>{child.label}</a>{" "}
+                        <code>{child.href}</code>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p>{pageCopy.emptySidebarDataLabel}</p>
+        )
+      }
+    </section>
+
     {
       ChapterContent && (
         <article
@@ -415,7 +495,8 @@ const tocHref = `/${lang}/book/`;
     margin: 0;
   }
 
-  .reader-route-scaffold__heading-check {
+  .reader-route-scaffold__heading-check,
+  .reader-route-scaffold__sidebar-data-check {
     display: grid;
     gap: var(--space-3);
     padding: var(--space-4);
@@ -424,24 +505,32 @@ const tocHref = `/${lang}/book/`;
     background: rgba(10, 15, 20, 0.2);
   }
 
-  .reader-route-scaffold__heading-check h2 {
+  .reader-route-scaffold__heading-check h2,
+  .reader-route-scaffold__sidebar-data-check h2 {
     margin: 0;
     font-size: 1.1rem;
   }
 
-  .reader-route-scaffold__heading-check ol {
+  .reader-route-scaffold__heading-check ol,
+  .reader-route-scaffold__sidebar-data-check ol {
     display: grid;
     gap: var(--space-2);
     margin: 0;
     padding-left: var(--space-5);
   }
 
-  .reader-route-scaffold__heading-check li {
+  .reader-route-scaffold__heading-check li,
+  .reader-route-scaffold__sidebar-data-check li {
     color: var(--muted-text-color);
   }
 
-  .reader-route-scaffold__heading-check code {
+  .reader-route-scaffold__heading-check code,
+  .reader-route-scaffold__sidebar-data-check code {
     color: var(--heading-color);
+  }
+
+  .reader-route-scaffold__sidebar-data-check a {
+    font-weight: 700;
   }
 
   .reader-route-scaffold__content {
