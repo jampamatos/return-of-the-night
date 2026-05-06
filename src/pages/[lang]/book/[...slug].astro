@@ -150,10 +150,8 @@ const copy = {
     tocLabel: "Table of Contents",
     chapterLabel: "Chapter",
     backToTocLabel: "Back to Table of Contents",
-    headingsLabel: "Current chapter sections",
-    emptyHeadingsLabel: "No sidebar-ready sections found yet.",
-    sidebarDataLabel: "Current chapter sidebar data",
-    emptySidebarDataLabel: "No current-chapter sidebar items were generated.",
+    sidebarLabel: "On this page",
+    emptySidebarLabel: "This chapter does not have local sections yet.",
   },
   "pt-BR": {
     title: "Leitor de Capítulo",
@@ -178,12 +176,8 @@ const copy = {
     tocLabel: "Sumário",
     chapterLabel: "Capítulo",
     backToTocLabel: "Voltar ao Sumário",
-    headingsLabel: "Seções do capítulo atual",
-    emptyHeadingsLabel:
-      "Nenhuma seção pronta para navegação lateral foi encontrada ainda.",
-    sidebarDataLabel: "Dados da navegação do capítulo atual",
-    emptySidebarDataLabel:
-      "Nenhum item de navegação do capítulo atual foi gerado.",
+    sidebarLabel: "Nesta página",
+    emptySidebarLabel: "Este capítulo ainda não tem seções locais.",
   },
 } as const satisfies Record<
   Locale,
@@ -209,10 +203,8 @@ const copy = {
     tocLabel: string;
     chapterLabel: string;
     backToTocLabel: string;
-    headingsLabel: string;
-    emptyHeadingsLabel: string;
-    sidebarDataLabel: string;
-    emptySidebarDataLabel: string;
+    sidebarLabel: string;
+    emptySidebarLabel: string;
   }
 >;
 
@@ -329,69 +321,51 @@ const tocHref = `/${lang}/book/`;
       }
     </dl>
 
-    <section
-      class="reader-route-scaffold__heading-check"
-      aria-labelledby="reader-heading-check-title"
-    >
-      <h2 id="reader-heading-check-title">{pageCopy.headingsLabel}</h2>
-
+    <div class="reader-route-scaffold__body">
       {
-        readerHeadings.length > 0 ? (
-          <ol>
-            {readerHeadings.map((heading) => (
-              <li>
-                <code>{`h${heading.depth}`}</code> <span>{heading.text}</span>{" "}
-                <code>{heading.slug}</code>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p>{pageCopy.emptyHeadingsLabel}</p>
+        ChapterContent && (
+          <article
+            class="reader-route-scaffold__content"
+            aria-label={pageCopy.contentLabel}
+          >
+            <ChapterContent />
+          </article>
         )
       }
-    </section>
 
-    <section
-      class="reader-route-scaffold__sidebar-data-check"
-      aria-labelledby="reader-sidebar-data-check-title"
-    >
-      <h2 id="reader-sidebar-data-check-title">{pageCopy.sidebarDataLabel}</h2>
+      <aside
+        class="reader-route-scaffold__sidebar"
+        aria-labelledby="reader-sidebar-title"
+      >
+        <h2 id="reader-sidebar-title">{pageCopy.sidebarLabel}</h2>
 
-      {
-        readerSidebarItems.length > 0 ? (
-          <ol>
-            {readerSidebarItems.map((item) => (
-              <li>
-                <a href={item.href}>{item.label}</a> <code>{item.href}</code>
-                {item.children.length > 0 && (
-                  <ol>
-                    {item.children.map((child) => (
-                      <li>
-                        <a href={child.href}>{child.label}</a>{" "}
-                        <code>{child.href}</code>
-                      </li>
-                    ))}
-                  </ol>
-                )}
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p>{pageCopy.emptySidebarDataLabel}</p>
-        )
-      }
-    </section>
+        {
+          readerSidebarItems.length > 0 ? (
+            <nav aria-label={pageCopy.sidebarLabel}>
+              <ol>
+                {readerSidebarItems.map((item) => (
+                  <li>
+                    <a href={item.href}>{item.label}</a>
 
-    {
-      ChapterContent && (
-        <article
-          class="reader-route-scaffold__content"
-          aria-label={pageCopy.contentLabel}
-        >
-          <ChapterContent />
-        </article>
-      )
-    }
+                    {item.children.length > 0 && (
+                      <ol>
+                        {item.children.map((child) => (
+                          <li>
+                            <a href={child.href}>{child.label}</a>
+                          </li>
+                        ))}
+                      </ol>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          ) : (
+            <p>{pageCopy.emptySidebarLabel}</p>
+          )
+        }
+      </aside>
+    </div>
   </section>
 
   <script>
@@ -405,7 +379,7 @@ const tocHref = `/${lang}/book/`;
   .reader-route-scaffold {
     display: grid;
     gap: var(--space-4);
-    max-width: 48rem;
+    width: 100%;
   }
 
   .reader-route-scaffold__context {
@@ -495,49 +469,79 @@ const tocHref = `/${lang}/book/`;
     margin: 0;
   }
 
-  .reader-route-scaffold__heading-check,
-  .reader-route-scaffold__sidebar-data-check {
+  .reader-route-scaffold__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem);
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .reader-route-scaffold__sidebar {
+    position: sticky;
+    top: calc(var(--space-6) + 5rem);
     display: grid;
     gap: var(--space-3);
     padding: var(--space-4);
-    border: 1px dashed var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.2);
+    background: rgba(10, 15, 20, 0.28);
   }
 
-  .reader-route-scaffold__heading-check h2,
-  .reader-route-scaffold__sidebar-data-check h2 {
+  .reader-route-scaffold__sidebar h2 {
     margin: 0;
-    font-size: 1.1rem;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
   }
 
-  .reader-route-scaffold__heading-check ol,
-  .reader-route-scaffold__sidebar-data-check ol {
+  .reader-route-scaffold__sidebar nav {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .reader-route-scaffold__sidebar ol {
     display: grid;
     gap: var(--space-2);
     margin: 0;
-    padding-left: var(--space-5);
+    padding: 0;
+    list-style: none;
   }
 
-  .reader-route-scaffold__heading-check li,
-  .reader-route-scaffold__sidebar-data-check li {
+  .reader-route-scaffold__sidebar ol ol {
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--border-color);
+  }
+
+  .reader-route-scaffold__sidebar a {
+    display: inline-flex;
     color: var(--muted-text-color);
-  }
-
-  .reader-route-scaffold__heading-check code,
-  .reader-route-scaffold__sidebar-data-check code {
-    color: var(--heading-color);
-  }
-
-  .reader-route-scaffold__sidebar-data-check a {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
     font-weight: 700;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .reader-route-scaffold__sidebar a:hover {
+    color: var(--accent-primary-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .reader-route-scaffold__sidebar p {
+    margin: 0;
+    font-size: 0.95rem;
   }
 
   .reader-route-scaffold__content {
     display: grid;
     gap: var(--space-4);
     max-width: var(--reading-measure);
-    margin-top: var(--space-4);
     padding-top: var(--space-5);
     border-top: 1px solid var(--border-color);
   }
