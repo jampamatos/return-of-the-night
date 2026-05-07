@@ -32,3 +32,21 @@ _Caption: Existing registered project artwork reused to validate semantic figure
 | ------------------------ | ------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | Standard Markdown table  | Renders through the shared reader MDX surface                | Authors do not need JSX for ordinary table content.                                |
 | Long tactical constraint | Keeps the table readable without breaking the reading column | This intentionally long cell helps validate horizontal overflow on narrow screens. |
+
+## Columns Rendering Sample
+
+:::columns
+:::column
+This column keeps ordinary Markdown authoring.
+
+- Supports paragraphs and lists.
+- Preserves the source reading order.
+
+:::
+:::column
+| Checkpoint | Outcome |
+| ---------- | ------- |
+| Wide view | Columns render side by side. |
+| Narrow view | Columns stack in source order. |
+:::
+:::

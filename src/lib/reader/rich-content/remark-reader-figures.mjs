@@ -115,5 +115,9 @@ function transformFigurePairs(parent) {
 export function remarkReaderFigures() {
   return function transform(tree) {
     transformFigurePairs(tree);
+
+    for (const child of tree.children ?? []) {
+      transform(child);
+    }
   };
 }

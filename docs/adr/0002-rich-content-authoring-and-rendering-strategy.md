@@ -30,7 +30,7 @@ The implementation will use a hybrid strategy:
 
 - Standard Markdown tables should remain the authoring convention for tables, with reader-specific semantic rendering and styling applied by the site.
 - Figures with captions should use an author-friendly block convention, rendered internally as semantic figure content.
-- Columns should use an author-friendly block convention for side-by-side composition, rendered internally through reader layout components.
+- Columns should use an author-friendly block convention for side-by-side composition, rendered internally through reader-owned layout markup.
 - Callouts should use an author-friendly block convention with a minimal supported set of variants.
 - Audience-filtered blocks should use an explicit authoring convention connected to the existing reader audience preference.
 
@@ -48,6 +48,23 @@ _Caption: Existing registered project artwork reused to validate semantic figure
 Localized content may use `Legenda:` instead of `Caption:` for the caption marker.
 
 The reader transforms this pair into semantic figure content internally. Authors should not write figure JSX for ordinary image-plus-caption content.
+
+## Current columns convention
+
+Side-by-side content uses directive-style Markdown blocks:
+
+```md
+:::columns
+:::column
+Rules text, lists, or tables go here.
+:::
+:::column
+Image, table, or supporting text goes here.
+:::
+:::
+```
+
+The reader transforms supported `columns` / `column` directives into reader-owned layout markup internally. Authors should not write layout JSX for ordinary two-column composition.
 
 ## Audience filtering
 
