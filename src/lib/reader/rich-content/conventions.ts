@@ -11,6 +11,10 @@ export type SupportedRichContentBlockType =
 
 export const FIGURE_CAPTION_PREFIXES = ["Caption", "Legenda"] as const;
 
+export const COLUMNS_DIRECTIVE_NAME = "columns" as const;
+
+export const COLUMN_DIRECTIVE_NAME = "column" as const;
+
 export const SUPPORTED_AUDIENCE_BLOCK_TARGETS = ["player", "gm"] as const;
 
 export type SupportedAudienceBlockTarget =

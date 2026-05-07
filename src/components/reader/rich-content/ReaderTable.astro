@@ -75,6 +75,20 @@ const tableProps = Astro.props;
     white-space: nowrap;
   }
 
+  :global(.reader-column) .reader-table table {
+    min-width: 100%;
+    table-layout: fixed;
+    font-size: 0.9rem;
+  }
+
+  :global(.reader-column) .reader-table :global(th),
+  :global(.reader-column) .reader-table :global(td) {
+    min-width: 0;
+    max-width: none;
+    padding: 0.65rem 0.75rem;
+    overflow-wrap: anywhere;
+  }
+
   @media (max-width: 40rem) {
     .reader-table {
       margin-inline: calc(var(--space-2) * -1);

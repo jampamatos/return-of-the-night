@@ -20,3 +20,33 @@ const readerMdxComponents = {
 ---
 
 <Content components={readerMdxComponents} />
+
+<style>
+  :global(.reader-columns) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    align-items: start;
+    width: 100%;
+    margin-block: var(--space-5);
+  }
+
+  :global(.reader-column) {
+    min-width: 0;
+  }
+
+  :global(.reader-column > :first-child) {
+    margin-top: 0;
+  }
+
+  :global(.reader-column > :last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 48rem) {
+    :global(.reader-columns) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-3);
+    }
+  }
+</style>

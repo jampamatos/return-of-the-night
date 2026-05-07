@@ -56,7 +56,6 @@ export const READER_CORE_SCOPE = [
 ] as const;
 
 export const READER_DEFERRED_SCOPE = [
-  "columns",
   "callouts",
   "expanded-audience-conditional-block-rendering",
   "glossary-hover-cards",
