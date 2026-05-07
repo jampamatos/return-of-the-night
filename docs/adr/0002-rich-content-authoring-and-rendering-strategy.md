@@ -36,6 +36,19 @@ The implementation will use a hybrid strategy:
 
 Components may be used under the hood whenever they make rendering, semantics, styling, or maintainability clearer. However, component implementation details should not force ordinary chapter authors into heavy JSX syntax.
 
+## Current figure convention
+
+Figures with captions use standard Markdown image syntax followed immediately by an emphasized caption paragraph:
+
+```md
+![Permanent daylight over a sealed arcology](/images/landing-hero.png)
+_Caption: Existing registered project artwork reused to validate semantic figure rendering._
+```
+
+Localized content may use `Legenda:` instead of `Caption:` for the caption marker.
+
+The reader transforms this pair into semantic figure content internally. Authors should not write figure JSX for ordinary image-plus-caption content.
+
 ## Audience filtering
 
 Audience-filtered content is a reading preference, not a security feature.

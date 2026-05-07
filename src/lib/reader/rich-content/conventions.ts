@@ -9,6 +9,8 @@ export const SUPPORTED_RICH_CONTENT_BLOCK_TYPES = [
 export type SupportedRichContentBlockType =
   (typeof SUPPORTED_RICH_CONTENT_BLOCK_TYPES)[number];
 
+export const FIGURE_CAPTION_PREFIXES = ["Caption", "Legenda"] as const;
+
 export const SUPPORTED_AUDIENCE_BLOCK_TARGETS = ["player", "gm"] as const;
 
 export type SupportedAudienceBlockTarget =

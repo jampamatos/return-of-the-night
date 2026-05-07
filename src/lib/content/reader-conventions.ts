@@ -56,8 +56,6 @@ export const READER_CORE_SCOPE = [
 ] as const;
 
 export const READER_DEFERRED_SCOPE = [
-  "figures-and-captions",
-  "styled-tables",
   "columns",
   "callouts",
   "expanded-audience-conditional-block-rendering",

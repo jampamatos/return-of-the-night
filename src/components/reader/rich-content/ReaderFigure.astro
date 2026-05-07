@@ -1,0 +1,39 @@
+---
+const figureProps = Astro.props;
+---
+
+<figure {...figureProps} class:list={["reader-figure", figureProps.class]}>
+  <slot />
+</figure>
+
+<style>
+  .reader-figure {
+    display: grid;
+    gap: var(--space-2);
+    width: 100%;
+    margin-inline: 0;
+    padding: var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.28);
+  }
+
+  .reader-figure :global(img) {
+    width: 100%;
+    border-radius: calc(var(--radius-sm) * 0.75);
+    object-fit: cover;
+  }
+
+  .reader-figure :global(figcaption) {
+    margin: 0;
+    color: var(--muted-text-color);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .reader-figure :global(figcaption strong) {
+    color: var(--heading-color);
+  }
+</style>
