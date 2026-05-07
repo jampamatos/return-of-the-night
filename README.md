@@ -2,7 +2,7 @@
 
 Return of the Night is an open-source web platform for reading RPG rulebooks, setting books, campaign books, and compendiums through a content-first digital-book experience.
 
-The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, a content-backed book home page with an automatically generated Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, and section deep links. The next approved implementation focus is rich content support for reader pages.
+The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, a content-backed book home page with an automatically generated Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, section deep links, a shared reader MDX component surface, and styled responsive Markdown table rendering. The next approved implementation focus is to continue expanding rich content support for reader pages.
 
 ## Current status
 
@@ -20,7 +20,7 @@ The current codebase is a plain Astro application with a shared site shell, loca
 - The route `/{lang}/book/` renders the current book home and Table of Contents from real content metadata.
 - The Table of Contents supports metadata-driven ordering, book-config grouping, fallback grouping for sparse localized content, chapter-reader links, empty states, orientation cues, and basic responsive behavior.
 - The route `/{lang}/book/{slug}/` renders generated chapter reader pages from content entries.
-- Chapter reader pages support plain MDX content, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, sparse-heading safeguards, and responsive fallback behavior.
+- Chapter reader pages support plain MDX content, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, sparse-heading safeguards, responsive fallback behavior, and styled responsive Markdown tables.
 - **Starlight is intentionally deferred** at this stage.
 - The repository language is **English-first** for code and contributor-facing artifacts.
 
@@ -49,10 +49,12 @@ The current codebase is a plain Astro application with a shared site shell, loca
 - `src/lib/content/chapter-routes.ts` provides chapter-reader href generation from chapter slugs.
 - `src/lib/glossary/entries.ts` provides glossary listing and lookup utilities.
 - `src/components/reader/BookTableOfContents.astro` renders the current book home and Table of Contents experience.
+- `src/components/reader/ReaderMdxContent.astro` centralizes the reader MDX component mapping used by chapter pages.
 - `src/components/reader/ReaderHeading2.astro` and `src/components/reader/ReaderHeading3.astro` render linkable reader headings for MDX content.
+- `src/components/reader/rich-content/ReaderTable.astro` renders Markdown tables with reader-specific styling and overflow-safe behavior.
 - `src/pages/[lang]/book/[...slug].astro` renders generated chapter reader pages.
 
-The app now renders the real book home, Table of Contents, and chapter reader. Interactive glossary UI, rich content blocks, full localization parity, and broader visual refinement remain planned roadmap work.
+The app now renders the real book home, Table of Contents, chapter reader, and the first reader rich-content primitive for Markdown tables. Interactive glossary UI, remaining rich content blocks, full localization parity, and broader visual refinement remain planned roadmap work.
 
 ## Source of truth
 
@@ -61,6 +63,7 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/open_rulebook_platform_blueprint.md`](docs/open_rulebook_platform_blueprint.md): product vision, scope, architecture direction, and implementation roadmap for the open-source platform.
 - [`docs/return-of-the-night-source-of-truth-v0.2.md`](docs/return-of-the-night-source-of-truth-v0.2.md): setting canon and project background for Return of the Night.
 - [`docs/adr/0001-bootstrap-strategy.md`](docs/adr/0001-bootstrap-strategy.md): accepted bootstrap decision to use plain Astro and defer Starlight.
+- [`docs/adr/0002-rich-content-authoring-and-rendering-strategy.md`](docs/adr/0002-rich-content-authoring-and-rendering-strategy.md): accepted rich-content authoring and rendering strategy for reader pages.
 - [`docs/architecture.md`](docs/architecture.md): repository architecture direction, system layers, and planned implementation order.
 - [`docs/code-organization.md`](docs/code-organization.md): code organization conventions for routes, components, domain logic, and styles.
 - [`docs/assets-policy.md`](docs/assets-policy.md): repository policy for asset provenance and licensing.
@@ -120,7 +123,7 @@ The development server starts the current application shell, content-backed book
 
 The current implementation intentionally stops at a functional chapter reader. The repository does **not** yet include:
 
-- rich content blocks such as figures with captions, styled tables, columns, and callouts
+- rich content blocks such as figures with captions, columns, and callouts
 - expanded audience-conditional block rendering
 - glossary hover cards or glossary-linked reader interactions
 - full translation parity across localized content
@@ -138,7 +141,7 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has a working foundation, base shell, content engine, book home / Table of Contents, and chapter reader. The next implementation focus is to add rich content features while preserving the Markdown/MDX-first authoring model.
+The repository has a working foundation, base shell, content engine, book home / Table of Contents, chapter reader, and styled Markdown table support. The next implementation focus is to continue adding rich content features while preserving the Markdown/MDX-first authoring model.
 
 ## Licensing
 

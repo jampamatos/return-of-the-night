@@ -2,10 +2,9 @@
 import { render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import ChapterReader from "../../../components/reader/ChapterReader.astro";
+import ReaderMdxContent from "../../../components/reader/ReaderMdxContent.astro";
 import ReaderBreadcrumb from "../../../components/reader/ReaderBreadcrumb.astro";
 import ReaderHeader from "../../../components/reader/ReaderHeader.astro";
-import ReaderHeading2 from "../../../components/reader/ReaderHeading2.astro";
-import ReaderHeading3 from "../../../components/reader/ReaderHeading3.astro";
 import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
 import {
   AUDIENCES,
@@ -79,10 +78,6 @@ const chapter: ReaderChapterSummary | undefined = chapterEntry
 
 const renderedChapter = chapterEntry ? await render(chapterEntry) : undefined;
 const ChapterContent = renderedChapter?.Content;
-const readerMdxComponents = {
-  h2: ReaderHeading2,
-  h3: ReaderHeading3,
-};
 
 const readerHeadings = normalizeReaderHeadings(renderedChapter?.headings);
 const readerSidebarItems = buildReaderSidebarItems(readerHeadings);
@@ -158,7 +153,7 @@ const tocHref = `/${lang}/book/`;
       {
         ChapterContent && (
           <Fragment slot="content">
-            <ChapterContent components={readerMdxComponents} />
+            <ReaderMdxContent Content={ChapterContent} />
           </Fragment>
         )
       }

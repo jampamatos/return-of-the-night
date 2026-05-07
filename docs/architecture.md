@@ -114,7 +114,7 @@ Current implementation status:
 - reader utilities normalize headings, build sidebar data, define reader copy, and create adjacent-reader links
 - glossary metadata utilities support listing by language and lookup by logical `id`
 - the book home renders a content-backed Table of Contents with empty states, orientation cues, and basic responsive behavior
-- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, and section deep links
+- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, section deep links, and styled responsive Markdown tables through a shared reader MDX component surface
 
 ## Current boundaries
 
@@ -127,17 +127,17 @@ The current implementation includes:
 - initial content seeds in English plus mirrored PT-BR examples for shared logical IDs
 - metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, and glossary lookup
 - a content-backed book home / Table of Contents with empty states, orientation cues, and basic responsive behavior
-- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, and sparse-heading safeguards
+- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, and styled responsive Markdown table rendering
 
 The current implementation does **not** yet include:
 
-- rich content blocks such as figure/caption systems, styled tables, columns, and callouts
+- rich content blocks such as figure/caption systems, columns, and callouts
 - expanded audience-conditional block rendering
 - glossary hover cards or reader-side glossary interactions
 - full translation parity or complete localization behavior
 - authentication, authorization, or backend infrastructure
 
-This means the repository now reflects the first complete content-driven reader layer of the system, while richer content blocks, glossary interactions, and localization consolidation remain planned rather than implemented.
+This means the repository now reflects the first complete content-driven reader layer of the system plus the first reader rich-content primitive for Markdown tables, while richer content blocks, glossary interactions, and localization consolidation remain planned rather than implemented.
 
 ## Planned evolution
 
