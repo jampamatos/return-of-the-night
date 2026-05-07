@@ -1,0 +1,90 @@
+---
+const tableProps = Astro.props;
+---
+
+<div
+  class="reader-table"
+  data-reader-rich-content="table"
+  role="region"
+  tabindex="0"
+  aria-label="Scrollable table"
+>
+  <table {...tableProps}>
+    <slot />
+  </table>
+</div>
+
+<style>
+  .reader-table {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(22, 27, 34, 0.42);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .reader-table:focus-visible {
+    outline: 2px solid var(--focus-ring-color);
+    outline-offset: 3px;
+  }
+
+  .reader-table table {
+    width: 100%;
+    min-width: 42rem;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .reader-table :global(caption) {
+    padding: var(--space-3) var(--space-4);
+    color: var(--muted-text-color);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    text-align: left;
+  }
+
+  .reader-table :global(th),
+  .reader-table :global(td) {
+    min-width: 9rem;
+    max-width: 22rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: break-word;
+  }
+
+  .reader-table :global(th) {
+    background: rgba(34, 211, 238, 0.1);
+    color: var(--heading-color);
+    font-family: var(--font-ui);
+    font-weight: 700;
+  }
+
+  .reader-table :global(td) {
+    background: rgba(216, 225, 234, 0.025);
+  }
+
+  .reader-table :global(tbody tr:nth-child(even) td) {
+    background: rgba(216, 225, 234, 0.055);
+  }
+
+  .reader-table :global(code) {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 40rem) {
+    .reader-table {
+      margin-inline: calc(var(--space-2) * -1);
+      border-radius: 0;
+    }
+
+    .reader-table :global(th),
+    .reader-table :global(td) {
+      min-width: 11rem;
+      padding: 0.7rem 0.75rem;
+    }
+  }
+</style>

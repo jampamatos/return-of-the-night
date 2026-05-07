@@ -1,0 +1,20 @@
+---
+import ReaderHeading2 from "./ReaderHeading2.astro";
+import ReaderHeading3 from "./ReaderHeading3.astro";
+import ReaderTable from "./rich-content/ReaderTable.astro";
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+
+interface Props {
+  Content: AstroComponentFactory;
+}
+
+const { Content } = Astro.props as Props;
+
+const readerMdxComponents = {
+  h2: ReaderHeading2,
+  h3: ReaderHeading3,
+  table: ReaderTable,
+};
+---
+
+<Content components={readerMdxComponents} />

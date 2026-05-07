@@ -79,7 +79,8 @@ const {
   .chapter-reader__content {
     display: grid;
     gap: var(--space-4);
-    max-width: var(--reading-measure);
+    width: 100%;
+    min-width: 0;
     padding-top: var(--space-5);
     border-top: 1px solid var(--border-color);
   }
@@ -95,6 +96,9 @@ const {
   .chapter-reader__content :global(h1),
   .chapter-reader__content :global(h2),
   .chapter-reader__content :global(h3),
+  .chapter-reader__content :global(ul),
+  .chapter-reader__content :global(ol),
+  .chapter-reader__content :global(blockquote),
   .chapter-reader__content :global(p) {
     max-width: var(--reading-measure);
   }
