@@ -66,6 +66,34 @@ Image, table, or supporting text goes here.
 
 The reader transforms supported `columns` / `column` directives into reader-owned layout markup internally. Authors should not write layout JSX for ordinary two-column composition.
 
+## Current callout convention
+
+Callouts use directive-style Markdown blocks with an intentionally limited variant set:
+
+```md
+:::note
+Supporting context goes here.
+:::
+
+:::warning
+Important caution goes here.
+:::
+
+:::example
+Short applied example goes here.
+:::
+```
+
+Localized content may provide an explicit visible label:
+
+```md
+:::warning[Aviso]
+Localized warning text goes here.
+:::
+```
+
+The reader transforms supported `note`, `warning`, and `example` directives into reader-owned semantic callout markup. Authors should not write callout JSX for ordinary note, warning, or example blocks.
+
 ## Audience filtering
 
 Audience-filtered content is a reading preference, not a security feature.

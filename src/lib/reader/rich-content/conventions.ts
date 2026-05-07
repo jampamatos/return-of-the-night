@@ -15,6 +15,8 @@ export const COLUMNS_DIRECTIVE_NAME = "columns" as const;
 
 export const COLUMN_DIRECTIVE_NAME = "column" as const;
 
+export const CALLOUT_DIRECTIVE_NAMES = ["note", "warning", "example"] as const;
+
 export const SUPPORTED_AUDIENCE_BLOCK_TARGETS = ["player", "gm"] as const;
 
 export type SupportedAudienceBlockTarget =

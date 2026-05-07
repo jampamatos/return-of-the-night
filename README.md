@@ -124,7 +124,6 @@ The development server starts the current application shell, content-backed book
 
 The current implementation intentionally stops at a functional chapter reader. The repository does **not** yet include:
 
-- rich content blocks such as callouts
 - expanded audience-conditional block rendering
 - glossary hover cards or glossary-linked reader interactions
 - full translation parity across localized content
@@ -142,7 +141,7 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has a working foundation, base shell, content engine, book home / Table of Contents, chapter reader, semantic figure support, styled Markdown table support, and directive-authored columns with responsive reader rendering. The next implementation focus is to continue adding rich content features while preserving the Markdown/MDX-first authoring model.
+The repository has a working foundation, base shell, content engine, book home / Table of Contents, chapter reader, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, and semantic reader callouts. The next implementation focus is to continue adding rich content features while preserving the Markdown/MDX-first authoring model.
 
 ## Licensing
 

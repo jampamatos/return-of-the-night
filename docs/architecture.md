@@ -127,17 +127,16 @@ The current implementation includes:
 - initial content seeds in English plus mirrored PT-BR examples for shared logical IDs
 - metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, and glossary lookup
 - a content-backed book home / Table of Contents with empty states, orientation cues, and basic responsive behavior
-- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, and responsive reader column rendering
+- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, and semantic callout rendering
 
 The current implementation does **not** yet include:
 
-- rich content blocks such as callouts
 - expanded audience-conditional block rendering
 - glossary hover cards or reader-side glossary interactions
 - full translation parity or complete localization behavior
 - authentication, authorization, or backend infrastructure
 
-This means the repository now reflects the first complete content-driven reader layer of the system plus the first reader rich-content primitives for semantic figures, Markdown tables, and responsive columns, while callouts, audience blocks, glossary interactions, and localization consolidation remain planned rather than implemented.
+This means the repository now reflects the first complete content-driven reader layer of the system plus the first reader rich-content primitives for semantic figures, Markdown tables, responsive columns, and callouts, while audience blocks, glossary interactions, and localization consolidation remain planned rather than implemented.
 
 ## Planned evolution
 
