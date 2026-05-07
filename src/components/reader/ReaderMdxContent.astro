@@ -1,6 +1,7 @@
 ---
 import ReaderHeading2 from "./ReaderHeading2.astro";
 import ReaderHeading3 from "./ReaderHeading3.astro";
+import ReaderFigure from "./rich-content/ReaderFigure.astro";
 import ReaderTable from "./rich-content/ReaderTable.astro";
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 
@@ -11,6 +12,7 @@ interface Props {
 const { Content } = Astro.props as Props;
 
 const readerMdxComponents = {
+  figure: ReaderFigure,
   h2: ReaderHeading2,
   h3: ReaderHeading3,
   table: ReaderTable,

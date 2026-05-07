@@ -55,6 +55,16 @@ Every repository-tracked asset must have an entry in [`docs/assets-register.md`]
 - If an asset is modified, the register entry must state that clearly.
 - If there is any doubt about redistribution rights, do not add the asset until the issue is resolved.
 
+## Reader sample assets
+
+Reader rich-content samples should reuse already registered assets whenever that is enough to validate rendering behavior.
+
+If a reader sample needs a new image, that image must follow the same policy as production assets:
+
+- add the file under `public/images/` unless a different path is intentionally documented
+- add or update its row in [`docs/assets-register.md`](./assets-register.md) in the same change
+- use truthful alt text and captions that do not obscure the asset's origin or license status
+
 ## Current register location
 
 The authoritative provenance register is [`docs/assets-register.md`](./assets-register.md).
