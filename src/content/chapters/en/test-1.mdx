@@ -64,3 +64,23 @@ Use warning callouts when the reader should pay attention before applying a rule
 :::example
 Example callouts can show a short rule application without making authors write custom JSX.
 :::
+
+## Audience Block Rendering Sample
+
+The following blocks validate reader-preference filtering. This is presentation behavior, not protected content.
+
+:::audience{target="player"}
+This player-facing block can contain ordinary Markdown for rules, reminders, or reading guidance meant for player mode.
+
+- It stays readable in source.
+- It uses the shared audience preference.
+- It does not require JSX.
+  :::
+
+:::audience{target="gm"}
+This GM-facing block can contain prep notes, adjudication reminders, or behind-the-screen guidance meant for GM mode.
+
+- It is filtered by the reader preference.
+- It is not access control.
+- It is not secret or protected content.
+  :::

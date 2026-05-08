@@ -94,6 +94,26 @@ Localized warning text goes here.
 
 The reader transforms supported `note`, `warning`, and `example` directives into reader-owned semantic callout markup. Authors should not write callout JSX for ordinary note, warning, or example blocks.
 
+## Current audience block convention
+
+Audience-filtered content uses directive-style Markdown blocks with an explicit `target` attribute:
+
+```md
+:::audience{target="player"}
+Player-mode content goes here.
+:::
+
+:::audience{target="gm"}
+GM-mode content goes here.
+:::
+```
+
+Supported targets are intentionally limited to `player` and `gm`.
+
+Authors should use ordinary Markdown for content that is meant for all readers. Audience blocks should only be used when a specific section is meant to appear for one reading preference and not the other.
+
+Audience blocks are reader presentation filters. They are not access control, secrecy, authentication, authorization, or content protection.
+
 ## Audience filtering
 
 Audience-filtered content is a reading preference, not a security feature.

@@ -62,3 +62,23 @@ Chamadas de exemplo podem mostrar uma aplicacao curta de regra sem exigir JSX cu
 :::
 
 É pra ser isso em português.
+
+## Amostra de renderização de blocos por audiência
+
+Os blocos abaixo validam a filtragem por preferência de leitura. Isso é comportamento de apresentação, não conteúdo protegido.
+
+:::audience{target="player"}
+Este bloco voltado para jogadores pode conter Markdown comum para regras, lembretes ou orientação de leitura pensada para o modo jogador.
+
+- Continua legível no arquivo-fonte.
+- Usa a preferência de audiência compartilhada.
+- Não exige JSX.
+  :::
+
+:::audience{target="gm"}
+Este bloco voltado para mestre pode conter notas de preparação, lembretes de adjudicação ou orientação de bastidor pensada para o modo GM.
+
+- É filtrado pela preferência de leitura.
+- Não é controle de acesso.
+- Não é conteúdo secreto ou protegido.
+  :::

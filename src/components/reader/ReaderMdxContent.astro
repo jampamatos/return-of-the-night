@@ -71,6 +71,34 @@ const readerMdxComponents = {
     margin-bottom: 0;
   }
 
+  :global(.reader-audience) {
+    display: grid;
+    gap: var(--space-3);
+    width: 100%;
+    margin-block: var(--space-5);
+    padding: var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(10, 15, 20, 0.24);
+  }
+
+  :global(.reader-audience > * + *) {
+    margin-top: 0;
+  }
+
+  :global(.reader-audience > :first-child) {
+    margin-top: 0;
+  }
+
+  :global(.reader-audience > :last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(html[data-audience="player"] .reader-audience--gm),
+  :global(html[data-audience="gm"] .reader-audience--player) {
+    display: none;
+  }
+
   :global(.reader-columns) {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
