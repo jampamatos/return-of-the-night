@@ -10,7 +10,7 @@ For detailed product scope and long-term roadmap, see [`docs/open_rulebook_platf
 
 ## Current architectural direction
 
-The repository is currently structured around a **plain Astro** foundation with the shared shell, content engine, book home / Table of Contents, and chapter reader implemented.
+The repository is currently structured around a **plain Astro** foundation with a cover-first entry, shared site frame, project Home, content engine, Table of Contents, and chapter reader implemented.
 
 That choice is intentional. The current architecture prioritizes:
 
@@ -19,7 +19,7 @@ That choice is intentional. The current architecture prioritizes:
 - progressive complexity over premature abstraction
 - open-source readiness over fast visual polish
 
-At the moment, the project is a static Astro application with repository-quality tooling, locale-prefixed shell routes, Astro content collections, typed schemas, initial content seeds, metadata utilities for chapters and glossary entries, a content-backed book home route that renders an automatically generated Table of Contents, and generated chapter reader pages that render MDX content.
+At the moment, the project is a static Astro application with repository-quality tooling, locale-prefixed routes, Astro content collections, typed schemas, a complete bilingual placeholder corpus, metadata utilities for chapters and glossary entries, a cover route, a project Home route, a content-backed Table of Contents route, and generated chapter reader pages that render MDX content.
 
 ## Core system layers
 
@@ -31,10 +31,10 @@ This is the user-facing application built with Astro pages, layouts, and compone
 
 This layer currently provides:
 
-- the landing page
+- the cover page and project Home
 - the shared shell
 - language and audience controls
-- the book home and Table of Contents
+- the Table of Contents
 - the chapter reader
 - chapter-local navigation controls
 
@@ -92,7 +92,7 @@ Important directories and files:
 - `public/`: public static assets, including the intended location for repository-tracked images
 - `public/images/`: public-facing image asset location
 - `src/pages/`: Astro route entry points
-- `src/pages/[lang]/`: language-prefixed route space, including landing, shell, and book home routes
+- `src/pages/[lang]/`: language-prefixed route space, including cover, project Home, and book routes
 - `src/components/`: UI and reader component area, including the current `BookTableOfContents` and reader heading components
 - `src/content/`: implemented content collections for chapters, glossary, and book config
 - `src/layouts/`: future shared layout area
@@ -102,18 +102,19 @@ Important directories and files:
 
 Current implementation status:
 
-- `src/pages/index.astro`, `src/pages/[lang]/index.astro`, and `src/pages/[lang]/shell/index.astro` provide the current landing and shell entry routes
-- `src/pages/[lang]/book/index.astro` provides the current book home route
+- `src/pages/index.astro` and `src/pages/[lang]/index.astro` provide the root redirect and localized cover routes
+- `src/pages/[lang]/home/index.astro` provides the project Home route
+- `src/pages/[lang]/book/index.astro` provides the Table of Contents route
 - `src/pages/[lang]/book/[...slug].astro` provides generated chapter reader routes
 - Astro content collections are registered in `src/content.config.ts`
 - typed schemas exist for `chapters`, `glossary`, and `book-config`
-- seed content exists for English chapters, English glossary entries, an English book config entry, and mirrored PT-BR examples for logical identity validation
+- complete placeholder content exists for ten English chapters, ten PT-BR chapters, six glossary entries per locale, and localized book-config entries with aligned group membership
 - chapter metadata utilities support listing by language/book, stable ordering, and previous/next resolution
 - TOC utilities support metadata-driven grouping, configured groups, and fallback ungrouped entries
 - chapter route utilities generate reader links from content slugs
 - reader utilities normalize headings, build sidebar data, define reader copy, and create adjacent-reader links
 - glossary metadata utilities support listing by language and lookup by logical `id`
-- the book home renders a content-backed Table of Contents with empty states, orientation cues, and basic responsive behavior
+- the Table of Contents renders from content metadata with empty states, orientation cues, and basic responsive behavior
 - the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, section deep links, semantic figures with captions, styled responsive Markdown tables, directive-authored responsive columns, callouts, and Player/GM audience blocks through a shared reader MDX component surface
 - the repository runs unit/content validation with Vitest, Chromium browser/accessibility validation with Playwright and axe, and high-severity dependency audits in CI
 
@@ -122,12 +123,12 @@ Current implementation status:
 The current implementation includes:
 
 - Astro bootstrap and repository-quality tooling
-- locale-prefixed landing, shell, and book home routes
+- locale-prefixed cover, project Home, and Table of Contents routes
 - audience preference persistence and shell controls
 - typed Astro content collections for chapters, glossary, and book config
-- initial content seeds in English plus mirrored PT-BR examples for shared logical IDs
+- complete PT-BR-first bilingual placeholder corpus with shared logical IDs and localized slugs
 - metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, and glossary lookup
-- a content-backed book home / Table of Contents with empty states, orientation cues, and basic responsive behavior
+- a content-backed Table of Contents with empty states, orientation cues, and basic responsive behavior
 - generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, semantic callout rendering, and audience-conditional block rendering
 - automated unit/content, browser/accessibility, and dependency-audit checks
 

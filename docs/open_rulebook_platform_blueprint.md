@@ -1080,13 +1080,12 @@ Prepare the project to grow without turning into chaos.
 
 ## 23. Recommended implementation order now
 
-The project has completed the foundation, shell, content engine, book home, chapter reader, rich-content features, and the initial regression/security automation. The current recommended sequence from this point is:
+The project has completed the foundation, shell, content engine, book home, chapter reader, rich-content features, initial regression/security automation, and the complete bilingual placeholder book structure. The current recommended sequence from this point is:
 
-1. Complete the bilingual placeholder book structure
-2. Interactive glossary
-3. Real localization and strict translation parity
-4. UX/layout refinement
-5. Contribution docs and hardening
+1. Interactive glossary
+2. Real localization and strict translation parity
+3. UX/layout refinement
+4. Contribution docs and hardening
 
 ---
 
@@ -1118,16 +1117,15 @@ For each step:
 
 The next concrete focus is:
 
-### **Complete Bilingual Placeholder Book Structure**
+### **Interactive Glossary**
 
 That means the next practical tasks should be, in order:
 
-1. replace the technical seed entries with the approved bilingual chapter map
-2. add meaningful PT-BR-first placeholder text and immediate English counterparts
-3. preserve matching logical IDs, status, order, and intended structures across locales
-4. exercise every implemented reader feature with the placeholder corpus
-5. add the stricter translation-parity and route checks needed for the new corpus
-6. defer interactive glossary behavior and visual polish until the placeholders are complete
+1. implement the approved inline-term syntax and resolver
+2. create the generated glossary index and localized term lookup
+3. provide accessible focus, hover, click, and Escape behavior
+4. render a useful missing-term state rather than silently failing
+5. validate unresolved term IDs before content is accepted
 
 ---
 
@@ -1159,7 +1157,8 @@ Core decisions must not change silently.
 - chapter reader completed
 - rich content features completed
 - regression, browser/accessibility, content-integrity, and dependency-audit checks completed
-- ready to create the bilingual placeholder book structure
+- bilingual placeholder book structure completed and validated
+- ready to implement the interactive glossary
 
 ---
 
@@ -1167,6 +1166,6 @@ Core decisions must not change silently.
 
 We are building **Return of the Night**, an open-source RPG digital-book platform with MDX-based content, rich navigation, interactive glossary behavior, player/GM reading modes, and support for English and PT-BR.
 
-The implementation strategy is incremental: the repository foundation, site shell, content engine, book home / Table of Contents, chapter reader, rich authoring features, and initial regression/security automation are now in place. The next step is to create and validate the complete bilingual placeholder book structure before moving into glossary interactions, localization consolidation, and visual refinement.
+The implementation strategy is incremental: the repository foundation, site shell, content engine, book home / Table of Contents, chapter reader, rich authoring features, initial regression/security automation, and complete bilingual placeholder corpus are now in place. The next step is the interactive glossary, followed by localization consolidation and visual refinement.
 
 The priorities are understanding, clarity, maintainability, and real open-source readiness — not speed or premature complexity.

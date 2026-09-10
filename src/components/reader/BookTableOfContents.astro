@@ -21,9 +21,6 @@ interface Props {
   homeHref: string;
   homeLabel: string;
   currentPageLabel: string;
-  overviewLabel: string;
-  sectionsCountLabel: string;
-  entriesCountLabel: string;
 }
 
 const {
@@ -40,16 +37,9 @@ const {
   homeHref,
   homeLabel,
   currentPageLabel,
-  overviewLabel,
-  sectionsCountLabel,
-  entriesCountLabel,
 } = Astro.props as Props;
 
 const hasTocEntries = groups.some((group) => group.entries.length > 0);
-const tocEntryCount = groups.reduce(
-  (total, group) => total + group.entries.length,
-  0,
-);
 ---
 
 <section class="book-toc" aria-labelledby="book-toc-title">
@@ -64,11 +54,6 @@ const tocEntryCount = groups.reduce(
     title={bookTitle}
     subtitle={bookSubtitle}
     tocLabel={tocLabel}
-    overviewLabel={overviewLabel}
-    sectionsCountLabel={sectionsCountLabel}
-    entriesCountLabel={entriesCountLabel}
-    sectionCount={groups.length}
-    entryCount={tocEntryCount}
   />
 
   {
@@ -92,12 +77,12 @@ const tocEntryCount = groups.reduce(
 <style>
   .book-toc {
     display: grid;
-    gap: var(--space-6);
+    gap: var(--space-5);
   }
 
   .book-toc__groups {
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
   @media (max-width: 40rem) {
@@ -107,6 +92,13 @@ const tocEntryCount = groups.reduce(
 
     .book-toc__groups {
       gap: var(--space-4);
+    }
+  }
+
+  @media (min-width: 40.0625rem) and (max-width: 90rem) {
+    .book-toc {
+      width: min(100%, 54rem);
+      margin-inline: auto;
     }
   }
 </style>

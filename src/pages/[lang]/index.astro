@@ -16,7 +16,7 @@ export function getStaticPaths() {
 
 const langParam = Astro.params.lang;
 const lang: Locale = getLocaleOrDefault(langParam);
-const shellHref = `/${lang}/shell/`;
+const homeHref = `/${lang}/home/`;
 
 const localeLabels = {
   en: {
@@ -43,90 +43,44 @@ const audienceLabels = {
 const pageCopy = {
   en: {
     title: "Return of the Night",
-    description: "A techno-noir reading shell for players and game masters.",
-    eyebrow: "Open-source digital book platform",
+    description:
+      "An open-source techno-noir RPG book for players and game masters.",
+    eyebrow: "Open-source techno-noir RPG book",
     heroTitleTop: "Return of",
     heroTitleBottom: "the Night",
-    heroLead: "A techno-noir reading shell for players and game masters.",
-    heroBody: "Choose your language. Set your audience. Enter the night.",
-    enterLabel: "Enter the site",
-    entryAriaLabel: "Site entry controls",
+    heroLead:
+      "An open-source techno-noir RPG book for players and game masters.",
+    heroBody: "Choose your language and reading mode, then enter the project.",
+    enterLabel: "Open the Book",
+    entryAriaLabel: "Book cover controls",
     languageLegend: "Language",
     audienceLegend: "Audience",
-    panelEyebrow: "System status",
+    panelEyebrow: "Book structure",
     panelItems: [
       { label: "Locales", value: "EN / PT-BR" },
       { label: "Modes", value: "Player / GM" },
-      { label: "Status", value: "Shell + Content Online" },
-    ],
-    valuesEyebrow: "Why this shell exists",
-    valuesTitle: "Built to feel like a platform, not a placeholder.",
-    cards: [
-      {
-        title: "Reader-first entry",
-        body: "The landing page should feel like the threshold of a digital rulebook, not a generic project homepage.",
-      },
-      {
-        title: "Mode-aware direction",
-        body: "Language and audience selection are part of the entry ritual, so the shell already adapts to how the reader wants to enter.",
-      },
-      {
-        title: "Cyberpunk identity",
-        body: "The interface leans into rain, neon, haze, and structured UI framing without collapsing into a generic game promo page.",
-      },
-    ],
-    previewEyebrow: "Planned experience",
-    previewTitle: "The first layers of the night are already online.",
-    previewBody:
-      "This shell is the entry point for a future digital reading platform with structured navigation, audience-aware behavior, and editorial layouts.",
-    previewItems: [
-      "Locale-prefixed routes keep the experience grounded in the active language.",
-      "Audience preference persists as you move deeper into the site.",
-      "The visual shell is ready to grow into a richer reading interface.",
+      { label: "Contents", value: "10 Chapters / 5 Groups" },
     ],
   },
   "pt-BR": {
     title: "Return of the Night",
-    description: "Uma shell techno-noir de leitura para jogadores e mestres.",
-    eyebrow: "Plataforma open-source de livro digital",
+    description:
+      "Um livro de RPG techno-noir open-source para jogadores e mestres.",
+    eyebrow: "Livro de RPG techno-noir open-source",
     heroTitleTop: "Return of",
     heroTitleBottom: "the Night",
-    heroLead: "Uma shell techno-noir de leitura para jogadores e mestres.",
-    heroBody: "Escolha seu idioma. Defina seu público. Entre na noite.",
-    enterLabel: "Entrar no site",
-    entryAriaLabel: "Controles de entrada do site",
+    heroLead:
+      "Um livro de RPG techno-noir open-source para jogadores e mestres.",
+    heroBody: "Escolha seu idioma e modo de leitura, depois entre no projeto.",
+    enterLabel: "Abrir o Livro",
+    entryAriaLabel: "Controles da capa do livro",
     languageLegend: "Idioma",
     audienceLegend: "Público",
-    panelEyebrow: "Status do sistema",
+    panelEyebrow: "Estrutura do livro",
     panelItems: [
       { label: "Idiomas", value: "EN / PT-BR" },
       { label: "Modos", value: "Jogador / Mestre" },
-      { label: "Status", value: "Shell + Conteúdo Online" },
-    ],
-    valuesEyebrow: "Por que esta shell existe",
-    valuesTitle: "Feita para parecer uma plataforma, não um placeholder.",
-    cards: [
-      {
-        title: "Entrada orientada ao leitor",
-        body: "A landing page deve parecer o limiar de um livro digital, não uma homepage genérica de projeto.",
-      },
-      {
-        title: "Direção orientada por modo",
-        body: "Idioma e público fazem parte do ritual de entrada, então a shell já se adapta à forma como a leitura vai começar.",
-      },
-      {
-        title: "Identidade cyberpunk",
-        body: "A interface assume chuva, néon, névoa e moldura técnica sem virar uma página promocional genérica de jogo.",
-      },
-    ],
-    previewEyebrow: "Experiência planejada",
-    previewTitle: "As primeiras camadas da noite já estão online.",
-    previewBody:
-      "Esta shell é o ponto de entrada para uma futura plataforma digital de leitura com navegação estruturada, comportamento orientado por público e layouts editoriais.",
-    previewItems: [
-      "Rotas com prefixo de idioma mantêm a experiência ancorada no idioma ativo.",
-      "A preferência de público persiste conforme o usuário entra mais fundo no site.",
-      "A base visual já está pronta para evoluir para uma interface de leitura mais rica.",
+      { label: "Conteúdo", value: "10 Capítulos / 5 Grupos" },
     ],
   },
 } as const;
@@ -233,7 +187,7 @@ const audienceOptions = AUDIENCES.map((audience) => ({
             </div>
           </div>
 
-          <a class="landing-entry__cta" href={shellHref}>
+          <a class="landing-entry__cta" href={homeHref}>
             {copy.enterLabel}
           </a>
         </div>
@@ -253,42 +207,6 @@ const audienceOptions = AUDIENCES.map((audience) => ({
           }
         </dl>
       </aside>
-    </div>
-  </section>
-
-  <section class="landing-values" aria-labelledby="landing-values-title">
-    <div class="landing-values__header">
-      <p class="landing-section__eyebrow">{copy.valuesEyebrow}</p>
-      <h2 id="landing-values-title" class="landing-section__title">
-        {copy.valuesTitle}
-      </h2>
-    </div>
-
-    <div class="landing-values__grid">
-      {
-        copy.cards.map((card) => (
-          <article class="landing-card">
-            <h3>{card.title}</h3>
-            <p>{card.body}</p>
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="landing-preview" aria-labelledby="landing-preview-title">
-    <div class="landing-preview__copy">
-      <p class="landing-section__eyebrow">{copy.previewEyebrow}</p>
-      <h2 id="landing-preview-title" class="landing-section__title">
-        {copy.previewTitle}
-      </h2>
-      <p class="landing-preview__body">{copy.previewBody}</p>
-    </div>
-
-    <div class="landing-preview__panel">
-      <ul class="landing-preview__list">
-        {copy.previewItems.map((item) => <li>{item}</li>)}
-      </ul>
     </div>
   </section>
 

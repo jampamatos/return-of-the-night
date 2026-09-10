@@ -2,20 +2,20 @@
 
 Return of the Night is an open-source web platform for reading RPG rulebooks, setting books, campaign books, and compendiums through a content-first digital-book experience.
 
-The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, a content-backed book home page with an automatically generated Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, section deep links, and a shared rich-content surface for figures, tables, columns, callouts, and audience-filtered blocks.
+The current codebase is a plain Astro application with a cover-first entry, a localized project home, typed content collections, a complete bilingual placeholder chapter and glossary corpus, metadata utilities for chapter ordering and glossary lookup, a content-backed Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, section deep links, and a shared rich-content surface for figures, tables, columns, callouts, and audience-filtered blocks.
 
 ## Current status
 
 - The project uses **plain Astro** rather than Starlight.
 - The current application includes locale-prefixed entry routes for `en` and `pt-BR`.
-- The route `/{lang}/` is now a styled landing page with localized copy, language selection, audience selection, and an entry CTA into the shell.
-- The route `/{lang}/shell/` uses a shared base layout with header controls for language and player/GM audience switching.
+- The route `/{lang}/` is the visual cover: localized language and audience choices lead into the project.
+- The route `/{lang}/home/` is the project Home. It has placeholders for the public project explanation, news, discussion/comments, contribution, and future support; its book CTA resumes the last local chapter when possible, otherwise it opens the Table of Contents.
 - Locale switching preserves the current route suffix when possible instead of always returning to the site root.
 - The audience preference persists in `localStorage` under the approved key `rotn:audience`.
 - The root route `/` redirects to the current default locale, `en`.
 - The project registers Astro content collections for `chapters`, `glossary`, and `book-config` in [`src/content.config.ts`](src/content.config.ts).
 - Chapters, glossary entries, and book config are validated through typed Zod schemas under [`src/lib/content/schemas/`](src/lib/content/schemas/).
-- The repository includes seeded English content plus localized PT-BR mirrors that demonstrate shared logical IDs across languages.
+- The repository includes a complete bilingual placeholder book map: every planned core chapter and glossary entry has aligned PT-BR and English content, stable logical IDs, localized slugs, and generated reader routes.
 - Metadata utilities now support chapter listing by language and book, stable reading order, adjacent chapter resolution, glossary listing by language, and glossary lookup by logical ID.
 - The route `/{lang}/book/` renders the current book home and Table of Contents from real content metadata.
 - The Table of Contents supports metadata-driven ordering, book-config grouping, fallback grouping for sparse localized content, chapter-reader links, empty states, orientation cues, and basic responsive behavior.
@@ -27,23 +27,19 @@ The current codebase is a plain Astro application with a shared site shell, loca
 ## Current routes
 
 - `/` redirects to the current default locale route and currently resolves to `/en/`
-- `/en/`
+- `/en/` (cover)
+- `/en/home/` (project Home)
 - `/pt-BR/`
-- `/en/shell/`
-- `/pt-BR/shell/`
 - `/en/book/`
 - `/pt-BR/book/`
-- `/en/book/test/test-1/`
-- `/en/book/test/test-2/`
-- `/pt-BR/book/teste/teste-1/`
+- `/en/book/getting-started/reading-the-book/`
+- `/pt-BR/book/comecando/como-ler-o-livro/`
 
 ## Content and Reader Status
 
-- `src/content/chapters/en/` contains seeded chapter content for the MVP book.
-- `src/content/chapters/pt-BR/` contains a localized mirror that demonstrates the shared logical `id` rule.
-- `src/content/glossary/en/` contains seeded glossary entries.
-- `src/content/glossary/pt-BR/` contains a localized mirror that demonstrates the shared logical `id` rule.
-- `src/content/config/` contains the first book-level config entry for the MVP book.
+- `src/content/chapters/en/` and `src/content/chapters/pt-BR/` contain aligned placeholder chapters for the MVP book.
+- `src/content/glossary/en/` and `src/content/glossary/pt-BR/` contain aligned placeholder glossary entries.
+- `src/content/config/` contains aligned English and PT-BR book-level configuration for the MVP book.
 - `src/lib/content/chapters.ts` provides chapter listing, ordering, and adjacent-entry utilities.
 - `src/lib/content/toc.ts` provides metadata-driven grouping for the Table of Contents.
 - `src/lib/content/chapter-routes.ts` provides chapter-reader href generation from chapter slugs.
@@ -72,6 +68,7 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/shell-reading-and-visual-guidelines.md`](docs/shell-reading-and-visual-guidelines.md): the current visual and reading-direction guide for the shell.
 - [`docs/writing-guide.md`](docs/writing-guide.md): minimum writing standards for repository artifacts and documentation language policy.
 - [`docs/open-source-and-spoiler-policy.md`](docs/open-source-and-spoiler-policy.md): open-source scope, spoiler-mode limitations, and the PT-BR-to-English authoring workflow.
+- [`docs/placeholder-book-structure.md`](docs/placeholder-book-structure.md): the temporary bilingual chapter map and its validation rules.
 - [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md): compatibility and third-party intellectual-property notices, including Cities Without Number.
 
 If a local implementation detail conflicts with those documents, the documentation should be treated as authoritative until it is intentionally updated.
@@ -95,19 +92,18 @@ npm install
 npm run dev
 ```
 
-The development server starts the current application shell, content-backed book home, and generated reader pages. Useful routes to verify locally:
+The development server starts the cover, project Home, content-backed Table of Contents, and generated reader pages. Useful routes to verify locally:
 
 - `/`
-- `/en/`
+- `/en/` (cover)
+- `/en/home/` (project Home)
 - `/pt-BR/`
-- `/en/shell/`
-- `/pt-BR/shell/`
 - `/en/book/`
 - `/pt-BR/book/`
-- `/en/book/test/test-1/`
-- `/en/book/test/test-1/#test-section`
-- `/en/book/test/test-2/`
-- `/pt-BR/book/teste/teste-1/`
+- `/en/book/getting-started/reading-the-book/`
+- `/en/book/getting-started/reading-the-book/#reader-feature-fixture`
+- `/en/book/gm-toolkit/running-return-of-the-night/`
+- `/pt-BR/book/comecando/como-ler-o-livro/`
 
 ## Available scripts
 
@@ -134,7 +130,7 @@ The current implementation intentionally stops at a functional chapter reader. T
 - glossary hover cards or glossary-linked reader interactions
 - full translation parity across localized content
 - localization fallback behavior or equivalent cross-locale reader routes
-- broader UX polish beyond the current functional reader, shell, landing page, and book home
+- broader UX polish beyond the current functional reader, landing page, and book home
 
 ## Project direction
 
@@ -147,7 +143,7 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has a working foundation, base shell, content engine, book home / Table of Contents, chapter reader, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, semantic reader callouts, and audience-filtered reader blocks. The next implementation focus is the interactive glossary while preserving the Markdown/MDX-first authoring model.
+The repository has a working foundation, base shell, content engine, complete bilingual placeholder book structure, book home / Table of Contents, chapter reader, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, semantic reader callouts, and audience-filtered reader blocks. The next implementation focus is the interactive glossary while preserving the Markdown/MDX-first authoring model.
 
 ## Licensing
 

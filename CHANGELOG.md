@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Separated the book cover from the project Home: localized root routes now show the cover, `/{lang}/home/` is the project hub, and the Table of Contents remains at `/{lang}/book/`.
+- Added a project-Home book CTA that resumes the last locally viewed chapter when available and otherwise opens the Table of Contents.
+- Added explicit project-Home placeholders for public news, community discussion/comments, contribution, and future voluntary support.
+- Reframed the Table of Contents and reader as an editorial book surface: compact chapter lists, quieter reading headers, chapter position, a narrower reading measure, and a minimal reading outline.
+- Added a responsive notebook layout with a denser scrolling header and a centered, narrower Table of Contents measure.
+
 ### Added
 
 - Repository bootstrap with Astro.
@@ -30,7 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Metadata-driven TOC ordering and grouping.
 - Chapter-reader link generation from chapter slugs.
 - Empty states and missing-data safeguards for sparse book content.
-- Book-home orientation cues and TOC overview metadata.
+- Book orientation cues and compact TOC hierarchy.
 - Basic responsive behavior for the Table of Contents layout.
 - Generated chapter reader route at `/{lang}/book/{slug}/`.
 - Static chapter reader paths generated from content metadata.
@@ -45,6 +53,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Semantic figure rendering with Markdown-authored captions.
 - Styled, responsive Markdown table rendering.
 - Directive-authored responsive columns, semantic callouts, and audience-filtered reader blocks.
+- Complete PT-BR-first bilingual placeholder book structure with ten aligned chapters, localized book configuration, and aligned glossary entries.
+- Content validation for the complete chapter map and localized book-config group membership.
 
 ### Changed
 

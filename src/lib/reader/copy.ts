@@ -21,9 +21,6 @@ export const READER_COPY = {
     eyebrow: "Chapter reader",
     heading: "Chapter reader",
     body: "Choose a chapter from the Table of Contents to start reading.",
-    chapterMetadataLabel: "Chapter metadata",
-    statusLabel: "Status",
-    audienceLabel: "Audience",
     missingTitle: "Chapter entry not found",
     missingBody:
       "The route exists, but the chapter entry could not be resolved from the current language and slug.",
@@ -50,9 +47,6 @@ export const READER_COPY = {
     eyebrow: "Leitor de capítulo",
     heading: "Leitor de capítulo",
     body: "Escolha um capítulo pelo Sumário para começar a leitura.",
-    chapterMetadataLabel: "Metadados do capítulo",
-    statusLabel: "Status",
-    audienceLabel: "Público",
     missingTitle: "Entrada de capítulo não encontrada",
     missingBody:
       "A rota existe, mas a entrada do capítulo não pôde ser resolvida a partir do idioma e do slug atuais.",

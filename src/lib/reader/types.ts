@@ -38,9 +38,6 @@ export interface ReaderCopy {
   eyebrow: string;
   heading: string;
   body: string;
-  chapterMetadataLabel: string;
-  statusLabel: string;
-  audienceLabel: string;
   missingTitle: string;
   missingBody: string;
   contentLabel: string;

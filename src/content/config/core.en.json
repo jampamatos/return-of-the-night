@@ -2,7 +2,7 @@
   "book": "core",
   "lang": "en",
   "bookTitle": "Return of the Night",
-  "bookSubtitle": "Browse the current core book structure and choose where to start reading.",
+  "bookSubtitle": "A bilingual placeholder structure for validating the complete core book before final prose is written.",
   "navigation": {
     "tableOfContents": "Table of Contents",
     "previousChapter": "Previous Chapter",
@@ -11,11 +11,39 @@
   },
   "chapterGroups": [
     {
-      "id": "test-group",
-      "label": "Opening Material",
-      "description": "Introductory and early reference material for the current book draft.",
+      "id": "start-here",
+      "label": "Start Here",
+      "description": "How to use this unfinished but fully testable book.",
       "order": 0,
       "chapterNumbers": [0]
+    },
+    {
+      "id": "player-guide",
+      "label": "Player Guide",
+      "description": "The public world, characters, and daily pressure.",
+      "order": 1,
+      "chapterNumbers": [1, 2, 3, 4]
+    },
+    {
+      "id": "world-in-conflict",
+      "label": "World in Conflict",
+      "description": "The wider setting and its contested possibilities.",
+      "order": 2,
+      "chapterNumbers": [5, 6]
+    },
+    {
+      "id": "gm-toolkit",
+      "label": "GM Toolkit",
+      "description": "Preparation-facing placeholders for running the setting.",
+      "order": 3,
+      "chapterNumbers": [7, 8]
+    },
+    {
+      "id": "reference",
+      "label": "Reference",
+      "description": "A testing surface for quick-reference material.",
+      "order": 4,
+      "chapterNumbers": [9]
     }
   ]
 }

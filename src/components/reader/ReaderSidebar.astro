@@ -46,16 +46,14 @@ const { label, emptyLabel, items } = Astro.props as Props;
     top: calc(var(--space-6) + 5rem);
     display: grid;
     gap: var(--space-3);
-    padding: var(--space-4);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.28);
+    padding: 0 0 0 var(--space-4);
+    border-left: 1px solid var(--border-color);
   }
 
   .reader-sidebar h2 {
     margin: 0;
     font-family: var(--font-ui);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -64,7 +62,7 @@ const { label, emptyLabel, items } = Astro.props as Props;
 
   .reader-sidebar nav {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-3);
   }
 
   .reader-sidebar ol {
@@ -86,7 +84,7 @@ const { label, emptyLabel, items } = Astro.props as Props;
     display: inline-flex;
     color: var(--muted-text-color);
     font-family: var(--font-ui);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 700;
     line-height: 1.25;
     text-decoration: none;
@@ -107,6 +105,9 @@ const { label, emptyLabel, items } = Astro.props as Props;
     .reader-sidebar {
       order: -1;
       position: static;
+      padding: var(--space-3) 0;
+      border-top: 1px solid var(--border-color);
+      border-left: 0;
       max-height: 16rem;
       overflow: auto;
     }

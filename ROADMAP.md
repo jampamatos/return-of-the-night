@@ -8,7 +8,7 @@ The source of truth for detailed scope, architecture direction, and implementati
 
 The repository has completed **Phase 6 — Rich content features**.
 
-The current maintenance checkpoint is **Code organization and contributor readiness**.
+The current implementation checkpoint is **Phase 7 — Interactive glossary**.
 
 The next implementation milestone after this checkpoint is **Phase 7 — Interactive glossary**.
 
@@ -67,7 +67,7 @@ Turn chapters into a real reading experience:
 - previous and next navigation
 - deep links and heading anchors
 
-### Maintenance checkpoint — Code organization and contributor readiness ← Current
+### Maintenance checkpoint — Code organization and contributor readiness ✅
 
 Prepare the codebase to scale safely before the next feature layer:
 
@@ -85,6 +85,15 @@ Add expressive content blocks and reader features:
 - side-by-side layout
 - callouts
 - audience-conditional blocks
+
+### Content readiness checkpoint — Complete bilingual placeholder book structure ✅
+
+Validate the full book surface before final prose is written:
+
+- complete PT-BR-first placeholder chapters with immediate English counterparts
+- localized book configuration and complete Table of Contents groups
+- aligned placeholder glossary entries
+- parity checks for stable chapter IDs, metadata, and group membership
 
 ### Phase 7 — Interactive glossary ← Next
 

@@ -17,10 +17,10 @@ import {
   getAdjacentChapterEntriesByLanguageAndBook,
   getChapterEntryByLanguageBookAndSlug,
   listChapterEntries,
+  listOrderedChapterEntriesByLanguageAndBook,
 } from "../../../lib/content/chapters";
 import {
   getAudienceOptionsForReader,
-  getReaderAudienceLabels,
   getReaderCopy,
 } from "../../../lib/reader/copy";
 import {
@@ -65,6 +65,18 @@ const adjacentChapterEntries = chapterEntry
     )
   : undefined;
 
+const orderedChapterEntries = chapterEntry
+  ? await listOrderedChapterEntriesByLanguageAndBook({
+      lang,
+      book: MVP_BOOK_ID,
+    })
+  : [];
+const chapterPosition = chapterEntry
+  ? orderedChapterEntries.findIndex(
+      (entry) => entry.data.id === chapterEntry.data.id,
+    ) + 1
+  : undefined;
+
 const chapter: ReaderChapterSummary | undefined = chapterEntry
   ? {
       chapterNumber: chapterEntry.data.chapterNumber,
@@ -89,7 +101,6 @@ const nextChapter = adjacentChapterEntries?.next
   : undefined;
 
 const copy = getReaderCopy(lang);
-const audienceLabels = getReaderAudienceLabels(lang);
 const audienceOptions = getAudienceOptionsForReader(lang, [...AUDIENCES]);
 
 const tocLabel =
@@ -102,9 +113,11 @@ const nextChapterLabel =
 const pageTitle = chapter?.pageTitle ?? copy.title;
 const pageDescription = chapter?.summary ?? copy.description;
 const eyebrow = chapter
-  ? `${copy.chapterLabel} ${chapter.chapterNumber} · ${chapter.chapterTitle}`
+  ? lang === "pt-BR"
+    ? `Capítulo ${chapterPosition} de ${orderedChapterEntries.length} · ${chapter.chapterTitle}`
+    : `Chapter ${chapterPosition} of ${orderedChapterEntries.length} · ${chapter.chapterTitle}`
   : copy.eyebrow;
-const homeHref = `/${lang}/`;
+const homeHref = `/${lang}/home/`;
 const tocHref = `/${lang}/book/`;
 ---
 
@@ -118,7 +131,11 @@ const tocHref = `/${lang}/book/`;
     audienceOptions={audienceOptions}
   />
 
-  <section class="reader-page" aria-labelledby="reader-route-title">
+  <section
+    class="reader-page"
+    aria-labelledby="reader-route-title"
+    data-reader-locale={lang}
+  >
     <ReaderBreadcrumb
       label={copy.breadcrumbLabel}
       homeHref={homeHref}
@@ -134,11 +151,6 @@ const tocHref = `/${lang}/book/`;
       summary={chapter?.summary ?? copy.body}
       tocHref={tocHref}
       backToTocLabel={copy.backToTocLabel}
-      chapter={chapter}
-      metadataLabel={copy.chapterMetadataLabel}
-      audienceLabel={copy.audienceLabel}
-      audienceValue={chapter ? audienceLabels[chapter.audience] : undefined}
-      statusLabel={copy.statusLabel}
     />
 
     <ChapterReader
@@ -162,8 +174,21 @@ const tocHref = `/${lang}/book/`;
 
   <script>
     import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
+    import { rememberLastReaderPath } from "../../../lib/reader/last-reader";
+    import { getLocaleOrDefault } from "../../../config/site";
 
     initAudienceSwitchers();
+
+    const readerLocale = document.querySelector<HTMLElement>(
+      "[data-reader-locale]",
+    )?.dataset.readerLocale;
+
+    if (readerLocale) {
+      rememberLastReaderPath(
+        getLocaleOrDefault(readerLocale),
+        window.location.pathname,
+      );
+    }
   </script>
 </BaseLayout>
 

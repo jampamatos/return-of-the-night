@@ -67,10 +67,7 @@ const pageCopy = {
     audienceSwitcherLabel: "Reading Mode",
     breadcrumbLabel: "Book location",
     homeLabel: "Home",
-    currentPageLabel: "Core Book",
-    overviewLabel: "Table of Contents overview",
-    sectionsCountLabel: "Sections",
-    entriesCountLabel: "Entries",
+    currentPageLabel: "Table of Contents",
   },
   "pt-BR": {
     title: "Return of the Night — Sumário",
@@ -86,10 +83,7 @@ const pageCopy = {
     audienceSwitcherLabel: "Modo de Leitura",
     breadcrumbLabel: "Localização no livro",
     homeLabel: "Início",
-    currentPageLabel: "Livro Principal",
-    overviewLabel: "Visão geral do sumário",
-    sectionsCountLabel: "Seções",
-    entriesCountLabel: "Entradas",
+    currentPageLabel: "Sumário",
   },
 } as const;
 
@@ -99,7 +93,7 @@ const bookTitle = bookConfigEntry?.data.bookTitle ?? copy.heading;
 const bookSubtitle = bookConfigEntry?.data.bookSubtitle ?? copy.body;
 const tocLabel =
   bookConfigEntry?.data.navigation.tableOfContents ?? copy.tocLabel;
-const homeHref = `/${lang}/`;
+const homeHref = `/${lang}/home/`;
 const audienceOptions = AUDIENCES.map((audience) => ({
   value: audience,
   label: audienceLabels[lang][audience],
@@ -130,9 +124,6 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     homeHref={homeHref}
     homeLabel={copy.homeLabel}
     currentPageLabel={copy.currentPageLabel}
-    overviewLabel={copy.overviewLabel}
-    sectionsCountLabel={copy.sectionsCountLabel}
-    entriesCountLabel={copy.entriesCountLabel}
   />
 
   <script>

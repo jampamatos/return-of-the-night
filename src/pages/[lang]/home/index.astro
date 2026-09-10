@@ -1,0 +1,233 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
+import {
+  AUDIENCES,
+  LOCALES,
+  getLocaleOrDefault,
+  type Audience,
+  type Locale,
+} from "../../../config/site";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const lang: Locale = getLocaleOrDefault(Astro.params.lang);
+
+const audienceLabels = {
+  en: { player: "Player", gm: "GM" },
+  "pt-BR": { player: "Jogador", gm: "Mestre" },
+} as const satisfies Record<Locale, Record<Audience, string>>;
+
+const pageCopy = {
+  en: {
+    title: "Return of the Night — Project Home",
+    description: "The open-source home of the Return of the Night RPG book.",
+    eyebrow: "Project home",
+    heading: "Return of the Night",
+    lead: "An open-source techno-noir RPG book about corporate control, endless day, and the return of human opacity.",
+    openBook: "Open the book",
+    openBookHelp:
+      "Continues from your last chapter on this device when available; otherwise opens the Table of Contents.",
+    aboutTitle: "About the project",
+    aboutBody:
+      "Return of the Night is being built in public as a free bilingual RPG book. The current edition is a complete, testable placeholder structure while the final PT-BR prose and immediate English translation are written.",
+    newsTitle: "Project news",
+    newsBody:
+      "News posts will appear here. This placeholder establishes the public home for development updates before the editorial feed is connected.",
+    discussionTitle: "Discussion and comments",
+    discussionBody:
+      "Community discussion will be connected here after the project chooses and configures its public comment provider.",
+    contributeTitle: "Contribute",
+    contributeBody:
+      "The repository is open to readers, writers, translators, designers, and developers who want to help shape the book.",
+    contributeLabel: "Contribute on GitHub",
+    supportTitle: "Support",
+    supportBody:
+      "A voluntary support link will appear here once the project selects a provider. No payment destination is configured yet.",
+    languageSwitcherLabel: "Language",
+    audienceSwitcherLabel: "Reading mode",
+  },
+  "pt-BR": {
+    title: "Return of the Night — Início do projeto",
+    description:
+      "A página inicial open-source do livro de RPG Return of the Night.",
+    eyebrow: "Início do projeto",
+    heading: "Return of the Night",
+    lead: "Um livro de RPG techno-noir open-source sobre controle corporativo, dia sem fim e o retorno da opacidade humana.",
+    openBook: "Abrir o livro",
+    openBookHelp:
+      "Retoma o último capítulo visto neste dispositivo quando disponível; caso contrário, abre o Sumário.",
+    aboutTitle: "Sobre o projeto",
+    aboutBody:
+      "Return of the Night está sendo construído em público como um livro de RPG bilíngue e gratuito. A edição atual é uma estrutura placeholder completa e testável enquanto a prosa final em PT-BR e sua tradução imediata para o inglês são escritas.",
+    newsTitle: "Notícias do projeto",
+    newsBody:
+      "As notícias aparecerão aqui. Este placeholder estabelece a página pública para atualizações de desenvolvimento antes de o feed editorial ser conectado.",
+    discussionTitle: "Discussão e comentários",
+    discussionBody:
+      "A discussão da comunidade será conectada aqui depois que o projeto escolher e configurar seu provedor público de comentários.",
+    contributeTitle: "Colabore",
+    contributeBody:
+      "O repositório está aberto a pessoas leitoras, escritoras, tradutoras, designers e desenvolvedoras que quiserem ajudar a moldar o livro.",
+    contributeLabel: "Colaborar no GitHub",
+    supportTitle: "Apoie",
+    supportBody:
+      "Um link de apoio voluntário aparecerá aqui quando o projeto escolher um provedor. Ainda não há destino de pagamento configurado.",
+    languageSwitcherLabel: "Idioma",
+    audienceSwitcherLabel: "Modo de leitura",
+  },
+} as const;
+
+const copy = pageCopy[lang];
+const audienceOptions = AUDIENCES.map((audience) => ({
+  value: audience,
+  label: audienceLabels[lang][audience],
+  isActive: audience === "player",
+}));
+const tocHref = `/${lang}/book/`;
+---
+
+<BaseLayout title={copy.title} description={copy.description} lang={lang}>
+  <ShellHeaderControls
+    slot="header-controls"
+    lang={lang}
+    pathname={Astro.url.pathname}
+    languageSwitcherLabel={copy.languageSwitcherLabel}
+    audienceSwitcherLabel={copy.audienceSwitcherLabel}
+    audienceOptions={audienceOptions}
+  />
+
+  <section class="project-home" aria-labelledby="project-home-title">
+    <header class="project-home__hero">
+      <p class="project-home__eyebrow">{copy.eyebrow}</p>
+      <h1 id="project-home-title">{copy.heading}</h1>
+      <p class="project-home__lead">{copy.lead}</p>
+      <a
+        class="project-home__book-cta"
+        href={tocHref}
+        data-open-book
+        data-book-locale={lang}
+      >
+        {copy.openBook}
+      </a>
+      <p class="project-home__cta-help">{copy.openBookHelp}</p>
+    </header>
+
+    <div class="project-home__grid">
+      <section class="project-home__section" aria-labelledby="about-title">
+        <h2 id="about-title">{copy.aboutTitle}</h2>
+        <p>{copy.aboutBody}</p>
+      </section>
+
+      <section class="project-home__section" aria-labelledby="news-title">
+        <h2 id="news-title">{copy.newsTitle}</h2>
+        <p>{copy.newsBody}</p>
+      </section>
+
+      <section class="project-home__section" aria-labelledby="discussion-title">
+        <h2 id="discussion-title">{copy.discussionTitle}</h2>
+        <p>{copy.discussionBody}</p>
+      </section>
+
+      <section class="project-home__section" aria-labelledby="contribute-title">
+        <h2 id="contribute-title">{copy.contributeTitle}</h2>
+        <p>{copy.contributeBody}</p>
+        <a href="https://github.com/jampamatos/return-of-the-night">
+          {copy.contributeLabel}
+        </a>
+      </section>
+
+      <section class="project-home__section" aria-labelledby="support-title">
+        <h2 id="support-title">{copy.supportTitle}</h2>
+        <p>{copy.supportBody}</p>
+      </section>
+    </div>
+  </section>
+
+  <script>
+    import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
+    import { initResumeBookLinks } from "../../../lib/reader/last-reader";
+
+    initAudienceSwitchers();
+    initResumeBookLinks();
+  </script>
+</BaseLayout>
+
+<style>
+  .project-home {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .project-home__hero {
+    max-width: var(--reading-measure);
+  }
+
+  .project-home__eyebrow {
+    margin: 0 0 var(--space-3);
+    color: var(--accent-primary);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .project-home__lead {
+    font-size: clamp(1.2rem, 1rem + 0.8vw, 1.55rem);
+  }
+
+  .project-home__book-cta {
+    display: inline-flex;
+    margin-top: var(--space-3);
+    padding: 0.8rem 1.1rem;
+    border: 1px solid var(--accent-warning);
+    border-radius: var(--radius-sm);
+    background: rgba(250, 204, 21, 0.1);
+    color: var(--heading-color);
+    font-family: var(--font-ui);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .project-home__book-cta:hover {
+    background: rgba(250, 204, 21, 0.18);
+  }
+
+  .project-home__cta-help {
+    margin-top: var(--space-3);
+    font-size: 0.95rem;
+  }
+
+  .project-home__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-4);
+  }
+
+  .project-home__section {
+    padding: var(--space-5);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface-background);
+  }
+
+  .project-home__section h2 {
+    font-size: 1.25rem;
+  }
+
+  .project-home__section p {
+    margin-bottom: 0;
+  }
+
+  .project-home__section a {
+    display: inline-block;
+    margin-top: var(--space-4);
+    font-family: var(--font-ui);
+    font-weight: 700;
+  }
+</style>

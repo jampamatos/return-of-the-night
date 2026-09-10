@@ -20,6 +20,11 @@ const {
 } = Astro.props as Props;
 
 const documentLang: Locale = getLocaleOrDefault(lang);
+const navigationCopy = {
+  en: { label: "Primary navigation", home: "Home", book: "Contents" },
+  "pt-BR": { label: "Navegação principal", home: "Início", book: "Sumário" },
+} as const;
+const navigation = navigationCopy[documentLang];
 ---
 
 <!doctype html>
@@ -51,11 +56,16 @@ const documentLang: Locale = getLocaleOrDefault(lang);
   </head>
   <body>
     <div class="site-shell">
-      <header class="site-header">
+      <header class="site-header" data-site-header>
         <div class="site-header__inner">
           <div class="site-brand">
-            <a href={`/${documentLang}/`}>Return of the Night</a>
+            <a href={`/${documentLang}/home/`}>Return of the Night</a>
           </div>
+
+          <nav class="site-navigation" aria-label={navigation.label}>
+            <a href={`/${documentLang}/home/`}>{navigation.home}</a>
+            <a href={`/${documentLang}/book/`}>{navigation.book}</a>
+          </nav>
 
           <div class="site-controls" aria-label="Site preferences">
             <slot name="header-controls" />
@@ -69,5 +79,24 @@ const documentLang: Locale = getLocaleOrDefault(lang);
         </div>
       </main>
     </div>
+
+    <script>
+      const siteHeader =
+        document.querySelector<HTMLElement>("[data-site-header]");
+      const mediumDesktop = window.matchMedia(
+        "(min-width: 40.0625rem) and (max-width: 90rem)",
+      );
+
+      const updateHeaderDensity = () => {
+        siteHeader?.classList.toggle(
+          "is-condensed",
+          mediumDesktop.matches && window.scrollY > 24,
+        );
+      };
+
+      updateHeaderDensity();
+      window.addEventListener("scroll", updateHeaderDensity, { passive: true });
+      mediumDesktop.addEventListener("change", updateHeaderDensity);
+    </script>
   </body>
 </html>

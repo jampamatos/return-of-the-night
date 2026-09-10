@@ -3,23 +3,9 @@ interface Props {
   title: string;
   subtitle?: string;
   tocLabel: string;
-  overviewLabel: string;
-  sectionsCountLabel: string;
-  entriesCountLabel: string;
-  sectionCount: number;
-  entryCount: number;
 }
 
-const {
-  title,
-  subtitle,
-  tocLabel,
-  overviewLabel,
-  sectionsCountLabel,
-  entriesCountLabel,
-  sectionCount,
-  entryCount,
-} = Astro.props as Props;
+const { title, subtitle, tocLabel } = Astro.props as Props;
 ---
 
 <header class="book-toc-header">
@@ -27,23 +13,12 @@ const {
   <h1 id="book-toc-title">{title}</h1>
 
   {subtitle && <p class="book-toc-header__subtitle">{subtitle}</p>}
-
-  <dl class="book-toc-header__overview" aria-label={overviewLabel}>
-    <div>
-      <dt>{sectionsCountLabel}</dt>
-      <dd>{sectionCount}</dd>
-    </div>
-
-    <div>
-      <dt>{entriesCountLabel}</dt>
-      <dd>{entryCount}</dd>
-    </div>
-  </dl>
 </header>
 
 <style>
   .book-toc-header {
-    padding-bottom: var(--space-5);
+    max-width: 46rem;
+    padding-bottom: var(--space-4);
     border-bottom: 1px solid var(--border-color);
   }
 
@@ -62,39 +37,6 @@ const {
     font-size: 1.1rem;
   }
 
-  .book-toc-header__overview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin: var(--space-5) 0 0;
-  }
-
-  .book-toc-header__overview div {
-    min-width: 8rem;
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.28);
-  }
-
-  .book-toc-header__overview dt {
-    margin: 0 0 var(--space-1);
-    font-family: var(--font-ui);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted-text-color);
-  }
-
-  .book-toc-header__overview dd {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--heading-color);
-  }
-
   @media (max-width: 40rem) {
     .book-toc-header {
       padding-bottom: var(--space-4);
@@ -107,18 +49,6 @@ const {
 
     .book-toc-header__subtitle {
       font-size: 1rem;
-    }
-
-    .book-toc-header__overview {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--space-2);
-      margin-top: var(--space-4);
-    }
-
-    .book-toc-header__overview div {
-      min-width: 0;
-      padding: var(--space-3);
     }
   }
 </style>

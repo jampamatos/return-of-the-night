@@ -65,8 +65,9 @@ const {
 <style>
   .chapter-reader {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem);
-    gap: var(--space-6);
+    grid-template-columns: minmax(0, 44rem) minmax(10rem, 12rem);
+    justify-content: space-between;
+    gap: clamp(var(--space-5), 5vw, var(--space-7));
     align-items: start;
   }
 
@@ -81,8 +82,7 @@ const {
     gap: var(--space-4);
     width: 100%;
     min-width: 0;
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--border-color);
+    padding-top: var(--space-4);
   }
 
   .chapter-reader__content :global(*) {
@@ -100,7 +100,7 @@ const {
   .chapter-reader__content :global(ol),
   .chapter-reader__content :global(blockquote),
   .chapter-reader__content :global(p) {
-    max-width: var(--reading-measure);
+    max-width: 44rem;
   }
 
   .chapter-reader__content :global([id]) {
@@ -125,7 +125,7 @@ const {
   @media (max-width: 58rem) {
     .chapter-reader {
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-5);
+      gap: var(--space-4);
     }
   }
 
