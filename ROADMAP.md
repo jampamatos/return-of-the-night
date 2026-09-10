@@ -6,11 +6,11 @@ The source of truth for detailed scope, architecture direction, and implementati
 
 ## Current phase
 
-The repository has completed **Phase 5 — Chapter reader**.
+The repository has completed **Phase 6 — Rich content features**.
 
 The current maintenance checkpoint is **Code organization and contributor readiness**.
 
-The next implementation milestone after this checkpoint is **Phase 6 — Rich content features**.
+The next implementation milestone after this checkpoint is **Phase 7 — Interactive glossary**.
 
 ## Planned phases
 
@@ -76,7 +76,7 @@ Prepare the codebase to scale safely before the next feature layer:
 - document code organization expectations for contributors
 - preserve existing behavior while improving readability and reviewability
 
-### Phase 6 — Rich content features ← Next
+### Phase 6 — Rich content features ✅
 
 Add expressive content blocks and reader features:
 
@@ -86,7 +86,7 @@ Add expressive content blocks and reader features:
 - callouts
 - audience-conditional blocks
 
-### Phase 7 — Interactive glossary
+### Phase 7 — Interactive glossary ← Next
 
 Introduce glossary references with contextual interactions:
 

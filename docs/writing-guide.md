@@ -25,6 +25,20 @@ Localized product content is still part of the project direction. The platform i
 
 If a document needs to mention locale-specific examples, prefer keeping the surrounding explanation in English and treating localized text as content data or reference material.
 
+## Book content workflow
+
+Book prose follows a PT-BR-first, English-immediate workflow.
+
+- Write each chapter and glossary entry in PT-BR first.
+- Add the English translation in the same change.
+- Keep the stable logical `id`, book, order, status, audience, and document role identical across the two locales.
+- Localize prose, visible labels, summaries, terms, and slugs instead of copying the PT-BR text into the English entry.
+- Do not treat a missing English version as an acceptable future translation backlog.
+
+Player/GM mode supports spoiler etiquette only. Audience-marked content can be present in the public static output, so authors must not rely on it to protect genuinely private material.
+
+For licensing, open-source publication, spoiler behavior, and Cities Without Number compatibility, follow [Open-Source, Spoiler, and Language Policy](./open-source-and-spoiler-policy.md) and [Third-Party Notices](../THIRD_PARTY_NOTICES.md).
+
 ## Writing principles
 
 All repository writing should follow these principles:

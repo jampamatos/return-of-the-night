@@ -12,11 +12,13 @@
 **English title:** Return of the Night  
 **Portuguese title:** A Volta da Noite
 
-**Current format:** a private, player-facing campaign wiki and rules reference for our table  
+**Current format:** a free, open-source player-facing campaign wiki and rules reference
 **Platform plan:** plain Astro digital-book/wiki experience; Starlight is deferred by ADR 0001  
 **System base:** Cities Without Number (CWN)
 
-This is **not** currently planned as a public commercial RPG product. It is a **private campaign setting + table hack + player resource** built for our own use, using the core engine of CWN and adapting it to an original dystopian cyberpunk world.
+This is not planned as a commercial product. It is a **free, open-source campaign setting + table hack + player resource** built around the core engine of CWN and an original dystopian cyberpunk world.
+
+Player/GM mode is intentionally a public spoiler-avoidance convention, not a privacy or security boundary. The book is authored in PT-BR and translated to English in the same change; IDs, technical metadata, and contributor-facing artifacts remain English-first. See [`docs/open-source-and-spoiler-policy.md`](./open-source-and-spoiler-policy.md) and [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) for the governing publication, language, and compatibility rules.
 
 The purpose of this document is to function as the project’s **source of truth** so we can write the wiki, run the game, and expand the setting without losing coherence.
 

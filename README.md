@@ -2,7 +2,7 @@
 
 Return of the Night is an open-source web platform for reading RPG rulebooks, setting books, campaign books, and compendiums through a content-first digital-book experience.
 
-The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, a content-backed book home page with an automatically generated Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, section deep links, a shared reader MDX component surface, semantic figure rendering, and styled responsive Markdown table rendering. The next approved implementation focus is to continue expanding rich content support for reader pages.
+The current codebase is a plain Astro application with a shared site shell, locale-prefixed entry routes, typed content collections, initial chapter and glossary content, metadata utilities for chapter ordering and glossary lookup, a content-backed book home page with an automatically generated Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, section deep links, and a shared rich-content surface for figures, tables, columns, callouts, and audience-filtered blocks.
 
 ## Current status
 
@@ -20,9 +20,9 @@ The current codebase is a plain Astro application with a shared site shell, loca
 - The route `/{lang}/book/` renders the current book home and Table of Contents from real content metadata.
 - The Table of Contents supports metadata-driven ordering, book-config grouping, fallback grouping for sparse localized content, chapter-reader links, empty states, orientation cues, and basic responsive behavior.
 - The route `/{lang}/book/{slug}/` renders generated chapter reader pages from content entries.
-- Chapter reader pages support plain MDX content, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, sparse-heading safeguards, responsive fallback behavior, semantic figures with captions, and styled responsive Markdown tables.
+- Chapter reader pages support plain MDX content, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, sparse-heading safeguards, responsive fallback behavior, semantic figures with captions, styled responsive Markdown tables, directive-authored columns and callouts, and audience-filtered blocks.
 - **Starlight is intentionally deferred** at this stage.
-- The repository language is **English-first** for code and contributor-facing artifacts.
+- The repository is **English-first** for code and contributor-facing artifacts; book prose is authored in PT-BR and translated to English in the same change.
 
 ## Current routes
 
@@ -55,7 +55,7 @@ The current codebase is a plain Astro application with a shared site shell, loca
 - `src/components/reader/rich-content/ReaderTable.astro` renders Markdown tables with reader-specific styling and overflow-safe behavior.
 - `src/pages/[lang]/book/[...slug].astro` renders generated chapter reader pages.
 
-The app now renders the real book home, Table of Contents, chapter reader, semantic figures with captions, and styled Markdown tables. Interactive glossary UI, remaining rich content blocks, full localization parity, and broader visual refinement remain planned roadmap work.
+The app now renders the real book home, Table of Contents, chapter reader, and every approved Phase 6 rich-content block: semantic figures with captions, styled Markdown tables, responsive columns, callouts, and audience-filtered blocks. Interactive glossary UI, full localization parity, and broader visual refinement remain planned roadmap work.
 
 ## Source of truth
 
@@ -71,6 +71,8 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/assets-register.md`](docs/assets-register.md): current register for asset source, author, license, and usage notes.
 - [`docs/shell-reading-and-visual-guidelines.md`](docs/shell-reading-and-visual-guidelines.md): the current visual and reading-direction guide for the shell.
 - [`docs/writing-guide.md`](docs/writing-guide.md): minimum writing standards for repository artifacts and documentation language policy.
+- [`docs/open-source-and-spoiler-policy.md`](docs/open-source-and-spoiler-policy.md): open-source scope, spoiler-mode limitations, and the PT-BR-to-English authoring workflow.
+- [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md): compatibility and third-party intellectual-property notices, including Cities Without Number.
 
 If a local implementation detail conflicts with those documents, the documentation should be treated as authoritative until it is intentionally updated.
 
@@ -78,7 +80,7 @@ If a local implementation detail conflicts with those documents, the documentati
 
 ### Requirements
 
-- Node.js `>=22.13.0 <23`
+- Node.js `>=22.19.0 <23`
 - npm `>=11.7.0`
 
 ### Setup
@@ -109,22 +111,26 @@ The development server starts the current application shell, content-backed book
 
 ## Available scripts
 
-| Script                 | Purpose                                                                     |
-| ---------------------- | --------------------------------------------------------------------------- |
-| `npm run dev`          | Start the local Astro development server.                                   |
-| `npm run build`        | Create a production build in `dist/`.                                       |
-| `npm run preview`      | Preview the production build locally.                                       |
-| `npm run typecheck`    | Run Astro and TypeScript project checks.                                    |
-| `npm run lint`         | Run ESLint across the repository.                                           |
-| `npm run format`       | Format repository files with Prettier.                                      |
-| `npm run format:check` | Verify that files match the configured Prettier style.                      |
-| `npm run check`        | Run the aggregate quality checks: format check, lint, typecheck, and build. |
+| Script                 | Purpose                                                                      |
+| ---------------------- | ---------------------------------------------------------------------------- |
+| `npm run dev`          | Start the local Astro development server.                                    |
+| `npm run build`        | Create a production build in `dist/`.                                        |
+| `npm run preview`      | Preview the production build locally.                                        |
+| `npm run typecheck`    | Run Astro and TypeScript project checks.                                     |
+| `npm run lint`         | Run ESLint across the repository.                                            |
+| `npm run format`       | Format repository files with Prettier.                                       |
+| `npm run format:check` | Verify that files match the configured Prettier style.                       |
+| `npm run test`         | Run the unit and content-integrity tests.                                    |
+| `npm run test:content` | Run only the chapter-source integrity tests.                                 |
+| `npm run test:e2e`     | Build the site, then run Chromium browser and accessibility tests.           |
+| `npm run test:all`     | Run the unit/content and browser/accessibility suites.                       |
+| `npm run audit:deps`   | Audit production and development dependencies for high-severity issues.      |
+| `npm run check`        | Run format check, lint, typecheck, production build, and unit/content tests. |
 
 ## Current boundaries
 
 The current implementation intentionally stops at a functional chapter reader. The repository does **not** yet include:
 
-- expanded audience-conditional block rendering
 - glossary hover cards or glossary-linked reader interactions
 - full translation parity across localized content
 - localization fallback behavior or equivalent cross-locale reader routes
@@ -141,13 +147,17 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has a working foundation, base shell, content engine, book home / Table of Contents, chapter reader, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, and semantic reader callouts. The next implementation focus is to continue adding rich content features while preserving the Markdown/MDX-first authoring model.
+The repository has a working foundation, base shell, content engine, book home / Table of Contents, chapter reader, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, semantic reader callouts, and audience-filtered reader blocks. The next implementation focus is the interactive glossary while preserving the Markdown/MDX-first authoring model.
 
 ## Licensing
 
 Unless otherwise noted, the software code in this repository is licensed under the [MIT License](LICENSE).
 
 Unless otherwise noted, the original textual and documentation content in this repository is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+Player/GM mode is a client-side spoiler-avoidance preference, not access control. See [`docs/open-source-and-spoiler-policy.md`](docs/open-source-and-spoiler-policy.md) before adding audience-marked content.
+
+Cities Without Number compatibility and third-party-content limits are documented in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 Repository-tracked assets are not covered by a single default asset license. Each asset must have explicit provenance and licensing information recorded in:
 

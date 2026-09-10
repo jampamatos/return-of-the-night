@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
 
 import mdx from "@astrojs/mdx";
 import remarkDirective from "remark-directive";
@@ -9,8 +10,8 @@ import { remarkReaderFigures } from "./src/lib/reader/rich-content/remark-reader
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [
-    mdx({
+  markdown: {
+    processor: unified({
       remarkPlugins: [
         remarkDirective,
         remarkReaderCallouts,
@@ -19,5 +20,6 @@ export default defineConfig({
         remarkReaderAudience,
       ],
     }),
-  ],
+  },
+  integrations: [mdx()],
 });

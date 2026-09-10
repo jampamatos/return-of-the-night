@@ -42,14 +42,14 @@ That means:
 - the canonical project name is **Return of the Night**
 - the repository language is **English**
 - code, comments, commit messages, docs, issue templates, PR templates, ADRs, and contributor-facing files should be written in **English** by default
-- the initial content architecture should treat **English** as the primary working language
+- the initial content architecture should use English-first identifiers and technical conventions while treating **PT-BR** as the primary prose-authoring language
 - PT-BR is a first-class supported locale, but not the primary maintenance language
 
 ### Practical implications
 
 - `README.md`, `CONTRIBUTING.md`, `ROADMAP.md`, `SECURITY.md`, `SUPPORT.md`, and architecture docs should be in English
 - folder names, identifiers, schema field names, component names, route conventions, and content IDs should be in English
-- translations should map to shared logical IDs whose canonical reference is English-first
+- every PT-BR chapter or glossary entry should receive an English translation in the same change, with a shared logical ID and matching structural metadata
 - discussion with the assistant may happen in Portuguese, but repository artifacts should default to English unless there is a deliberate reason otherwise
 
 ---
@@ -70,6 +70,8 @@ That means the project must be built from the start with:
 - validation and automation where appropriate
 
 Open source is not a cosmetic label here. It is a design constraint.
+
+The project is free and open source. Code is MIT-licensed, original written material is CC BY 4.0 unless otherwise stated, and every repository-tracked asset must have explicit provenance. Third-party material remains subject to its own applicable rights and notices.
 
 ---
 
@@ -196,7 +198,7 @@ GM-oriented mode. Shows the full content, including blocks marked as GM-only.
 
 ### 8.3 Important rule
 
-In the MVP, player/GM mode is a **reading preference**, not a real security layer. Truly secret content must not rely on this feature alone.
+In the MVP, player/GM mode is a **reading preference**, not a real security layer. The static output can contain both Player and GM content, so the mode is intentionally spoiler etiquette rather than authentication, authorization, access control, secrecy, or content protection.
 
 ---
 
@@ -288,6 +290,8 @@ Initial supported languages:
 
 - `en`
 - `pt-BR`
+
+Book prose is authored in PT-BR first and translated to English in the same change. English remains the language for code, stable IDs, frontmatter conventions, and contributor-facing artifacts.
 
 ## 10.5 Routing strategy
 
@@ -556,7 +560,7 @@ The structure across languages should remain as mirrored as possible.
 
 ## 15.5 English-first rule
 
-When there is uncertainty about naming, identifiers, or the primary reference version of a content entry, default to the English version.
+When there is uncertainty about a stable identifier, default to an English-friendly identifier. For book prose, PT-BR is the editorial source and English is the immediate maintained translation.
 
 ---
 
@@ -1076,11 +1080,11 @@ Prepare the project to grow without turning into chaos.
 
 ## 23. Recommended implementation order now
 
-The project has completed the foundation, shell, content engine, book home, and chapter reader work. The current recommended sequence from this point is:
+The project has completed the foundation, shell, content engine, book home, chapter reader, rich-content features, and the initial regression/security automation. The current recommended sequence from this point is:
 
-1. Rich content features
+1. Complete the bilingual placeholder book structure
 2. Interactive glossary
-3. Real localization
+3. Real localization and strict translation parity
 4. UX/layout refinement
 5. Contribution docs and hardening
 
@@ -1114,17 +1118,16 @@ For each step:
 
 The next concrete focus is:
 
-### **Rich Content Features**
+### **Complete Bilingual Placeholder Book Structure**
 
 That means the next practical tasks should be, in order:
 
-1. define author-facing conventions for rich content blocks
-2. add image and caption support
-3. add styled table support
-4. add side-by-side layout support
-5. add callout support
-6. keep audience-conditional block rendering scoped to the current rich-content boundary
-7. avoid glossary hover cards, localization fallback logic, and broad visual polish until their planned roadmap work
+1. replace the technical seed entries with the approved bilingual chapter map
+2. add meaningful PT-BR-first placeholder text and immediate English counterparts
+3. preserve matching logical IDs, status, order, and intended structures across locales
+4. exercise every implemented reader feature with the placeholder corpus
+5. add the stricter translation-parity and route checks needed for the new corpus
+6. defer interactive glossary behavior and visual polish until the placeholders are complete
 
 ---
 
@@ -1154,7 +1157,9 @@ Core decisions must not change silently.
 - content engine completed
 - book home / Table of Contents completed
 - chapter reader completed
-- ready to start rich content features
+- rich content features completed
+- regression, browser/accessibility, content-integrity, and dependency-audit checks completed
+- ready to create the bilingual placeholder book structure
 
 ---
 
@@ -1162,6 +1167,6 @@ Core decisions must not change silently.
 
 We are building **Return of the Night**, an open-source RPG digital-book platform with MDX-based content, rich navigation, interactive glossary behavior, player/GM reading modes, and support for English and PT-BR.
 
-The implementation strategy is incremental: the repository foundation, site shell, content engine, book home / Table of Contents, and chapter reader are now in place. The next step is to add rich authoring features before moving into glossary interactions, localization consolidation, and visual refinement.
+The implementation strategy is incremental: the repository foundation, site shell, content engine, book home / Table of Contents, chapter reader, rich authoring features, and initial regression/security automation are now in place. The next step is to create and validate the complete bilingual placeholder book structure before moving into glossary interactions, localization consolidation, and visual refinement.
 
 The priorities are understanding, clarity, maintainability, and real open-source readiness — not speed or premature complexity.

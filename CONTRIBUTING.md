@@ -17,7 +17,7 @@ The project is still early and intentionally incremental, so the contribution pr
 
 Requirements:
 
-- Node.js `>=22.13.0 <23`
+- Node.js `>=22.19.0 <23`
 - npm `>=11.7.0`
 
 Install dependencies:
@@ -64,9 +64,14 @@ Available commands:
 - `npm run lint`
 - `npm run typecheck`
 - `npm run build`
+- `npm run test`
+- `npm run test:content`
+- `npm run test:e2e`
+- `npm run test:all`
+- `npm run audit:deps`
 - `npm run check`
 
-In most cases, `npm run check` should be enough before submitting a PR because it runs the current aggregate validation flow.
+In most cases, `npm run check` should be enough before submitting a PR because it runs format, lint, typecheck, build, and unit/content tests. Run `npm run test:e2e` when a change affects the rendered reader, client-side behavior, or accessibility. Run `npm run audit:deps` after dependency changes.
 
 If you cannot run one of the expected checks, say so clearly in the pull request.
 

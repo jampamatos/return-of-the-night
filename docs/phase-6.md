@@ -4,6 +4,10 @@
 
 Add the features that make the reader more powerful and closer to the intended vision.
 
+## Status
+
+Completed. The repository implements every Phase 6 block type and includes a dedicated reader fixture for each one. The completed feature set is covered by formatting, linting, Astro typechecking, production builds, unit/content tests, and Chromium accessibility tests with Node.js 22.19.0 and npm 11.7.0. The fixture material remains temporary and will be replaced by the bilingual placeholder book structure before final prose is written.
+
 ## Deliverables
 
 - images with captions

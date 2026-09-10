@@ -42,6 +42,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Responsive fallback behavior for chapter-local navigation.
 - Sparse-heading safeguards for chapters with minimal structure.
 - Code organization guide for routes, components, domain logic, and styles.
+- Semantic figure rendering with Markdown-authored captions.
+- Styled, responsive Markdown table rendering.
+- Directive-authored responsive columns, semantic callouts, and audience-filtered reader blocks.
 
 ### Changed
 
@@ -49,3 +52,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Updated the next implementation focus to rich content features.
 - Aligned repository documentation with the implemented reader scope and deferred rich content, glossary, and localization work.
 - Refactored the chapter reader route into smaller reader components and typed reader utilities.
+- Updated project status and roadmap documentation to reflect the completed Phase 6 rich-content feature set.

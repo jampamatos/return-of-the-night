@@ -67,7 +67,7 @@ Expected responsibilities include:
 - localization utilities
 - reader-specific navigation logic
 
-In the current repository, this layer includes implemented utilities for content loading, chapter ordering, adjacent chapter resolution, TOC grouping, chapter-reader link generation, glossary listing, glossary lookup, locale routing, and audience preference handling. Rich content, glossary interaction, and localization consolidation behavior still remains deferred.
+In the current repository, this layer includes implemented utilities for content loading, chapter ordering, adjacent chapter resolution, TOC grouping, chapter-reader link generation, glossary listing, glossary lookup, locale routing, audience preference handling, and rich-content directive transformations. Glossary interaction and localization consolidation remain deferred.
 
 ### 4. Repository and governance layer
 
@@ -78,7 +78,7 @@ That means architecture includes repository systems such as:
 - documentation
 - ADRs
 - issue and pull request templates
-- formatting, linting, and type checking
+- formatting, linting, type checking, content integrity checks, browser/accessibility tests, and dependency audits
 - licensing and asset provenance policy
 - contribution and community guidance
 
@@ -114,7 +114,8 @@ Current implementation status:
 - reader utilities normalize headings, build sidebar data, define reader copy, and create adjacent-reader links
 - glossary metadata utilities support listing by language and lookup by logical `id`
 - the book home renders a content-backed Table of Contents with empty states, orientation cues, and basic responsive behavior
-- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, section deep links, semantic figures with captions, styled responsive Markdown tables, and directive-authored responsive columns through a shared reader MDX component surface
+- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, section deep links, semantic figures with captions, styled responsive Markdown tables, directive-authored responsive columns, callouts, and Player/GM audience blocks through a shared reader MDX component surface
+- the repository runs unit/content validation with Vitest, Chromium browser/accessibility validation with Playwright and axe, and high-severity dependency audits in CI
 
 ## Current boundaries
 
@@ -127,16 +128,16 @@ The current implementation includes:
 - initial content seeds in English plus mirrored PT-BR examples for shared logical IDs
 - metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, and glossary lookup
 - a content-backed book home / Table of Contents with empty states, orientation cues, and basic responsive behavior
-- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, and semantic callout rendering
+- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, semantic callout rendering, and audience-conditional block rendering
+- automated unit/content, browser/accessibility, and dependency-audit checks
 
 The current implementation does **not** yet include:
 
-- expanded audience-conditional block rendering
 - glossary hover cards or reader-side glossary interactions
 - full translation parity or complete localization behavior
 - authentication, authorization, or backend infrastructure
 
-This means the repository now reflects the first complete content-driven reader layer of the system plus the first reader rich-content primitives for semantic figures, Markdown tables, responsive columns, and callouts, while audience blocks, glossary interactions, and localization consolidation remain planned rather than implemented.
+This means the repository now reflects the complete content-driven reader layer and current rich-content feature set, including audience blocks. Glossary interactions and localization consolidation remain planned rather than implemented.
 
 ## Planned evolution
 
@@ -147,8 +148,8 @@ The intended implementation order remains incremental:
 3. content engine and schemas — completed
 4. book home and Table of Contents generation — completed
 5. chapter reader — completed
-6. rich content features — next
-7. interactive glossary — planned
+6. rich content features — completed
+7. interactive glossary — next
 8. real localization — planned
 9. UX and layout refinement — planned
 10. contribution docs and hardening — planned

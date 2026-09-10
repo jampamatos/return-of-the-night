@@ -9,12 +9,18 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "http-server ./dist -a 127.0.0.1 -p 4321 -s",
     "typecheck": "astro check",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "lint": "eslint .",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run build"
+    "test": "vitest run",
+    "test:content": "vitest run tests/content",
+    "test:watch": "vitest",
+    "test:e2e": "npm run build && playwright test",
+    "test:all": "npm run test && npm run test:e2e",
+    "audit:deps": "npm audit --audit-level=high && npm audit --omit=dev --audit-level=high",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run build && npm run test"
   },
   "repository": {
     "type": "git",
@@ -30,21 +36,27 @@
   "homepage": "https://github.com/jampamatos/return-of-the-night#readme",
   "packageManager": "npm@11.7.0",
   "dependencies": {
-    "@astrojs/mdx": "^5.0.3",
-    "astro": "^6.0.7",
+    "@astrojs/markdown-remark": "7.3.1",
+    "@astrojs/mdx": "8.0.1",
+    "astro": "7.3.2",
     "remark-directive": "^4.0.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.8",
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.20.2",
     "@typescript-eslint/parser": "8.57.1",
     "eslint": "9.39.4",
     "eslint-plugin-astro": "1.6.0",
+    "http-server": "14.1.1",
     "prettier": "3.8.1",
     "prettier-plugin-astro": "0.14.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "5.0.0"
   },
   "engines": {
-    "node": ">=22.13.0 < 23",
+    "node": ">=22.19.0 < 23",
     "npm": ">=11.7.0"
   }
 }
