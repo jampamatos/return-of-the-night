@@ -12,6 +12,7 @@ The current codebase is a plain Astro application with a cover-first entry, a lo
 - The route `/{lang}/home/` is the project Home. It has placeholders for the public project explanation, news, discussion/comments, contribution, and future support; its book CTA resumes the last local chapter when possible, otherwise it opens the Table of Contents.
 - Chapter locale switching resolves the equivalent localized chapter by its shared logical ID, so each locale can use its own natural slug. When a counterpart is missing, it opens a localized Table-of-Contents fallback state rather than a broken route.
 - The audience preference persists in `localStorage` under the approved key `rotn:audience`.
+- Dark and light reading themes persist locally across the site. The Paper theme also persists, but is available only on the Table of Contents, chapter reader, and glossary.
 - The root route `/` redirects to the current default locale, `en`.
 - The project registers Astro content collections for `chapters`, `glossary`, and `book-config` in [`src/content.config.ts`](src/content.config.ts).
 - Chapters, glossary entries, and book config are validated through typed Zod schemas under [`src/lib/content/schemas/`](src/lib/content/schemas/).
@@ -20,7 +21,7 @@ The current codebase is a plain Astro application with a cover-first entry, a lo
 - The route `/{lang}/book/` renders the current book home and Table of Contents from real content metadata.
 - The Table of Contents supports metadata-driven ordering, book-config grouping, fallback grouping for sparse localized content, chapter-reader links, empty states, orientation cues, and basic responsive behavior.
 - The route `/{lang}/book/{slug}/` renders generated chapter reader pages from content entries.
-- Chapter reader pages support plain MDX content, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, sparse-heading safeguards, responsive fallback behavior, semantic figures with captions, styled responsive Markdown tables, directive-authored columns and callouts, and audience-filtered blocks.
+- Chapter reader pages support plain MDX content, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, sparse-heading safeguards, responsive fallback behavior, persistent themes, keyboard-dismissible mobile navigation, back-to-top behavior, semantic figures with captions, styled responsive Markdown tables, directive-authored columns and callouts, and audience-filtered blocks.
 - **Starlight is intentionally deferred** at this stage.
 - The repository is **English-first** for code and contributor-facing artifacts; book prose is authored in PT-BR and translated to English in the same change.
 
@@ -72,6 +73,7 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/open-source-and-spoiler-policy.md`](docs/open-source-and-spoiler-policy.md): open-source scope, spoiler-mode limitations, and the PT-BR-to-English authoring workflow.
 - [`docs/placeholder-book-structure.md`](docs/placeholder-book-structure.md): the temporary bilingual chapter map and its validation rules.
 - [`docs/interactive-glossary.md`](docs/interactive-glossary.md): inline term syntax, reader behavior, and glossary validation rules.
+- [`docs/editorial-guide.md`](docs/editorial-guide.md): practical PT-BR-first chapter and glossary workflow, review checklist, and reusable templates.
 - [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md): compatibility and third-party intellectual-property notices, including Cities Without Number.
 
 If a local implementation detail conflicts with those documents, the documentation should be treated as authoritative until it is intentionally updated.
@@ -130,7 +132,7 @@ The development server starts the cover, project Home, content-backed Table of C
 
 The current implementation intentionally stops before the final visual redesign. The repository does **not** yet include:
 
-- broader UX polish beyond the current functional reader, landing page, and book home
+- a unified visual redesign of the shell, Table of Contents, and chapter layouts
 
 ## Project direction
 

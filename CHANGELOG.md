@@ -16,6 +16,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Added an accessible interactive glossary with inline MDX references, hover/focus cards, Escape-to-close behavior, localized glossary indexes, and unresolved-reference validation.
 - Localized chapter switching now resolves the target chapter by shared logical ID, with a localized Table-of-Contents fallback state when no counterpart is available.
 - Expanded bilingual content validation to cover glossary types and matching inline glossary references across translated chapters.
+- Added persistent dark and light themes, plus a Paper theme limited to book routes.
+- Added compact mobile navigation, Escape-to-close behavior, and an accessible back-to-top control for long chapters.
+- Added reusable bilingual chapter and glossary templates with a practical editorial guide.
 
 ### Added
 

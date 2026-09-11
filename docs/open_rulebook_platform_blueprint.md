@@ -1117,14 +1117,14 @@ For each step:
 
 The next concrete focus is:
 
-### **Reader Controls and Layout Foundation**
+### **Editorial Authoring**
 
 That means the next practical tasks should be, in order:
 
-1. add a persistent reading-theme control
-2. make navigation compact and usable on small screens
-3. add a reliable back-to-top behavior for long chapters
-4. expand responsive and accessibility coverage for the reader controls
+1. write the PT-BR source for one approved chapter
+2. add its immediate English translation with matching structural metadata
+3. introduce glossary entries as the prose establishes recurring terms
+4. validate the chapter in the reader before continuing to the next one
 5. reserve full shell, TOC, and chapter visual redesign for a unified later iteration
 
 ---
@@ -1160,6 +1160,8 @@ Core decisions must not change silently.
 - bilingual placeholder book structure completed and validated
 - interactive glossary completed: localized index, inline MDX terms, accessible hover/focus/click card, Escape behavior, and build-time unresolved-ID rejection
 - localization consolidation completed: shared-ID route resolution, strict bilingual parity checks, and visible localized missing-translation fallback states
+- functional reader controls completed: persistent themes, Paper mode limited to book routes, compact mobile navigation, back-to-top behavior, and responsive/accessibility tests
+- editorial authoring readiness completed: reusable bilingual chapter and glossary templates plus a practical editorial guide
 
 ---
 
@@ -1167,6 +1169,6 @@ Core decisions must not change silently.
 
 We are building **Return of the Night**, an open-source RPG digital-book platform with MDX-based content, rich navigation, interactive glossary behavior, player/GM reading modes, and support for English and PT-BR.
 
-The implementation strategy is incremental: the repository foundation, site shell, content engine, book home / Table of Contents, chapter reader, rich authoring features, initial regression/security automation, complete bilingual placeholder corpus, interactive glossary, and localization consolidation are now in place. The next step is functional reader controls, followed by a unified visual refinement.
+The implementation strategy is incremental: the repository foundation, site shell, content engine, book home / Table of Contents, chapter reader, rich authoring features, initial regression/security automation, complete bilingual placeholder corpus, interactive glossary, localization consolidation, reader controls, and editorial templates are now in place. The next step is final PT-BR prose with immediate English translation; a unified visual refinement can remain a separate later iteration.
 
 The priorities are understanding, clarity, maintainability, and real open-source readiness — not speed or premature complexity.

@@ -6,11 +6,11 @@ The source of truth for detailed scope, architecture direction, and implementati
 
 ## Current phase
 
-The repository has completed **Phase 8 — Localization consolidation**.
+The repository has completed **Phase 9 — Reader controls and layout refinement**.
 
-The current implementation checkpoint is **Phase 9 — Reader controls and layout refinement**.
+The current implementation checkpoint is **Editorial authoring readiness**.
 
-The next implementation milestone after this checkpoint is **Phase 9 — Reader controls and layout refinement**.
+The next project milestone is **writing the final PT-BR prose with immediate English translations**.
 
 ## Planned phases
 
@@ -113,7 +113,7 @@ Consolidate multilingual behavior across the product:
 - translated global labels
 - fallback rules for missing content
 
-### Phase 9 — UX and layout refinement
+### Phase 9 — Reader controls and layout foundation ✅
 
 Complete the remaining functional reader controls before the deliberate visual redesign:
 
@@ -122,6 +122,14 @@ Complete the remaining functional reader controls before the deliberate visual r
 - back-to-top behavior
 - responsive and accessibility checks
 - a later unified redesign of the shell, TOC, and chapter layout
+
+### Editorial authoring readiness ✅
+
+Prepare the validated book structure for final prose:
+
+- PT-BR-first and immediate-English authoring workflow
+- reusable chapter and glossary templates for both locales
+- practical editorial guidance and a ready-for-review checklist
 
 ### Phase 10 — Contribution docs and hardening
 

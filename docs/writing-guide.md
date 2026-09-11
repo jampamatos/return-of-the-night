@@ -51,6 +51,8 @@ The reader resolves locale changes by logical ID. If a translation has not yet b
 
 For licensing, open-source publication, spoiler behavior, and Cities Without Number compatibility, follow [Open-Source, Spoiler, and Language Policy](./open-source-and-spoiler-policy.md) and [Third-Party Notices](../THIRD_PARTY_NOTICES.md).
 
+For the concrete chapter and glossary workflow, including reusable MDX templates and the ready-for-review checklist, follow the [Editorial Guide](./editorial-guide.md).
+
 ## Writing principles
 
 All repository writing should follow these principles:

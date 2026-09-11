@@ -6,6 +6,7 @@ import ReaderMdxContent from "../../../components/reader/ReaderMdxContent.astro"
 import ReaderBreadcrumb from "../../../components/reader/ReaderBreadcrumb.astro";
 import ReaderHeader from "../../../components/reader/ReaderHeader.astro";
 import ReaderGlossaryPopover from "../../../components/reader/ReaderGlossaryPopover.astro";
+import ReaderBackToTop from "../../../components/reader/ReaderBackToTop.astro";
 import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
 import {
   AUDIENCES,
@@ -158,12 +159,18 @@ const glossaryCopy =
       };
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  lang={lang}
+  supportsPaperTheme
+>
   <ShellHeaderControls
     slot="header-controls"
     lang={lang}
     pathname={Astro.url.pathname}
     localeHrefs={localeHrefs}
+    supportsPaperTheme
     languageSwitcherLabel={copy.languageSwitcherLabel}
     audienceSwitcherLabel={copy.audienceSwitcherLabel}
     audienceOptions={audienceOptions}
@@ -226,14 +233,21 @@ const glossaryCopy =
       }))}
       {...glossaryCopy}
     />
+
+    <ReaderBackToTop
+      label={lang === "pt-BR" ? "Voltar ao topo" : "Back to top"}
+      targetId="reader-route-title"
+    />
   </section>
 
   <script>
     import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
     import { rememberLastReaderPath } from "../../../lib/reader/last-reader";
+    import { initThemeSwitchers } from "../../../lib/theme/theme-switcher";
     import { getLocaleOrDefault } from "../../../config/site";
 
     initAudienceSwitchers();
+    initThemeSwitchers();
 
     const readerLocale = document.querySelector<HTMLElement>(
       "[data-reader-locale]",

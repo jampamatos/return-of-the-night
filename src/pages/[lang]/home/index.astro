@@ -149,8 +149,10 @@ const tocHref = `/${lang}/book/`;
   <script>
     import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
     import { initResumeBookLinks } from "../../../lib/reader/last-reader";
+    import { initThemeSwitchers } from "../../../lib/theme/theme-switcher";
 
     initAudienceSwitchers();
+    initThemeSwitchers();
     initResumeBookLinks();
   </script>
 </BaseLayout>

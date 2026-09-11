@@ -52,6 +52,47 @@ test.describe("chapter reader", () => {
     );
   });
 
+  test("keeps header navigation compact and keyboard-dismissible on mobile", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/en/book/");
+
+    const menu = page.getByRole("button", { name: "Open navigation menu" });
+    const navigation = page.locator("[data-site-navigation]");
+
+    await expect(navigation).toBeHidden();
+    await menu.click();
+    await expect(menu).toHaveAttribute("aria-expanded", "true");
+    await expect(navigation).toBeVisible();
+
+    await page.keyboard.press("Escape");
+    await expect(menu).toHaveAttribute("aria-expanded", "false");
+    await expect(navigation).toBeHidden();
+  });
+
+  test("persists reader themes and limits paper to book routes", async ({
+    page,
+  }) => {
+    await page.goto("/en/book/");
+
+    await page.getByRole("button", { name: "Light" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+
+    await page.getByRole("button", { name: "Paper" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "paper");
+
+    await page.goto("/en/home/");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(page.getByRole("button", { name: "Paper" })).toHaveCount(0);
+
+    await page.goto("/en/book/");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "paper");
+  });
+
   test("renders the rich-content fixture and switches reading mode", async ({
     page,
   }) => {
@@ -80,6 +121,23 @@ test.describe("chapter reader", () => {
     await expect(page.locator("html")).toHaveAttribute("data-audience", "gm");
     await expect(playerBlock).toBeHidden();
     await expect(gmBlock).toBeVisible();
+  });
+
+  test("returns to the chapter opening from long reader content", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/en/book/getting-started/reading-the-book/");
+    await page.evaluate(() => window.scrollTo(0, 900));
+
+    const backToTop = page.getByRole("button", { name: "Back to top" });
+    await expect(backToTop).toBeVisible();
+    await backToTop.click();
+
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeLessThan(5);
+    await expect(page.locator("#reader-route-title")).toBeFocused();
   });
 
   test("switches a reader route to the equivalent localized chapter", async ({

@@ -1,0 +1,80 @@
+---
+interface Props {
+  label: string;
+  targetId: string;
+}
+
+const { label, targetId } = Astro.props as Props;
+---
+
+<button
+  class="reader-back-to-top"
+  type="button"
+  data-reader-back-to-top
+  data-reader-back-to-top-target={targetId}
+  hidden
+>
+  <span aria-hidden="true">↑</span>
+  <span>{label}</span>
+</button>
+
+<script>
+  const backToTop = document.querySelector<HTMLButtonElement>(
+    "[data-reader-back-to-top]",
+  );
+
+  const updateBackToTopVisibility = () => {
+    if (!backToTop) return;
+
+    backToTop.hidden = window.scrollY < 560;
+  };
+
+  updateBackToTopVisibility();
+  window.addEventListener("scroll", updateBackToTopVisibility, {
+    passive: true,
+  });
+
+  backToTop?.addEventListener("click", () => {
+    const targetId = backToTop.dataset.readerBackToTopTarget;
+    const target = targetId ? document.getElementById(targetId) : undefined;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    window.scrollTo({
+      top: 0,
+      behavior: reduceMotion.matches ? "auto" : "smooth",
+    });
+
+    if (target instanceof HTMLElement) {
+      target.tabIndex = -1;
+      target.focus({ preventScroll: true });
+    }
+  });
+</script>
+
+<style>
+  .reader-back-to-top {
+    position: fixed;
+    right: max(var(--space-4), env(safe-area-inset-right));
+    bottom: max(var(--space-4), env(safe-area-inset-bottom));
+    z-index: 9;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--accent-primary);
+    border-radius: 999px;
+    background: var(--surface-background-strong);
+    color: var(--heading-color);
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+    font-family: var(--font-ui);
+    font-weight: 700;
+  }
+
+  @media (max-width: 40rem) {
+    .reader-back-to-top {
+      right: var(--space-3);
+      bottom: var(--space-3);
+    }
+  }
+</style>

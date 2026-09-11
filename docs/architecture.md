@@ -125,12 +125,12 @@ The current implementation includes:
 
 - Astro bootstrap and repository-quality tooling
 - locale-prefixed cover, project Home, and Table of Contents routes
-- audience preference persistence and shell controls
+- audience and theme preference persistence, including a Paper theme limited to book routes
 - typed Astro content collections for chapters, glossary, and book config
 - complete PT-BR-first bilingual placeholder corpus with shared logical IDs and localized slugs
 - metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, glossary lookup, and glossary-reference validation
-- a content-backed Table of Contents with empty states, orientation cues, and basic responsive behavior
-- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, semantic callout rendering, audience-conditional block rendering, and interactive glossary definitions
+- a content-backed Table of Contents with empty states, orientation cues, theme controls, and responsive behavior
+- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, persistent dark/light themes, a Paper theme limited to book routes, compact keyboard-dismissible mobile navigation, a back-to-top control, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, semantic callout rendering, audience-conditional block rendering, and interactive glossary definitions
 - localized glossary indexes and static validation of inline glossary IDs
 - automated unit/content, browser/accessibility, and dependency-audit checks
 
@@ -152,7 +152,7 @@ The intended implementation order remains incremental:
 6. rich content features — completed
 7. interactive glossary — completed
 8. real localization — completed
-9. reader controls and layout refinement — next
+9. reader controls and layout refinement — completed
 10. contribution docs and hardening — planned
 
 The architecture should continue to follow these principles as the project grows:

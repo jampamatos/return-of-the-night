@@ -1,5 +1,5 @@
 ---
-import { LOCALES, type Audience, type Locale } from "../../config/site";
+import { THEMES, LOCALES, type Audience, type Locale } from "../../config/site";
 import { buildLocalHref } from "../../utils/locale-routing";
 
 interface AudienceOption {
@@ -12,6 +12,7 @@ interface Props {
   lang: Locale;
   pathname: string;
   localeHrefs?: Partial<Record<Locale, string>>;
+  supportsPaperTheme?: boolean;
   languageSwitcherLabel: string;
   audienceSwitcherLabel: string;
   audienceOptions: AudienceOption[];
@@ -21,6 +22,7 @@ const {
   lang,
   pathname,
   localeHrefs = {},
+  supportsPaperTheme = false,
   languageSwitcherLabel,
   audienceSwitcherLabel,
   audienceOptions,
@@ -30,6 +32,19 @@ const localeLinks = LOCALES.map((locale) => ({
   locale,
   href: localeHrefs[locale] ?? buildLocalHref(locale, pathname),
 }));
+const themeCopy = {
+  en: { label: "Theme", dark: "Dark", light: "Light", paper: "Paper" },
+  "pt-BR": {
+    label: "Tema",
+    dark: "Escuro",
+    light: "Claro",
+    paper: "Papel",
+  },
+} as const;
+const themes = supportsPaperTheme
+  ? THEMES
+  : THEMES.filter((theme) => theme !== "paper");
+const themeLabels = themeCopy[lang];
 ---
 
 <div class="shell-header-controls">
@@ -45,6 +60,30 @@ const localeLinks = LOCALES.map((locale) => ({
         ))
       }
     </nav>
+  </div>
+
+  <div class="shell-control">
+    <span class="shell-control__label">{themeLabels.label}</span>
+
+    <div
+      class="shell-control__options"
+      data-theme-selector
+      data-supports-paper-theme={String(supportsPaperTheme)}
+      role="group"
+      aria-label={themeLabels.label}
+    >
+      {
+        themes.map((theme) => (
+          <button
+            type="button"
+            data-theme-option={theme}
+            aria-pressed={theme === "dark" ? "true" : "false"}
+          >
+            {themeLabels[theme]}
+          </button>
+        ))
+      }
+    </div>
   </div>
 
   <div class="shell-control">

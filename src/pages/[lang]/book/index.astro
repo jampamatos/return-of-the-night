@@ -109,11 +109,17 @@ const audienceOptions = AUDIENCES.map((audience) => ({
 }));
 ---
 
-<BaseLayout title={copy.title} description={copy.description} lang={lang}>
+<BaseLayout
+  title={copy.title}
+  description={copy.description}
+  lang={lang}
+  supportsPaperTheme
+>
   <ShellHeaderControls
     slot="header-controls"
     lang={lang}
     pathname={Astro.url.pathname}
+    supportsPaperTheme
     languageSwitcherLabel={copy.languageSwitcherLabel}
     audienceSwitcherLabel={copy.audienceSwitcherLabel}
     audienceOptions={audienceOptions}
@@ -137,7 +143,9 @@ const audienceOptions = AUDIENCES.map((audience) => ({
 
   <script>
     import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
+    import { initThemeSwitchers } from "../../../lib/theme/theme-switcher";
 
     initAudienceSwitchers();
+    initThemeSwitchers();
   </script>
 </BaseLayout>

@@ -3,6 +3,8 @@ import "../styles/global.css";
 import {
   AUDIENCE_STORAGE_KEY,
   DEFAULT_AUDIENCE,
+  DEFAULT_THEME,
+  THEME_STORAGE_KEY,
   getLocaleOrDefault,
   type Locale,
 } from "../config/site";
@@ -11,24 +13,28 @@ interface Props {
   title: string;
   description?: string;
   lang?: string;
+  supportsPaperTheme?: boolean;
 }
 
 const {
   title,
   description = "Return of the Night - an open source digital book platform.",
   lang,
+  supportsPaperTheme = false,
 } = Astro.props as Props;
 
 const documentLang: Locale = getLocaleOrDefault(lang);
 const navigationCopy = {
   en: {
     label: "Primary navigation",
+    menu: "Open navigation menu",
     home: "Home",
     book: "Contents",
     glossary: "Glossary",
   },
   "pt-BR": {
     label: "Navegação principal",
+    menu: "Abrir menu de navegação",
     home: "Início",
     book: "Sumário",
     glossary: "Glossário",
@@ -38,7 +44,11 @@ const navigation = navigationCopy[documentLang];
 ---
 
 <!doctype html>
-<html lang={documentLang} data-audience={DEFAULT_AUDIENCE}>
+<html
+  lang={documentLang}
+  data-audience={DEFAULT_AUDIENCE}
+  data-theme={DEFAULT_THEME}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -48,6 +58,9 @@ const navigation = navigationCopy[documentLang];
       define:vars={{
         storageKey: AUDIENCE_STORAGE_KEY,
         fallbackAudience: DEFAULT_AUDIENCE,
+        themeStorageKey: THEME_STORAGE_KEY,
+        fallbackTheme: DEFAULT_THEME,
+        supportsPaperTheme,
       }}
     >
       try {
@@ -61,18 +74,48 @@ const navigation = navigationCopy[documentLang];
       } catch {
         document.documentElement.dataset.audience = fallbackAudience;
       }
+
+      try {
+        const rawTheme = window.localStorage.getItem(themeStorageKey);
+        const theme =
+          rawTheme === "light" || rawTheme === "dark"
+            ? rawTheme
+            : rawTheme === "paper" && supportsPaperTheme
+              ? rawTheme
+              : fallbackTheme;
+
+        document.documentElement.dataset.theme = theme;
+      } catch {
+        document.documentElement.dataset.theme = fallbackTheme;
+      }
     </script>
     <title>{title}</title>
   </head>
   <body>
     <div class="site-shell">
       <header class="site-header" data-site-header>
-        <div class="site-header__inner">
+        <div class="site-header__inner" data-site-menu-open="false">
           <div class="site-brand">
             <a href={`/${documentLang}/home/`}>Return of the Night</a>
           </div>
 
-          <nav class="site-navigation" aria-label={navigation.label}>
+          <button
+            class="site-menu-toggle"
+            type="button"
+            data-site-menu-toggle
+            aria-controls="site-navigation"
+            aria-expanded="false"
+            aria-label={navigation.menu}
+          >
+            <span aria-hidden="true">☰</span>
+          </button>
+
+          <nav
+            class="site-navigation"
+            id="site-navigation"
+            data-site-navigation
+            aria-label={navigation.label}
+          >
             <a href={`/${documentLang}/home/`}>{navigation.home}</a>
             <a href={`/${documentLang}/book/`}>{navigation.book}</a>
             <a href={`/${documentLang}/glossary/`}>{navigation.glossary}</a>
@@ -84,7 +127,7 @@ const navigation = navigationCopy[documentLang];
         </div>
       </header>
 
-      <main class="site-main">
+      <main id="main-content" class="site-main">
         <div class="site-main__inner">
           <slot />
         </div>
@@ -94,6 +137,15 @@ const navigation = navigationCopy[documentLang];
     <script>
       const siteHeader =
         document.querySelector<HTMLElement>("[data-site-header]");
+      const siteHeaderInner = document.querySelector<HTMLElement>(
+        ".site-header__inner",
+      );
+      const siteMenuToggle = document.querySelector<HTMLButtonElement>(
+        "[data-site-menu-toggle]",
+      );
+      const siteNavigation = document.querySelector<HTMLElement>(
+        "[data-site-navigation]",
+      );
       const mediumDesktop = window.matchMedia(
         "(min-width: 40.0625rem) and (max-width: 90rem)",
       );
@@ -108,6 +160,30 @@ const navigation = navigationCopy[documentLang];
       updateHeaderDensity();
       window.addEventListener("scroll", updateHeaderDensity, { passive: true });
       mediumDesktop.addEventListener("change", updateHeaderDensity);
+
+      const setSiteMenuOpen = (isOpen: boolean) => {
+        siteHeaderInner?.setAttribute("data-site-menu-open", String(isOpen));
+        siteMenuToggle?.setAttribute("aria-expanded", String(isOpen));
+      };
+
+      siteMenuToggle?.addEventListener("click", () => {
+        const isOpen = siteMenuToggle.getAttribute("aria-expanded") === "true";
+        setSiteMenuOpen(!isOpen);
+      });
+
+      siteNavigation?.addEventListener("click", (event) => {
+        if ((event.target as HTMLElement).closest("a")) {
+          setSiteMenuOpen(false);
+        }
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        if (siteMenuToggle?.getAttribute("aria-expanded") !== "true") return;
+
+        setSiteMenuOpen(false);
+        siteMenuToggle.focus();
+      });
     </script>
   </body>
 </html>
