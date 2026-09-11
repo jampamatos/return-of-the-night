@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Refined the archive-oriented redesign: global preferences now use compact configuration controls; Home adds real archive-channel labels; large TOCs expose calculated index metadata; desktop glossary definitions use the reader rail with a mobile dialog fallback; Light has a clinical interface treatment; and themed native scrollbars match the product surface.
+- Began the archive-oriented visual redesign: the shared shell, project Home, generated Table of Contents, document reader, and glossary now use a calmer editorial/system grammar with restrained corners, technical dividers, data rails, and dedicated reading typography.
 - Separated the book cover from the project Home: localized root routes now show the cover, `/{lang}/home/` is the project hub, and the Table of Contents remains at `/{lang}/book/`.
 - Added a project-Home book CTA that resumes the last locally viewed chapter when available and otherwise opens the Table of Contents.
 - Added explicit project-Home placeholders for public news, community discussion/comments, contribution, and future voluntary support.

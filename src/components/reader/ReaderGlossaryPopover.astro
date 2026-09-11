@@ -35,7 +35,7 @@ const entriesById = Object.fromEntries(
     id="reader-glossary-popover"
     class="reader-glossary__popover"
     aria-label={heading}
-    role="dialog"
+    role="complementary"
     hidden
   >
     <div class="reader-glossary__header">
@@ -67,9 +67,9 @@ const entriesById = Object.fromEntries(
   const glossaryRoot = document.querySelector<HTMLElement>(
     "[data-reader-glossary]",
   );
-  const popover = glossaryRoot
-    ?.querySelector<HTMLElement>("[data-glossary-type]")
-    ?.closest<HTMLElement>("[role=dialog]");
+  const popover = glossaryRoot?.querySelector<HTMLElement>(
+    ".reader-glossary__popover",
+  );
   const type = glossaryRoot?.querySelector<HTMLElement>("[data-glossary-type]");
   const term = glossaryRoot?.querySelector<HTMLElement>("[data-glossary-term]");
   const summary = glossaryRoot?.querySelector<HTMLElement>(
@@ -93,6 +93,20 @@ const entriesById = Object.fromEntries(
   );
   let activeTrigger: HTMLButtonElement | undefined;
   let closeTimeout: number | undefined;
+  const railQuery = window.matchMedia("(min-width: 58.0625rem)");
+
+  const isRailMode = () => railQuery.matches;
+
+  const updatePopoverMode = () => {
+    if (!popover) return;
+
+    const layout = isRailMode() ? "rail" : "popover";
+    popover.dataset.layout = layout;
+    popover.setAttribute(
+      "role",
+      layout === "rail" ? "complementary" : "dialog",
+    );
+  };
 
   const clearScheduledClose = () => {
     if (closeTimeout) {
@@ -114,7 +128,7 @@ const entriesById = Object.fromEntries(
   };
 
   const positionPopover = () => {
-    if (!popover || !activeTrigger) return;
+    if (!popover || !activeTrigger || isRailMode()) return;
 
     const triggerBounds = activeTrigger.getBoundingClientRect();
     const popoverWidth = Math.min(22 * 16, window.innerWidth - 32);
@@ -136,6 +150,7 @@ const entriesById = Object.fromEntries(
     if (!entry || !popover || !type || !term || !summary || !link) return;
 
     clearScheduledClose();
+    updatePopoverMode();
     activeTrigger?.setAttribute("aria-expanded", "false");
     activeTrigger = trigger;
     type.textContent = entry.type;
@@ -149,6 +164,8 @@ const entriesById = Object.fromEntries(
   };
 
   const scheduleClose = () => {
+    if (isRailMode()) return;
+
     clearScheduledClose();
     closeTimeout = window.setTimeout(() => {
       if (
@@ -170,7 +187,11 @@ const entriesById = Object.fromEntries(
   popover?.addEventListener("pointerenter", clearScheduledClose);
   popover?.addEventListener("pointerleave", scheduleClose);
   closeButton?.addEventListener("click", () => closePopover(true));
-  window.addEventListener("resize", positionPopover);
+  updatePopoverMode();
+  window.addEventListener("resize", () => {
+    updatePopoverMode();
+    positionPopover();
+  });
   window.addEventListener("scroll", positionPopover, { passive: true });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !popover?.hidden) {
@@ -189,14 +210,18 @@ const entriesById = Object.fromEntries(
 
 <style>
   .reader-glossary__popover {
-    position: fixed;
-    z-index: 20;
-    width: min(22rem, calc(100vw - 2rem));
+    position: static;
+    width: 100%;
     padding: var(--space-4);
-    border: 1px solid var(--accent-primary);
-    border-radius: var(--radius-sm);
-    background: var(--surface-background-strong);
-    box-shadow: var(--shadow-soft), var(--shadow-glow);
+    border: 1px solid var(--border-color);
+    border-left: 2px solid var(--accent-primary);
+    border-radius: 0;
+    background: color-mix(
+      in srgb,
+      var(--surface-background-strong) 74%,
+      transparent
+    );
+    box-shadow: none;
   }
 
   .reader-glossary__header {
@@ -222,7 +247,7 @@ const entriesById = Object.fromEntries(
     height: 1.8rem;
     place-items: center;
     border: 1px solid var(--border-color);
-    border-radius: 50%;
+    border-radius: 0;
     background: transparent;
     color: var(--text-color);
     font-size: 1.2rem;
@@ -261,5 +286,16 @@ const entriesById = Object.fromEntries(
   :global(.reader-glossary-term:hover),
   :global(.reader-glossary-term[aria-expanded="true"]) {
     color: var(--accent-primary-strong);
+  }
+
+  @media (max-width: 58rem) {
+    .reader-glossary__popover {
+      position: fixed;
+      z-index: 20;
+      width: min(22rem, calc(100vw - 2rem));
+      border: 1px solid var(--accent-primary);
+      background: var(--surface-background-strong);
+      box-shadow: var(--shadow-soft);
+    }
   }
 </style>

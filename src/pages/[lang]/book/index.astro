@@ -68,6 +68,12 @@ const pageCopy = {
     breadcrumbLabel: "Book location",
     homeLabel: "Home",
     currentPageLabel: "Table of Contents",
+    indexCopy: {
+      label: "Index status",
+      groups: "Groups",
+      entries: "Entries",
+      profile: "Profile",
+    },
     translationUnavailable: {
       title: "Translation unavailable",
       body: "This chapter does not have a published English counterpart yet. Choose another available chapter from the Table of Contents.",
@@ -88,6 +94,12 @@ const pageCopy = {
     breadcrumbLabel: "Localização no livro",
     homeLabel: "Início",
     currentPageLabel: "Sumário",
+    indexCopy: {
+      label: "Estado do índice",
+      groups: "Grupos",
+      entries: "Entradas",
+      profile: "Perfil",
+    },
     translationUnavailable: {
       title: "Tradução indisponível",
       body: "Este capítulo ainda não tem uma versão publicada em PT-BR. Escolha outro capítulo disponível no Sumário.",
@@ -138,6 +150,7 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     homeHref={homeHref}
     homeLabel={copy.homeLabel}
     currentPageLabel={copy.currentPageLabel}
+    indexCopy={copy.indexCopy}
     translationUnavailable={copy.translationUnavailable}
   />
 

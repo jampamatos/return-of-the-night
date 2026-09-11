@@ -6,6 +6,30 @@ This document captures the current functional and visual direction for the **Ret
 
 The goal is not to fully design the final product yet, but to define the **experience principles, interface expectations, visual identity, and early design constraints** that should shape the shell from this point onward.
 
+## First redesign iteration — implemented baseline
+
+The first deliberate visual iteration establishes the page grammar without changing the content model, routes, localization, accessibility behavior, or reading features:
+
+- **The shared shell** is an archive/system bar: compact mono labels, restrained technical dividers, a cover-returning brand link, and no generic rounded outer application panel.
+- **The project Home** is a public archive record: editorial copy paired with build, edition, structure, and open-source metadata instead of a grid of equivalent product cards.
+- **The Table of Contents** is a generated file index: numbered groups, plain divider-led entries, compact metadata, and explicit Player/GM clearance markers.
+- **The reader** is a document viewer: a controlled prose measure, document-like section markers, and a quiet right-side "On this page" rail on wide screens.
+- **The glossary** is reference intelligence: terms and their definitions form a two-column desktop index that collapses into a single mobile reading flow.
+
+This is intentionally a foundation, not the final art direction. The cover, richer reader data rail, mobile section navigation, and final content composition remain later design passes.
+
+## Second redesign iteration — implemented baseline
+
+The second pass develops the useful “materiality” identified during review without adding fictional project data:
+
+- Global language, theme, and reading-mode selectors now read as compact archive configuration (`LABEL: active value`) rather than three uniform segmented-control blocks.
+- At wide desktop sizes, the complete header remains one continuous system bar. Its wider container is deliberately reserved for navigation and configuration; the book itself keeps its narrower editorial measure.
+- The Home's lower sections have explicit archive-record, transmission-channel, public-channel, and open-source-protocol roles. Those labels communicate genuine integration states, not invented setting lore.
+- On large displays, the generated TOC uses its previously empty right field for an index-status rail with calculated group and entry counts plus the real Player/GM reading profile.
+- The reader's glossary definition lives in its right contextual rail on desktop and remains a compact accessible dialog on narrow viewports.
+- Light is treated as a colder corporate interface through restrained technical rules, while Paper remains the unauthorized printed copy. Native scrollbars now inherit each theme's track, thumb, and accent treatment.
+- Translation-workflow callouts use the informational note treatment; magenta remains reserved for restricted/GM/corruption meanings rather than generic workflow emphasis.
+
 ---
 
 ## Product Experience North Star
@@ -79,7 +103,7 @@ The upper part of the site supports or should remain compatible with:
 - audience mode switching
 - eventual mode toggles such as light/dark theme
 
-The brand area should act as a reliable link back to the locale-specific home or book entry point.
+The brand area acts as a reliable link back to the locale-specific **cover**. The explicit Home navigation remains the way to reach the project archive.
 
 ## Reading page structure
 
@@ -132,6 +156,7 @@ The Table of Contents should be:
 - procedural rather than hand-maintained
 - capable of growing as chapters and sections are added
 - navigable as a book-level index
+- legible as a technical file index: numbered groups and calm divider-led entries rather than a stack of dashboard cards
 
 It may visually resemble a structured editorial contents spread, but functionally it must be derived from the content system.
 
@@ -463,6 +488,10 @@ Typography should balance:
 - futuristic identity
 - genre atmosphere
 
+### Current implementation baseline
+
+The first redesign iteration uses **Source Serif 4** for continuous reading, **Space Grotesk** for page and chapter display hierarchy, and **IBM Plex Mono** for UI, metadata, breadcrumbs, and system labels. This split is deliberate: the book stays calm in its main column while the surrounding archive retains its technical voice.
+
 The platform likely needs **two complementary type families**:
 
 1. one for **body reading**
@@ -562,6 +591,17 @@ This would preserve both:
 ---
 
 ## Layout and Composition Principles
+
+### Archive rather than dashboard
+
+The project must not solve every page with the same centered card, rounded container, or grid of equally weighted boxes. Prefer:
+
+- an open page field with divider-led sections
+- compact, squared controls where a control is genuinely needed
+- data rails, metadata blocks, and numbered structures at the edges of content
+- asymmetry that supports orientation rather than decoration
+
+Cyberpunk expression belongs mainly in hierarchy, labels, rails, selective active states, and the relationship between information layers. Long-form prose must remain visually quiet.
 
 Even before advanced reader features are implemented, the shell should already begin to reflect these principles:
 

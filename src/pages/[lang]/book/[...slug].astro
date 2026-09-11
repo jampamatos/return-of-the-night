@@ -214,25 +214,26 @@ const glossaryCopy =
           </Fragment>
         )
       }
-    </ChapterReader>
 
-    <ReaderGlossaryPopover
-      lang={lang}
-      entries={glossaryEntries.map((entry) => ({
-        id: entry.data.id,
-        term: entry.data.term,
-        type:
-          lang === "pt-BR"
-            ? entry.data.type === "term"
-              ? "Termo"
-              : "Regra"
-            : entry.data.type === "term"
-              ? "Term"
-              : "Rule",
-        summary: entry.data.summary,
-      }))}
-      {...glossaryCopy}
-    />
+      <ReaderGlossaryPopover
+        slot="reference"
+        lang={lang}
+        entries={glossaryEntries.map((entry) => ({
+          id: entry.data.id,
+          term: entry.data.term,
+          type:
+            lang === "pt-BR"
+              ? entry.data.type === "term"
+                ? "Termo"
+                : "Regra"
+              : entry.data.type === "term"
+                ? "Term"
+                : "Rule",
+          summary: entry.data.summary,
+        }))}
+        {...glossaryCopy}
+      />
+    </ChapterReader>
 
     <ReaderBackToTop
       label={lang === "pt-BR" ? "Voltar ao topo" : "Back to top"}

@@ -7,22 +7,28 @@ import BookTocEntry from "./BookTocEntry.astro";
 interface Props {
   lang: Locale;
   group: TocGroup;
+  index: number;
   audienceLabels: Record<ChapterAudience, string>;
   emptyLabel: string;
 }
 
-const { lang, group, audienceLabels, emptyLabel } = Astro.props as Props;
+const { lang, group, index, audienceLabels, emptyLabel } = Astro.props as Props;
 ---
 
 <section class="book-toc-group" aria-labelledby={`toc-group-${group.id}`}>
   <header class="book-toc-group__header">
-    <h2 id={`toc-group-${group.id}`}>{group.label}</h2>
+    <span class="book-toc-group__index" aria-hidden="true">
+      {String(index + 1).padStart(2, "0")}
+    </span>
+    <div>
+      <h2 id={`toc-group-${group.id}`}>{group.label}</h2>
 
-    {
-      group.description && (
-        <p class="book-toc-group__description">{group.description}</p>
-      )
-    }
+      {
+        group.description && (
+          <p class="book-toc-group__description">{group.description}</p>
+        )
+      }
+    </div>
   </header>
 
   {
@@ -45,19 +51,31 @@ const { lang, group, audienceLabels, emptyLabel } = Astro.props as Props;
 
 <style>
   .book-toc-group {
-    padding-top: var(--space-4);
+    position: relative;
+    padding: var(--space-5) 0 var(--space-2);
     border-top: 1px solid var(--border-color);
   }
 
   .book-toc-group__header {
     display: grid;
-    gap: var(--space-2);
+    grid-template-columns: minmax(3rem, 5rem) minmax(0, 1fr);
+    gap: var(--space-3);
     margin-bottom: var(--space-3);
+  }
+
+  .book-toc-group__index {
+    color: var(--border-color-strong);
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.8;
+    letter-spacing: -0.08em;
   }
 
   .book-toc-group__header h2 {
     margin: 0;
-    font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.65rem);
+    font-size: clamp(1.4rem, 1.1rem + 0.9vw, 2rem);
+    letter-spacing: -0.03em;
   }
 
   .book-toc-group__description {
@@ -82,6 +100,14 @@ const { lang, group, audienceLabels, emptyLabel } = Astro.props as Props;
   }
 
   @media (max-width: 40rem) {
+    .book-toc-group__header {
+      grid-template-columns: 2.6rem minmax(0, 1fr);
+    }
+
+    .book-toc-group__index {
+      font-size: 2.5rem;
+    }
+
     .book-toc-group__header h2 {
       font-size: 1.25rem;
     }

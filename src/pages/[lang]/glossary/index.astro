@@ -100,24 +100,29 @@ const audienceOptions = AUDIENCES.map((audience) => ({
       {
         renderedEntries.map(({ entry, Content }) => (
           <article id={entry.data.id} class="glossary-entry">
-            <p class="glossary-entry__type">
-              {lang === "pt-BR"
-                ? entry.data.type === "term"
-                  ? "Termo"
-                  : "Regra"
-                : entry.data.type === "term"
-                  ? "Term"
-                  : "Rule"}
-            </p>
-            <h2>{entry.data.term}</h2>
-            <p class="glossary-entry__summary">{entry.data.summary}</p>
-            {entry.data.aliases.length > 0 && (
-              <p class="glossary-entry__aliases">
-                <strong>{copy.aliases}:</strong> {entry.data.aliases.join(", ")}
+            <div class="glossary-entry__term">
+              <p class="glossary-entry__type">
+                {lang === "pt-BR"
+                  ? entry.data.type === "term"
+                    ? "Termo"
+                    : "Regra"
+                  : entry.data.type === "term"
+                    ? "Term"
+                    : "Rule"}
               </p>
-            )}
-            <div class="glossary-entry__body">
-              <Content />
+              <h2>{entry.data.term}</h2>
+            </div>
+            <div class="glossary-entry__definition">
+              <p class="glossary-entry__summary">{entry.data.summary}</p>
+              {entry.data.aliases.length > 0 && (
+                <p class="glossary-entry__aliases">
+                  <strong>{copy.aliases}:</strong>{" "}
+                  {entry.data.aliases.join(", ")}
+                </p>
+              )}
+              <div class="glossary-entry__body">
+                <Content />
+              </div>
             </div>
           </article>
         ))
@@ -138,7 +143,9 @@ const audienceOptions = AUDIENCES.map((audience) => ({
   .glossary-page {
     display: grid;
     gap: var(--space-5);
-    max-width: 48rem;
+    max-width: var(--max-content-width);
+    padding-left: clamp(var(--space-3), 3vw, var(--space-6));
+    border-left: 1px solid var(--border-color);
   }
 
   .glossary-page__breadcrumb {
@@ -181,6 +188,7 @@ const audienceOptions = AUDIENCES.map((audience) => ({
 
   .glossary-page__header > p:last-child {
     margin-top: var(--space-3);
+    max-width: 52ch;
   }
 
   .glossary-page__entries {
@@ -190,6 +198,9 @@ const audienceOptions = AUDIENCES.map((audience) => ({
   }
 
   .glossary-entry {
+    display: grid;
+    grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
+    column-gap: clamp(var(--space-5), 5vw, var(--space-7));
     padding: var(--space-5) 0;
     border-bottom: 1px solid var(--border-color);
     scroll-margin-top: 8rem;
@@ -201,7 +212,7 @@ const audienceOptions = AUDIENCES.map((audience) => ({
   }
 
   .glossary-entry__summary {
-    margin-top: var(--space-2) !important;
+    margin: 0 !important;
     font-size: 1.1rem;
   }
 
@@ -212,5 +223,16 @@ const audienceOptions = AUDIENCES.map((audience) => ({
 
   .glossary-entry__body :global(p) {
     margin: 0;
+  }
+
+  @media (max-width: 44rem) {
+    .glossary-page {
+      padding-left: var(--space-3);
+    }
+
+    .glossary-entry {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-3);
+    }
   }
 </style>

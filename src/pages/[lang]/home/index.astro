@@ -30,24 +30,35 @@ const pageCopy = {
     openBook: "Open the book",
     openBookHelp:
       "Continues from your last chapter on this device when available; otherwise opens the Table of Contents.",
+    recordLabel: "Archive record / 01",
     aboutTitle: "About the project",
     aboutBody:
       "Return of the Night is being built in public as a free bilingual RPG book. The current edition is a complete, testable placeholder structure while the final PT-BR prose and immediate English translation are written.",
     newsTitle: "Project news",
+    newsLabel: "Transmission channel / pending",
     newsBody:
       "News posts will appear here. This placeholder establishes the public home for development updates before the editorial feed is connected.",
     discussionTitle: "Discussion and comments",
+    discussionLabel: "Public channel / pending",
     discussionBody:
       "Community discussion will be connected here after the project chooses and configures its public comment provider.",
     contributeTitle: "Contribute",
+    contributeKicker: "Open-source protocol",
     contributeBody:
       "The repository is open to readers, writers, translators, designers, and developers who want to help shape the book.",
     contributeLabel: "Contribute on GitHub",
     supportTitle: "Support",
+    supportLabel: "Support signal",
     supportBody:
       "A voluntary support link will appear here once the project selects a provider. No payment destination is configured yet.",
     languageSwitcherLabel: "Language",
     audienceSwitcherLabel: "Reading mode",
+    metadata: [
+      { label: "Archive", value: "Public build" },
+      { label: "Edition", value: "PT-BR / EN" },
+      { label: "Structure", value: "10 chapters / 5 groups" },
+      { label: "Protocol", value: "Open source" },
+    ],
   },
   "pt-BR": {
     title: "Return of the Night — Início do projeto",
@@ -59,24 +70,35 @@ const pageCopy = {
     openBook: "Abrir o livro",
     openBookHelp:
       "Retoma o último capítulo visto neste dispositivo quando disponível; caso contrário, abre o Sumário.",
+    recordLabel: "Registro de arquivo / 01",
     aboutTitle: "Sobre o projeto",
     aboutBody:
       "Return of the Night está sendo construído em público como um livro de RPG bilíngue e gratuito. A edição atual é uma estrutura placeholder completa e testável enquanto a prosa final em PT-BR e sua tradução imediata para o inglês são escritas.",
     newsTitle: "Notícias do projeto",
+    newsLabel: "Canal de transmissão / pendente",
     newsBody:
       "As notícias aparecerão aqui. Este placeholder estabelece a página pública para atualizações de desenvolvimento antes de o feed editorial ser conectado.",
     discussionTitle: "Discussão e comentários",
+    discussionLabel: "Canal público / pendente",
     discussionBody:
       "A discussão da comunidade será conectada aqui depois que o projeto escolher e configurar seu provedor público de comentários.",
     contributeTitle: "Colabore",
+    contributeKicker: "Protocolo open source",
     contributeBody:
       "O repositório está aberto a pessoas leitoras, escritoras, tradutoras, designers e desenvolvedoras que quiserem ajudar a moldar o livro.",
     contributeLabel: "Colaborar no GitHub",
     supportTitle: "Apoie",
+    supportLabel: "Sinal de apoio",
     supportBody:
       "Um link de apoio voluntário aparecerá aqui quando o projeto escolher um provedor. Ainda não há destino de pagamento configurado.",
     languageSwitcherLabel: "Idioma",
     audienceSwitcherLabel: "Modo de leitura",
+    metadata: [
+      { label: "Arquivo", value: "Build público" },
+      { label: "Edição", value: "PT-BR / EN" },
+      { label: "Estrutura", value: "10 capítulos / 5 grupos" },
+      { label: "Protocolo", value: "Open source" },
+    ],
   },
 } as const;
 
@@ -101,45 +123,78 @@ const tocHref = `/${lang}/book/`;
 
   <section class="project-home" aria-labelledby="project-home-title">
     <header class="project-home__hero">
-      <p class="project-home__eyebrow">{copy.eyebrow}</p>
-      <h1 id="project-home-title">{copy.heading}</h1>
-      <p class="project-home__lead">{copy.lead}</p>
-      <a
-        class="project-home__book-cta"
-        href={tocHref}
-        data-open-book
-        data-book-locale={lang}
-      >
-        {copy.openBook}
-      </a>
-      <p class="project-home__cta-help">{copy.openBookHelp}</p>
+      <div class="project-home__hero-copy">
+        <p class="project-home__eyebrow">{copy.eyebrow}</p>
+        <h1 id="project-home-title">{copy.heading}</h1>
+        <p class="project-home__lead">{copy.lead}</p>
+        <a
+          class="project-home__book-cta"
+          href={tocHref}
+          data-open-book
+          data-book-locale={lang}
+        >
+          <span aria-hidden="true">&gt; </span>{copy.openBook}
+        </a>
+        <p class="project-home__cta-help">{copy.openBookHelp}</p>
+      </div>
+
+      <dl class="project-home__metadata">
+        {
+          copy.metadata.map((item) => (
+            <div>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </header>
 
     <div class="project-home__grid">
-      <section class="project-home__section" aria-labelledby="about-title">
+      <section
+        class="project-home__section project-home__section--record"
+        aria-labelledby="about-title"
+      >
+        <p class="project-home__section-label">{copy.recordLabel}</p>
         <h2 id="about-title">{copy.aboutTitle}</h2>
         <p>{copy.aboutBody}</p>
       </section>
 
-      <section class="project-home__section" aria-labelledby="news-title">
+      <section
+        class="project-home__section project-home__section--dispatch"
+        aria-labelledby="news-title"
+      >
+        <p class="project-home__section-label">{copy.newsLabel}</p>
         <h2 id="news-title">{copy.newsTitle}</h2>
         <p>{copy.newsBody}</p>
       </section>
 
-      <section class="project-home__section" aria-labelledby="discussion-title">
+      <section
+        class="project-home__section project-home__section--dispatch"
+        aria-labelledby="discussion-title"
+      >
+        <p class="project-home__section-label">{copy.discussionLabel}</p>
         <h2 id="discussion-title">{copy.discussionTitle}</h2>
         <p>{copy.discussionBody}</p>
       </section>
+    </div>
 
-      <section class="project-home__section" aria-labelledby="contribute-title">
+    <div class="project-home__protocols">
+      <section
+        class="project-home__protocol"
+        aria-labelledby="contribute-title"
+      >
+        <p class="project-home__section-label">{copy.contributeKicker}</p>
         <h2 id="contribute-title">{copy.contributeTitle}</h2>
         <p>{copy.contributeBody}</p>
         <a href="https://github.com/jampamatos/return-of-the-night">
           {copy.contributeLabel}
+          <span aria-hidden="true">↗</span>
         </a>
       </section>
 
-      <section class="project-home__section" aria-labelledby="support-title">
+      <section class="project-home__protocol" aria-labelledby="support-title">
+        <p class="project-home__section-label">{copy.supportLabel}</p>
         <h2 id="support-title">{copy.supportTitle}</h2>
         <p>{copy.supportBody}</p>
       </section>
@@ -164,6 +219,15 @@ const tocHref = `/${lang}/book/`;
   }
 
   .project-home__hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(13rem, 18rem);
+    gap: clamp(var(--space-5), 6vw, var(--space-7));
+    align-items: end;
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .project-home__hero-copy {
     max-width: var(--reading-measure);
   }
 
@@ -171,8 +235,8 @@ const tocHref = `/${lang}/book/`;
     margin: 0 0 var(--space-3);
     color: var(--accent-primary);
     font-family: var(--font-ui);
-    font-size: 0.85rem;
-    font-weight: 800;
+    font-size: 0.68rem;
+    font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
@@ -186,12 +250,13 @@ const tocHref = `/${lang}/book/`;
     margin-top: var(--space-3);
     padding: 0.8rem 1.1rem;
     border: 1px solid var(--accent-warning);
-    border-radius: var(--radius-sm);
-    background: rgba(250, 204, 21, 0.1);
+    border-radius: 0;
+    background: rgba(250, 204, 21, 0.08);
     color: var(--heading-color);
     font-family: var(--font-ui);
-    font-weight: 800;
-    letter-spacing: 0.06em;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
     text-decoration: none;
     text-transform: uppercase;
   }
@@ -207,29 +272,134 @@ const tocHref = `/${lang}/book/`;
 
   .project-home__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
-    gap: var(--space-4);
+    grid-template-columns: minmax(0, 1.4fr) minmax(14rem, 1fr);
+    gap: 0 clamp(var(--space-5), 5vw, var(--space-7));
   }
 
   .project-home__section {
-    padding: var(--space-5);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background: var(--surface-background);
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--border-color);
   }
 
-  .project-home__section h2 {
+  .project-home__section--record {
+    grid-row: span 2;
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding-right: clamp(var(--space-4), 3vw, var(--space-6));
+    border-left: 2px solid var(--accent-primary);
+    padding-left: var(--space-4);
+  }
+
+  .project-home__section--record p:last-child {
+    font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.22rem);
+    line-height: 1.65;
+  }
+
+  .project-home__section--dispatch {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .project-home__section h2,
+  .project-home__protocol h2 {
     font-size: 1.25rem;
   }
 
-  .project-home__section p {
+  .project-home__section p,
+  .project-home__protocol p {
     margin-bottom: 0;
   }
 
-  .project-home__section a {
+  .project-home__section-label {
+    margin: 0;
+    color: var(--accent-primary) !important;
+    font-family: var(--font-ui);
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .project-home__protocols {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(14rem, 1fr);
+    gap: clamp(var(--space-5), 5vw, var(--space-7));
+    padding: var(--space-5) 0;
+    border-block: 1px solid var(--border-color);
+  }
+
+  .project-home__protocol {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+  }
+
+  .project-home__protocol:first-child {
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--accent-primary);
+  }
+
+  .project-home__protocol a {
     display: inline-block;
     margin-top: var(--space-4);
     font-family: var(--font-ui);
-    font-weight: 700;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-home__metadata {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: var(--space-4) 0 0 var(--space-4);
+    border-left: 1px solid var(--accent-primary);
+  }
+
+  .project-home__metadata div {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .project-home__metadata dt,
+  .project-home__metadata dd {
+    margin: 0;
+    font-family: var(--font-ui);
+    text-transform: uppercase;
+  }
+
+  .project-home__metadata dt {
+    color: var(--muted-text-color);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+  }
+
+  .project-home__metadata dd {
+    color: var(--heading-color);
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 48rem) {
+    .project-home__hero,
+    .project-home__grid,
+    .project-home__protocols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .project-home__section--record {
+      grid-row: auto;
+    }
+
+    .project-home__protocols {
+      gap: var(--space-5);
+    }
+
+    .project-home__metadata {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-top: var(--space-4);
+    }
   }
 </style>

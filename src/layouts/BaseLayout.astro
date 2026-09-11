@@ -53,6 +53,16 @@ const navigation = navigationCopy[documentLang];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    />
     <script
       is:inline
       define:vars={{
@@ -96,7 +106,12 @@ const navigation = navigationCopy[documentLang];
       <header class="site-header" data-site-header>
         <div class="site-header__inner" data-site-menu-open="false">
           <div class="site-brand">
-            <a href={`/${documentLang}/home/`}>Return of the Night</a>
+            <a href={`/${documentLang}/`}>
+              <span>Return of the Night</span>
+              <span class="site-brand__system" aria-hidden="true"
+                >/ archive</span
+              >
+            </a>
           </div>
 
           <button

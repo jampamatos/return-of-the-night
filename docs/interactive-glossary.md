@@ -14,7 +14,9 @@ The label belongs to the current language. The `id` must use the same logical gl
 
 ## Reader behavior
 
-The reader transforms an inline term into an accessible button. It opens the localized term summary on hover, keyboard focus, or click. The card provides a link to the corresponding glossary-index entry and closes with `Escape`, its close button, or an outside click.
+The reader transforms an inline term into an accessible button. It opens the localized term summary on hover, keyboard focus, or click. On wide screens, the active definition occupies the reader's contextual right rail alongside the page outline; it updates in place without covering the reading column. Below the reader-rail breakpoint, the same information becomes a compact anchored dialog.
+
+Both variants provide a link to the corresponding glossary-index entry and close with `Escape`, their close button, or an outside click. The desktop rail remains available until it is explicitly replaced or closed, while the mobile dialog also dismisses after pointer leave when it has not received focus.
 
 The glossary index is available at `/{lang}/glossary/`. Individual entries are deep-linkable as `/{lang}/glossary/#stable-term-id`.
 

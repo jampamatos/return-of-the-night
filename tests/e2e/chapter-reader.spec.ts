@@ -15,6 +15,13 @@ test.describe("chapter reader", () => {
     await openBookCoverLink.click();
     await expect(page).toHaveURL(/\/en\/home\/$/);
 
+    const coverLink = page.getByRole("link", { name: "Return of the Night" });
+    await expect(coverLink).toHaveAttribute("href", "/en/");
+    await coverLink.click();
+    await expect(page).toHaveURL(/\/en\/$/);
+
+    await page.goto("/en/home/");
+
     const openBookLink = page.getByRole("link", { name: "Open the book" });
     await expect(openBookLink).toHaveAttribute("href", "/en/book/");
     await openBookLink.click();
@@ -50,6 +57,26 @@ test.describe("chapter reader", () => {
     await expect(page.locator("[data-site-header]")).toHaveClass(
       /is-condensed/,
     );
+  });
+
+  test("keeps the desktop reader header on one continuous system bar", async ({
+    page,
+  }) => {
+    for (const path of [
+      "/en/book/getting-started/reading-the-book/",
+      "/pt-BR/book/referencia/referencia-e-espaco-de-trabalho/",
+    ]) {
+      await page.setViewportSize({ width: 1366, height: 768 });
+      await page.goto(path);
+
+      const headerHeight = await page
+        .locator("[data-site-header]")
+        .evaluate((element) =>
+          Math.round(element.getBoundingClientRect().height),
+        );
+
+      expect(headerHeight).toBeLessThan(90);
+    }
   });
 
   test("keeps header navigation compact and keyboard-dismissible on mobile", async ({
@@ -178,7 +205,7 @@ test.describe("chapter reader", () => {
     const term = page.getByRole("button", { name: "arcology" });
     await term.click();
 
-    const definition = page.getByRole("dialog", {
+    const definition = page.getByRole("complementary", {
       name: "Glossary definition",
     });
     await expect(definition).toBeVisible();
@@ -196,6 +223,24 @@ test.describe("chapter reader", () => {
     await expect(
       page.getByRole("heading", { level: 2, name: "Arcology" }),
     ).toBeVisible();
+  });
+
+  test("uses a compact glossary dialog below the reader rail breakpoint", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/en/book/getting-started/reading-the-book/");
+
+    await page.getByRole("button", { name: "arcology" }).click();
+
+    const definition = page.getByRole("dialog", {
+      name: "Glossary definition",
+    });
+    await expect(definition).toBeVisible();
+    await expect(definition).toContainText("Arcology");
+
+    await page.keyboard.press("Escape");
+    await expect(definition).toBeHidden();
   });
 
   test("has no detectable accessibility violations on the reader fixture", async ({
