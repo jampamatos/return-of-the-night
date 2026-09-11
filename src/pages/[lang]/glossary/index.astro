@@ -1,0 +1,208 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
+import {
+  AUDIENCES,
+  LOCALES,
+  getLocaleOrDefault,
+  type Audience,
+  type Locale,
+} from "../../../config/site";
+import { listGlossaryEntriesByLanguage } from "../../../lib/glossary/entries";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const lang: Locale = getLocaleOrDefault(Astro.params.lang);
+const entries = (await listGlossaryEntriesByLanguage(lang)).sort(
+  (left, right) => left.data.term.localeCompare(right.data.term, lang),
+);
+const renderedEntries = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  })),
+);
+
+const audienceLabels = {
+  en: { player: "Player", gm: "GM" },
+  "pt-BR": { player: "Jogador", gm: "Mestre" },
+} as const satisfies Record<Locale, Record<Audience, string>>;
+
+const copy =
+  lang === "pt-BR"
+    ? {
+        title: "Return of the Night — Glossário",
+        description: "Glossário de termos de Return of the Night.",
+        eyebrow: "Referência do livro",
+        heading: "Glossário",
+        body: "Definições e termos compartilhados do livro. Cada entrada é um placeholder bilíngue pronto para a prosa final.",
+        home: "Início",
+        contents: "Sumário",
+        language: "Idioma",
+        mode: "Modo de leitura",
+        aliases: "Também conhecido como",
+      }
+    : {
+        title: "Return of the Night — Glossary",
+        description: "Glossary of Return of the Night terms.",
+        eyebrow: "Book reference",
+        heading: "Glossary",
+        body: "Shared terms and definitions from the book. Every entry is a bilingual placeholder ready for final prose.",
+        home: "Home",
+        contents: "Table of Contents",
+        language: "Language",
+        mode: "Reading Mode",
+        aliases: "Also known as",
+      };
+
+const audienceOptions = AUDIENCES.map((audience) => ({
+  value: audience,
+  label: audienceLabels[lang][audience],
+  isActive: audience === "player",
+}));
+---
+
+<BaseLayout title={copy.title} description={copy.description} lang={lang}>
+  <ShellHeaderControls
+    slot="header-controls"
+    lang={lang}
+    pathname={Astro.url.pathname}
+    languageSwitcherLabel={copy.language}
+    audienceSwitcherLabel={copy.mode}
+    audienceOptions={audienceOptions}
+  />
+
+  <section class="glossary-page" aria-labelledby="glossary-title">
+    <nav class="glossary-page__breadcrumb" aria-label={copy.heading}>
+      <a href={`/${lang}/home/`}>{copy.home}</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/${lang}/book/`}>{copy.contents}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{copy.heading}</span>
+    </nav>
+
+    <header class="glossary-page__header">
+      <p>{copy.eyebrow}</p>
+      <h1 id="glossary-title">{copy.heading}</h1>
+      <p>{copy.body}</p>
+    </header>
+
+    <div class="glossary-page__entries">
+      {
+        renderedEntries.map(({ entry, Content }) => (
+          <article id={entry.data.id} class="glossary-entry">
+            <p class="glossary-entry__type">
+              {lang === "pt-BR"
+                ? entry.data.type === "term"
+                  ? "Termo"
+                  : "Regra"
+                : entry.data.type === "term"
+                  ? "Term"
+                  : "Rule"}
+            </p>
+            <h2>{entry.data.term}</h2>
+            <p class="glossary-entry__summary">{entry.data.summary}</p>
+            {entry.data.aliases.length > 0 && (
+              <p class="glossary-entry__aliases">
+                <strong>{copy.aliases}:</strong> {entry.data.aliases.join(", ")}
+              </p>
+            )}
+            <div class="glossary-entry__body">
+              <Content />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <script>
+    import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
+
+    initAudienceSwitchers();
+  </script>
+</BaseLayout>
+
+<style>
+  .glossary-page {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 48rem;
+  }
+
+  .glossary-page__breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--muted-text-color);
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .glossary-page__breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .glossary-page__breadcrumb [aria-current="page"],
+  .glossary-page__header > p:first-child,
+  .glossary-entry__type {
+    color: var(--accent-primary);
+  }
+
+  .glossary-page__header > p:first-child,
+  .glossary-entry__type {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .glossary-page__header h1,
+  .glossary-page__header > p:last-child {
+    margin: 0;
+  }
+
+  .glossary-page__header > p:last-child {
+    margin-top: var(--space-3);
+  }
+
+  .glossary-page__entries {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .glossary-entry {
+    padding: var(--space-5) 0;
+    border-bottom: 1px solid var(--border-color);
+    scroll-margin-top: 8rem;
+  }
+
+  .glossary-entry h2,
+  .glossary-entry p {
+    margin: 0;
+  }
+
+  .glossary-entry__summary {
+    margin-top: var(--space-2) !important;
+    font-size: 1.1rem;
+  }
+
+  .glossary-entry__aliases,
+  .glossary-entry__body {
+    margin-top: var(--space-3);
+  }
+
+  .glossary-entry__body :global(p) {
+    margin: 0;
+  }
+</style>

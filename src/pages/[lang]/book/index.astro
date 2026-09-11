@@ -68,6 +68,10 @@ const pageCopy = {
     breadcrumbLabel: "Book location",
     homeLabel: "Home",
     currentPageLabel: "Table of Contents",
+    translationUnavailable: {
+      title: "Translation unavailable",
+      body: "This chapter does not have a published English counterpart yet. Choose another available chapter from the Table of Contents.",
+    },
   },
   "pt-BR": {
     title: "Return of the Night — Sumário",
@@ -84,6 +88,10 @@ const pageCopy = {
     breadcrumbLabel: "Localização no livro",
     homeLabel: "Início",
     currentPageLabel: "Sumário",
+    translationUnavailable: {
+      title: "Tradução indisponível",
+      body: "Este capítulo ainda não tem uma versão publicada em PT-BR. Escolha outro capítulo disponível no Sumário.",
+    },
   },
 } as const;
 
@@ -124,6 +132,7 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     homeHref={homeHref}
     homeLabel={copy.homeLabel}
     currentPageLabel={copy.currentPageLabel}
+    translationUnavailable={copy.translationUnavailable}
   />
 
   <script>

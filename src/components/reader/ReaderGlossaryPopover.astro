@@ -1,0 +1,265 @@
+---
+import type { Locale } from "../../config/site";
+
+interface GlossaryTerm {
+  id: string;
+  term: string;
+  type: string;
+  summary: string;
+}
+
+interface Props {
+  lang: Locale;
+  entries: GlossaryTerm[];
+  heading: string;
+  openLabel: string;
+  closeLabel: string;
+}
+
+const { lang, entries, heading, openLabel, closeLabel } = Astro.props as Props;
+const entriesById = Object.fromEntries(
+  entries.map((entry) => [
+    entry.id,
+    { ...entry, href: `/${lang}/glossary/#${entry.id}` },
+  ]),
+);
+---
+
+<div
+  class="reader-glossary"
+  data-reader-glossary
+  data-entries={JSON.stringify(entriesById)}
+  data-open-label={openLabel}
+>
+  <aside
+    id="reader-glossary-popover"
+    class="reader-glossary__popover"
+    aria-label={heading}
+    role="dialog"
+    hidden
+  >
+    <div class="reader-glossary__header">
+      <p class="reader-glossary__type" data-glossary-type></p>
+      <button
+        class="reader-glossary__close"
+        type="button"
+        data-glossary-close
+        aria-label={closeLabel}
+      >
+        ×
+      </button>
+    </div>
+    <h2 data-glossary-term></h2>
+    <p data-glossary-summary></p>
+    <a data-glossary-link></a>
+  </aside>
+</div>
+
+<script>
+  interface GlossaryEntry {
+    id: string;
+    term: string;
+    type: string;
+    summary: string;
+    href: string;
+  }
+
+  const glossaryRoot = document.querySelector<HTMLElement>(
+    "[data-reader-glossary]",
+  );
+  const popover = glossaryRoot
+    ?.querySelector<HTMLElement>("[data-glossary-type]")
+    ?.closest<HTMLElement>("[role=dialog]");
+  const type = glossaryRoot?.querySelector<HTMLElement>("[data-glossary-type]");
+  const term = glossaryRoot?.querySelector<HTMLElement>("[data-glossary-term]");
+  const summary = glossaryRoot?.querySelector<HTMLElement>(
+    "[data-glossary-summary]",
+  );
+  const link = glossaryRoot?.querySelector<HTMLAnchorElement>(
+    "[data-glossary-link]",
+  );
+  const closeButton = glossaryRoot?.querySelector<HTMLButtonElement>(
+    "[data-glossary-close]",
+  );
+
+  const entries = glossaryRoot
+    ? (JSON.parse(glossaryRoot.dataset.entries ?? "{}") as Record<
+        string,
+        GlossaryEntry
+      >)
+    : {};
+  const triggers = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-glossary-id]"),
+  );
+  let activeTrigger: HTMLButtonElement | undefined;
+  let closeTimeout: number | undefined;
+
+  const clearScheduledClose = () => {
+    if (closeTimeout) {
+      window.clearTimeout(closeTimeout);
+      closeTimeout = undefined;
+    }
+  };
+
+  const closePopover = (restoreFocus = false) => {
+    clearScheduledClose();
+
+    if (!popover) return;
+
+    popover.hidden = true;
+    activeTrigger?.setAttribute("aria-expanded", "false");
+
+    if (restoreFocus) activeTrigger?.focus();
+    activeTrigger = undefined;
+  };
+
+  const positionPopover = () => {
+    if (!popover || !activeTrigger) return;
+
+    const triggerBounds = activeTrigger.getBoundingClientRect();
+    const popoverWidth = Math.min(22 * 16, window.innerWidth - 32);
+    const left = Math.min(
+      Math.max(16, triggerBounds.left),
+      window.innerWidth - popoverWidth - 16,
+    );
+    const below = triggerBounds.bottom + 10;
+    const top = Math.min(below, window.innerHeight - popover.offsetHeight - 16);
+
+    popover.style.left = `${left}px`;
+    popover.style.top = `${Math.max(16, top)}px`;
+  };
+
+  const openPopover = (trigger: HTMLButtonElement) => {
+    const id = trigger.dataset.glossaryId;
+    const entry = id ? entries[id] : undefined;
+
+    if (!entry || !popover || !type || !term || !summary || !link) return;
+
+    clearScheduledClose();
+    activeTrigger?.setAttribute("aria-expanded", "false");
+    activeTrigger = trigger;
+    type.textContent = entry.type;
+    term.textContent = entry.term;
+    summary.textContent = entry.summary;
+    link.href = entry.href;
+    link.textContent = glossaryRoot?.dataset.openLabel ?? "Open glossary";
+    trigger.setAttribute("aria-expanded", "true");
+    popover.hidden = false;
+    positionPopover();
+  };
+
+  const scheduleClose = () => {
+    clearScheduledClose();
+    closeTimeout = window.setTimeout(() => {
+      if (
+        !popover?.matches(":hover") &&
+        !popover?.contains(document.activeElement)
+      ) {
+        closePopover();
+      }
+    }, 120);
+  };
+
+  for (const trigger of triggers) {
+    trigger.addEventListener("pointerenter", () => openPopover(trigger));
+    trigger.addEventListener("pointerleave", scheduleClose);
+    trigger.addEventListener("focus", () => openPopover(trigger));
+    trigger.addEventListener("click", () => openPopover(trigger));
+  }
+
+  popover?.addEventListener("pointerenter", clearScheduledClose);
+  popover?.addEventListener("pointerleave", scheduleClose);
+  closeButton?.addEventListener("click", () => closePopover(true));
+  window.addEventListener("resize", positionPopover);
+  window.addEventListener("scroll", positionPopover, { passive: true });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !popover?.hidden) {
+      event.preventDefault();
+      closePopover(true);
+    }
+  });
+  document.addEventListener("pointerdown", (event) => {
+    const target = event.target as Node;
+
+    if (!popover?.contains(target) && !activeTrigger?.contains(target)) {
+      closePopover();
+    }
+  });
+</script>
+
+<style>
+  .reader-glossary__popover {
+    position: fixed;
+    z-index: 20;
+    width: min(22rem, calc(100vw - 2rem));
+    padding: var(--space-4);
+    border: 1px solid var(--accent-primary);
+    border-radius: var(--radius-sm);
+    background: var(--surface-background-strong);
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+  }
+
+  .reader-glossary__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .reader-glossary__type {
+    margin: 0;
+    color: var(--accent-primary);
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .reader-glossary__close {
+    display: grid;
+    width: 1.8rem;
+    height: 1.8rem;
+    place-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .reader-glossary__popover h2 {
+    margin: var(--space-2) 0 0;
+    font-size: 1.3rem;
+  }
+
+  .reader-glossary__popover > p:not(.reader-glossary__type) {
+    margin: var(--space-2) 0 0;
+    color: var(--muted-text-color);
+  }
+
+  .reader-glossary__popover a {
+    display: inline-block;
+    margin-top: var(--space-3);
+    font-family: var(--font-ui);
+    font-weight: 700;
+  }
+
+  :global(.reader-glossary-term) {
+    display: inline;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px dashed var(--accent-primary);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  :global(.reader-glossary-term:hover),
+  :global(.reader-glossary-term[aria-expanded="true"]) {
+    color: var(--accent-primary-strong);
+  }
+</style>

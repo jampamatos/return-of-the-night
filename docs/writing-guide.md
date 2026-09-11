@@ -37,6 +37,18 @@ Book prose follows a PT-BR-first, English-immediate workflow.
 
 Player/GM mode supports spoiler etiquette only. Audience-marked content can be present in the public static output, so authors must not rely on it to protect genuinely private material.
 
+## Localization contract
+
+Every supported locale is a maintained edition of the same book, not a partial view of it. A chapter or glossary entry is considered complete only when its PT-BR source and English translation are both present.
+
+- Reuse the same stable `id` for equivalent chapter and glossary entries; localize `slug`, title, summary, prose, labels, aliases, and visible terminology.
+- Keep chapter `book`, `chapterNumber`, `order`, `audience`, and `status` identical across locales.
+- Keep each localized book configuration aligned by group `id`, group order, and chapter membership.
+- When a chapter uses `:term[Localized label]{id="stable-term-id"}`, use the same referenced glossary IDs in its translated counterpart, while translating the visible label.
+- Run `npm run test` before opening a change. Content tests reject unmatched logical IDs and incompatible structural metadata.
+
+The reader resolves locale changes by logical ID. If a translation has not yet been published, it intentionally returns to the destination language's Table of Contents with a visible localized notice; it must never generate a copied slug that leads to a 404 page. This fallback protects readers, but it does not make a missing translation acceptable for merged book content.
+
 For licensing, open-source publication, spoiler behavior, and Cities Without Number compatibility, follow [Open-Source, Spoiler, and Language Policy](./open-source-and-spoiler-policy.md) and [Third-Party Notices](../THIRD_PARTY_NOTICES.md).
 
 ## Writing principles
@@ -102,7 +114,6 @@ Future documentation may extend it with more detailed rules for:
 - content collection structure
 - chapter metadata and ordering
 - glossary entry authoring
-- localization workflow
 - terminology consistency
 - voice and tone for player-facing and GM-facing material
 

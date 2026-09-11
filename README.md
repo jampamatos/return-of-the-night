@@ -10,7 +10,7 @@ The current codebase is a plain Astro application with a cover-first entry, a lo
 - The current application includes locale-prefixed entry routes for `en` and `pt-BR`.
 - The route `/{lang}/` is the visual cover: localized language and audience choices lead into the project.
 - The route `/{lang}/home/` is the project Home. It has placeholders for the public project explanation, news, discussion/comments, contribution, and future support; its book CTA resumes the last local chapter when possible, otherwise it opens the Table of Contents.
-- Locale switching preserves the current route suffix when possible instead of always returning to the site root.
+- Chapter locale switching resolves the equivalent localized chapter by its shared logical ID, so each locale can use its own natural slug. When a counterpart is missing, it opens a localized Table-of-Contents fallback state rather than a broken route.
 - The audience preference persists in `localStorage` under the approved key `rotn:audience`.
 - The root route `/` redirects to the current default locale, `en`.
 - The project registers Astro content collections for `chapters`, `glossary`, and `book-config` in [`src/content.config.ts`](src/content.config.ts).
@@ -32,6 +32,8 @@ The current codebase is a plain Astro application with a cover-first entry, a lo
 - `/pt-BR/`
 - `/en/book/`
 - `/pt-BR/book/`
+- `/en/glossary/`
+- `/pt-BR/glossary/`
 - `/en/book/getting-started/reading-the-book/`
 - `/pt-BR/book/comecando/como-ler-o-livro/`
 
@@ -51,7 +53,7 @@ The current codebase is a plain Astro application with a cover-first entry, a lo
 - `src/components/reader/rich-content/ReaderTable.astro` renders Markdown tables with reader-specific styling and overflow-safe behavior.
 - `src/pages/[lang]/book/[...slug].astro` renders generated chapter reader pages.
 
-The app now renders the real book home, Table of Contents, chapter reader, and every approved Phase 6 rich-content block: semantic figures with captions, styled Markdown tables, responsive columns, callouts, and audience-filtered blocks. Interactive glossary UI, full localization parity, and broader visual refinement remain planned roadmap work.
+The app now renders the real Table of Contents, chapter reader, localized glossary index, and every approved rich-content block: semantic figures with captions, styled Markdown tables, responsive columns, callouts, audience-filtered blocks, and accessible inline glossary terms. Use `:term[Localized label]{id="stable-term-id"}` in chapter MDX; the static build rejects unknown IDs. Content tests require aligned chapter IDs and structural metadata, glossary IDs and types, book-config group membership, and inline glossary references across EN and PT-BR.
 
 ## Source of truth
 
@@ -69,6 +71,7 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/writing-guide.md`](docs/writing-guide.md): minimum writing standards for repository artifacts and documentation language policy.
 - [`docs/open-source-and-spoiler-policy.md`](docs/open-source-and-spoiler-policy.md): open-source scope, spoiler-mode limitations, and the PT-BR-to-English authoring workflow.
 - [`docs/placeholder-book-structure.md`](docs/placeholder-book-structure.md): the temporary bilingual chapter map and its validation rules.
+- [`docs/interactive-glossary.md`](docs/interactive-glossary.md): inline term syntax, reader behavior, and glossary validation rules.
 - [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md): compatibility and third-party intellectual-property notices, including Cities Without Number.
 
 If a local implementation detail conflicts with those documents, the documentation should be treated as authoritative until it is intentionally updated.
@@ -125,11 +128,8 @@ The development server starts the cover, project Home, content-backed Table of C
 
 ## Current boundaries
 
-The current implementation intentionally stops at a functional chapter reader. The repository does **not** yet include:
+The current implementation intentionally stops before the final visual redesign. The repository does **not** yet include:
 
-- glossary hover cards or glossary-linked reader interactions
-- full translation parity across localized content
-- localization fallback behavior or equivalent cross-locale reader routes
 - broader UX polish beyond the current functional reader, landing page, and book home
 
 ## Project direction
@@ -138,12 +138,11 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 
 - a navigable reading experience
 - chapter-aware navigation
-- glossary interactions
 - audience-conditioned content for players and GMs
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has a working foundation, base shell, content engine, complete bilingual placeholder book structure, book home / Table of Contents, chapter reader, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, semantic reader callouts, and audience-filtered reader blocks. The next implementation focus is the interactive glossary while preserving the Markdown/MDX-first authoring model.
+The repository has a working foundation, base shell, content engine, complete bilingual placeholder book structure, Table of Contents, chapter reader, localized glossary index, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, semantic reader callouts, audience-filtered reader blocks, and accessible contextual glossary definitions.
 
 ## Licensing
 

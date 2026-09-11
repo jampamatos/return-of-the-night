@@ -25,7 +25,7 @@ Every chapter and glossary entry is a **placeholder**, not finished canon. Book 
 
 The `how-to-read-this-book` pair exercises figures, tables, responsive columns, note/warning/example callouts, Player/GM blocks, heading navigation, and language-specific routing. The other chapters provide the complete table-of-contents, grouping, reader-navigation, audience, and responsive-content surface.
 
-The content tests require the exact chapter map in both locales and compare book, number, order, audience, and status. They also require matching localized book-config group IDs and chapter membership. Full missing-translation behavior and user-facing fallback states remain part of the later localization milestone.
+The content tests require the exact chapter map in both locales and compare book, number, order, audience, and status. They also require matching localized book-config group IDs and chapter membership, glossary IDs and types, and inline glossary references for matching chapters. Reader locale controls resolve translated chapters by shared logical ID; if a counterpart is absent, they route to a localized Table-of-Contents notice instead of a broken URL.
 
 ## Placeholder glossary map
 

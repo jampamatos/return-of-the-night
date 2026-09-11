@@ -1117,15 +1117,15 @@ For each step:
 
 The next concrete focus is:
 
-### **Interactive Glossary**
+### **Reader Controls and Layout Foundation**
 
 That means the next practical tasks should be, in order:
 
-1. implement the approved inline-term syntax and resolver
-2. create the generated glossary index and localized term lookup
-3. provide accessible focus, hover, click, and Escape behavior
-4. render a useful missing-term state rather than silently failing
-5. validate unresolved term IDs before content is accepted
+1. add a persistent reading-theme control
+2. make navigation compact and usable on small screens
+3. add a reliable back-to-top behavior for long chapters
+4. expand responsive and accessibility coverage for the reader controls
+5. reserve full shell, TOC, and chapter visual redesign for a unified later iteration
 
 ---
 
@@ -1158,7 +1158,8 @@ Core decisions must not change silently.
 - rich content features completed
 - regression, browser/accessibility, content-integrity, and dependency-audit checks completed
 - bilingual placeholder book structure completed and validated
-- ready to implement the interactive glossary
+- interactive glossary completed: localized index, inline MDX terms, accessible hover/focus/click card, Escape behavior, and build-time unresolved-ID rejection
+- localization consolidation completed: shared-ID route resolution, strict bilingual parity checks, and visible localized missing-translation fallback states
 
 ---
 
@@ -1166,6 +1167,6 @@ Core decisions must not change silently.
 
 We are building **Return of the Night**, an open-source RPG digital-book platform with MDX-based content, rich navigation, interactive glossary behavior, player/GM reading modes, and support for English and PT-BR.
 
-The implementation strategy is incremental: the repository foundation, site shell, content engine, book home / Table of Contents, chapter reader, rich authoring features, initial regression/security automation, and complete bilingual placeholder corpus are now in place. The next step is the interactive glossary, followed by localization consolidation and visual refinement.
+The implementation strategy is incremental: the repository foundation, site shell, content engine, book home / Table of Contents, chapter reader, rich authoring features, initial regression/security automation, complete bilingual placeholder corpus, interactive glossary, and localization consolidation are now in place. The next step is functional reader controls, followed by a unified visual refinement.
 
 The priorities are understanding, clarity, maintainability, and real open-source readiness — not speed or premature complexity.

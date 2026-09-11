@@ -5,20 +5,24 @@ import ChapterReader from "../../../components/reader/ChapterReader.astro";
 import ReaderMdxContent from "../../../components/reader/ReaderMdxContent.astro";
 import ReaderBreadcrumb from "../../../components/reader/ReaderBreadcrumb.astro";
 import ReaderHeader from "../../../components/reader/ReaderHeader.astro";
+import ReaderGlossaryPopover from "../../../components/reader/ReaderGlossaryPopover.astro";
 import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
 import {
   AUDIENCES,
   getLocaleOrDefault,
+  LOCALES,
   type Locale,
 } from "../../../config/site";
 import { getBookConfigEntryByLanguageAndBook } from "../../../lib/content/book-config";
 import { MVP_BOOK_ID } from "../../../lib/content/conventions";
 import {
   getAdjacentChapterEntriesByLanguageAndBook,
+  getChapterEntryByLanguageBookAndId,
   getChapterEntryByLanguageBookAndSlug,
   listChapterEntries,
   listOrderedChapterEntriesByLanguageAndBook,
 } from "../../../lib/content/chapters";
+import { buildLocalizedChapterHref } from "../../../lib/content/localization";
 import {
   getAudienceOptionsForReader,
   getReaderCopy,
@@ -29,6 +33,7 @@ import {
 } from "../../../lib/reader/headings";
 import { buildReaderAdjacentLink } from "../../../lib/reader/navigation";
 import type { ReaderChapterSummary } from "../../../lib/reader/types";
+import { listGlossaryEntriesByLanguage } from "../../../lib/glossary/entries";
 
 export async function getStaticPaths() {
   const chapterEntries = await listChapterEntries();
@@ -49,6 +54,25 @@ const chapterEntry = await getChapterEntryByLanguageBookAndSlug({
   book: MVP_BOOK_ID,
   slug,
 });
+
+const localeHrefs = chapterEntry
+  ? Object.fromEntries(
+      await Promise.all(
+        LOCALES.map(async (locale) => {
+          const localizedChapter = await getChapterEntryByLanguageBookAndId({
+            lang: locale,
+            book: MVP_BOOK_ID,
+            id: chapterEntry.data.id,
+          });
+
+          return [
+            locale,
+            buildLocalizedChapterHref(locale, localizedChapter),
+          ] as const;
+        }),
+      ),
+    )
+  : undefined;
 
 const bookConfigEntry = await getBookConfigEntryByLanguageAndBook({
   lang,
@@ -90,6 +114,7 @@ const chapter: ReaderChapterSummary | undefined = chapterEntry
 
 const renderedChapter = chapterEntry ? await render(chapterEntry) : undefined;
 const ChapterContent = renderedChapter?.Content;
+const glossaryEntries = await listGlossaryEntriesByLanguage(lang);
 
 const readerHeadings = normalizeReaderHeadings(renderedChapter?.headings);
 const readerSidebarItems = buildReaderSidebarItems(readerHeadings);
@@ -119,6 +144,18 @@ const eyebrow = chapter
   : copy.eyebrow;
 const homeHref = `/${lang}/home/`;
 const tocHref = `/${lang}/book/`;
+const glossaryCopy =
+  lang === "pt-BR"
+    ? {
+        heading: "Definição do glossário",
+        openLabel: "Abrir no glossário",
+        closeLabel: "Fechar definição",
+      }
+    : {
+        heading: "Glossary definition",
+        openLabel: "Open in glossary",
+        closeLabel: "Close definition",
+      };
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
@@ -126,6 +163,7 @@ const tocHref = `/${lang}/book/`;
     slot="header-controls"
     lang={lang}
     pathname={Astro.url.pathname}
+    localeHrefs={localeHrefs}
     languageSwitcherLabel={copy.languageSwitcherLabel}
     audienceSwitcherLabel={copy.audienceSwitcherLabel}
     audienceOptions={audienceOptions}
@@ -170,6 +208,24 @@ const tocHref = `/${lang}/book/`;
         )
       }
     </ChapterReader>
+
+    <ReaderGlossaryPopover
+      lang={lang}
+      entries={glossaryEntries.map((entry) => ({
+        id: entry.data.id,
+        term: entry.data.term,
+        type:
+          lang === "pt-BR"
+            ? entry.data.type === "term"
+              ? "Termo"
+              : "Regra"
+            : entry.data.type === "term"
+              ? "Term"
+              : "Rule",
+        summary: entry.data.summary,
+      }))}
+      {...glossaryCopy}
+    />
   </section>
 
   <script>

@@ -7,6 +7,7 @@ import { remarkReaderAudience } from "./src/lib/reader/rich-content/remark-reade
 import { remarkReaderCallouts } from "./src/lib/reader/rich-content/remark-reader-callouts.mjs";
 import { remarkReaderColumns } from "./src/lib/reader/rich-content/remark-reader-columns.mjs";
 import { remarkReaderFigures } from "./src/lib/reader/rich-content/remark-reader-figures.mjs";
+import { remarkReaderGlossary } from "./src/lib/reader/rich-content/remark-reader-glossary.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,6 +19,7 @@ export default defineConfig({
         remarkReaderColumns,
         remarkReaderFigures,
         remarkReaderAudience,
+        remarkReaderGlossary,
       ],
     }),
   },

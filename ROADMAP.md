@@ -6,11 +6,11 @@ The source of truth for detailed scope, architecture direction, and implementati
 
 ## Current phase
 
-The repository has completed **Phase 6 — Rich content features**.
+The repository has completed **Phase 8 — Localization consolidation**.
 
-The current implementation checkpoint is **Phase 7 — Interactive glossary**.
+The current implementation checkpoint is **Phase 9 — Reader controls and layout refinement**.
 
-The next implementation milestone after this checkpoint is **Phase 7 — Interactive glossary**.
+The next implementation milestone after this checkpoint is **Phase 9 — Reader controls and layout refinement**.
 
 ## Planned phases
 
@@ -95,7 +95,7 @@ Validate the full book surface before final prose is written:
 - aligned placeholder glossary entries
 - parity checks for stable chapter IDs, metadata, and group membership
 
-### Phase 7 — Interactive glossary ← Next
+### Phase 7 — Interactive glossary ✅
 
 Introduce glossary references with contextual interactions:
 
@@ -104,7 +104,7 @@ Introduce glossary references with contextual interactions:
 - hover and focus cards
 - semantic glossary styling
 
-### Phase 8 — Real localization
+### Phase 8 — Real localization ✅
 
 Consolidate multilingual behavior across the product:
 
@@ -115,13 +115,13 @@ Consolidate multilingual behavior across the product:
 
 ### Phase 9 — UX and layout refinement
 
-Refine the product experience into a more polished reader:
+Complete the remaining functional reader controls before the deliberate visual redesign:
 
-- improved landing page
-- improved TOC
-- improved chapter layout
-- responsive refinement
-- navigation refinement
+- theme control
+- compact mobile navigation
+- back-to-top behavior
+- responsive and accessibility checks
+- a later unified redesign of the shell, TOC, and chapter layout
 
 ### Phase 10 — Contribution docs and hardening
 

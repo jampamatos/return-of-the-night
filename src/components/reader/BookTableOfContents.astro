@@ -21,6 +21,10 @@ interface Props {
   homeHref: string;
   homeLabel: string;
   currentPageLabel: string;
+  translationUnavailable?: {
+    title: string;
+    body: string;
+  };
 }
 
 const {
@@ -37,6 +41,7 @@ const {
   homeHref,
   homeLabel,
   currentPageLabel,
+  translationUnavailable,
 } = Astro.props as Props;
 
 const hasTocEntries = groups.some((group) => group.entries.length > 0);
@@ -57,6 +62,22 @@ const hasTocEntries = groups.some((group) => group.entries.length > 0);
   />
 
   {
+    translationUnavailable && (
+      <aside
+        class="book-toc-translation-notice"
+        id="translation-unavailable"
+        data-translation-unavailable
+        role="status"
+        tabindex="-1"
+        hidden
+      >
+        <h2>{translationUnavailable.title}</h2>
+        <p>{translationUnavailable.body}</p>
+      </aside>
+    )
+  }
+
+  {
     hasTocEntries ? (
       <div class="book-toc__groups">
         {groups.map((group) => (
@@ -74,6 +95,28 @@ const hasTocEntries = groups.some((group) => group.entries.length > 0);
   }
 </section>
 
+<script>
+  const translationUnavailableNotice = document.querySelector<HTMLElement>(
+    "[data-translation-unavailable]",
+  );
+
+  const updateTranslationUnavailableNotice = () => {
+    if (!translationUnavailableNotice) return;
+
+    const isTranslationUnavailable =
+      window.location.hash === "#translation-unavailable";
+
+    translationUnavailableNotice.hidden = !isTranslationUnavailable;
+
+    if (isTranslationUnavailable) {
+      translationUnavailableNotice.focus();
+    }
+  };
+
+  updateTranslationUnavailableNotice();
+  window.addEventListener("hashchange", updateTranslationUnavailableNotice);
+</script>
+
 <style>
   .book-toc {
     display: grid;
@@ -83,6 +126,24 @@ const hasTocEntries = groups.some((group) => group.entries.length > 0);
   .book-toc__groups {
     display: grid;
     gap: var(--space-4);
+  }
+
+  .book-toc-translation-notice {
+    max-width: 46rem;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--accent-primary);
+    border-radius: var(--radius-sm);
+    background: rgba(18, 53, 65, 0.55);
+  }
+
+  .book-toc-translation-notice h2 {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-ui);
+    font-size: 1rem;
+  }
+
+  .book-toc-translation-notice p {
+    margin: 0;
   }
 
   @media (max-width: 40rem) {

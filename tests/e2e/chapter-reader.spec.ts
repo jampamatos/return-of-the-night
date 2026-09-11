@@ -82,6 +82,64 @@ test.describe("chapter reader", () => {
     await expect(gmBlock).toBeVisible();
   });
 
+  test("switches a reader route to the equivalent localized chapter", async ({
+    page,
+  }) => {
+    await page.goto("/en/book/getting-started/reading-the-book/");
+
+    await page.getByRole("link", { name: "pt-BR" }).click();
+
+    await expect(page).toHaveURL(
+      /\/pt-BR\/book\/comecando\/como-ler-o-livro\/$/,
+    );
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Como Ler Este Livro" }),
+    ).toBeVisible();
+  });
+
+  test("shows a localized fallback state when a translation is unavailable", async ({
+    page,
+  }) => {
+    await page.goto("/pt-BR/book/#translation-unavailable");
+
+    await expect(page.locator("[data-translation-unavailable]")).toContainText(
+      "Tradução indisponível",
+    );
+    await expect(
+      page.getByText(
+        "Este capítulo ainda não tem uma versão publicada em PT-BR.",
+      ),
+    ).toBeVisible();
+  });
+
+  test("opens an inline glossary definition and its index entry", async ({
+    page,
+  }) => {
+    await page.goto("/en/book/getting-started/reading-the-book/");
+
+    const term = page.getByRole("button", { name: "arcology" });
+    await term.click();
+
+    const definition = page.getByRole("dialog", {
+      name: "Glossary definition",
+    });
+    await expect(definition).toBeVisible();
+    await expect(definition).toContainText("Arcology");
+
+    await page.keyboard.press("Escape");
+    await expect(definition).toBeHidden();
+
+    await term.click();
+    await definition.getByRole("link", { name: "Open in glossary" }).click();
+    await expect(page).toHaveURL(/\/en\/glossary\/#arcology$/);
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Glossary" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Arcology" }),
+    ).toBeVisible();
+  });
+
   test("has no detectable accessibility violations on the reader fixture", async ({
     page,
   }) => {

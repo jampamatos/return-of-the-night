@@ -11,6 +11,7 @@ interface AudienceOption {
 interface Props {
   lang: Locale;
   pathname: string;
+  localeHrefs?: Partial<Record<Locale, string>>;
   languageSwitcherLabel: string;
   audienceSwitcherLabel: string;
   audienceOptions: AudienceOption[];
@@ -19,6 +20,7 @@ interface Props {
 const {
   lang,
   pathname,
+  localeHrefs = {},
   languageSwitcherLabel,
   audienceSwitcherLabel,
   audienceOptions,
@@ -26,7 +28,7 @@ const {
 
 const localeLinks = LOCALES.map((locale) => ({
   locale,
-  href: buildLocalHref(locale, pathname),
+  href: localeHrefs[locale] ?? buildLocalHref(locale, pathname),
 }));
 ---
 

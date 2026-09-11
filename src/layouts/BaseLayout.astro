@@ -21,8 +21,18 @@ const {
 
 const documentLang: Locale = getLocaleOrDefault(lang);
 const navigationCopy = {
-  en: { label: "Primary navigation", home: "Home", book: "Contents" },
-  "pt-BR": { label: "Navegação principal", home: "Início", book: "Sumário" },
+  en: {
+    label: "Primary navigation",
+    home: "Home",
+    book: "Contents",
+    glossary: "Glossary",
+  },
+  "pt-BR": {
+    label: "Navegação principal",
+    home: "Início",
+    book: "Sumário",
+    glossary: "Glossário",
+  },
 } as const;
 const navigation = navigationCopy[documentLang];
 ---
@@ -65,6 +75,7 @@ const navigation = navigationCopy[documentLang];
           <nav class="site-navigation" aria-label={navigation.label}>
             <a href={`/${documentLang}/home/`}>{navigation.home}</a>
             <a href={`/${documentLang}/book/`}>{navigation.book}</a>
+            <a href={`/${documentLang}/glossary/`}>{navigation.glossary}</a>
           </nav>
 
           <div class="site-controls" aria-label="Site preferences">

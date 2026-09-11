@@ -19,7 +19,7 @@ That choice is intentional. The current architecture prioritizes:
 - progressive complexity over premature abstraction
 - open-source readiness over fast visual polish
 
-At the moment, the project is a static Astro application with repository-quality tooling, locale-prefixed routes, Astro content collections, typed schemas, a complete bilingual placeholder corpus, metadata utilities for chapters and glossary entries, a cover route, a project Home route, a content-backed Table of Contents route, and generated chapter reader pages that render MDX content.
+At the moment, the project is a static Astro application with repository-quality tooling, locale-prefixed routes, Astro content collections, typed schemas, a complete bilingual placeholder corpus, a localized glossary index with inline reader interactions, a cover route, a project Home route, a content-backed Table of Contents route, and generated chapter reader pages that render MDX content.
 
 ## Core system layers
 
@@ -37,10 +37,10 @@ This layer currently provides:
 - the Table of Contents
 - the chapter reader
 - chapter-local navigation controls
+- localized glossary indexes and inline glossary cards
 
 Planned additions to this layer include:
 
-- glossary interactions
 - richer reader layouts
 
 ### 2. Content layer
@@ -67,7 +67,7 @@ Expected responsibilities include:
 - localization utilities
 - reader-specific navigation logic
 
-In the current repository, this layer includes implemented utilities for content loading, chapter ordering, adjacent chapter resolution, TOC grouping, chapter-reader link generation, glossary listing, glossary lookup, locale routing, audience preference handling, and rich-content directive transformations. Glossary interaction and localization consolidation remain deferred.
+In the current repository, this layer includes implemented utilities for content loading, chapter ordering, adjacent chapter resolution, TOC grouping, chapter-reader link generation, glossary listing, glossary lookup, locale routing, localized chapter-route fallback handling, audience preference handling, and rich-content directive transformations.
 
 ### 4. Repository and governance layer
 
@@ -106,16 +106,17 @@ Current implementation status:
 - `src/pages/[lang]/home/index.astro` provides the project Home route
 - `src/pages/[lang]/book/index.astro` provides the Table of Contents route
 - `src/pages/[lang]/book/[...slug].astro` provides generated chapter reader routes
+- `src/pages/[lang]/glossary/index.astro` provides localized glossary indexes
 - Astro content collections are registered in `src/content.config.ts`
 - typed schemas exist for `chapters`, `glossary`, and `book-config`
 - complete placeholder content exists for ten English chapters, ten PT-BR chapters, six glossary entries per locale, and localized book-config entries with aligned group membership
 - chapter metadata utilities support listing by language/book, stable ordering, and previous/next resolution
 - TOC utilities support metadata-driven grouping, configured groups, and fallback ungrouped entries
-- chapter route utilities generate reader links from content slugs
+- chapter route utilities generate reader links from content slugs; localization utilities resolve translated chapters by logical ID and expose an explicit missing-translation fallback
 - reader utilities normalize headings, build sidebar data, define reader copy, and create adjacent-reader links
-- glossary metadata utilities support listing by language and lookup by logical `id`
+- glossary metadata utilities support listing by language and lookup by logical `id`; inline MDX term directives resolve against those IDs during the static build
 - the Table of Contents renders from content metadata with empty states, orientation cues, and basic responsive behavior
-- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, section deep links, semantic figures with captions, styled responsive Markdown tables, directive-authored responsive columns, callouts, and Player/GM audience blocks through a shared reader MDX component surface
+- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, section deep links, semantic figures with captions, styled responsive Markdown tables, directive-authored responsive columns, callouts, Player/GM audience blocks, and accessible glossary cards through a shared reader MDX component surface
 - the repository runs unit/content validation with Vitest, Chromium browser/accessibility validation with Playwright and axe, and high-severity dependency audits in CI
 
 ## Current boundaries
@@ -127,18 +128,17 @@ The current implementation includes:
 - audience preference persistence and shell controls
 - typed Astro content collections for chapters, glossary, and book config
 - complete PT-BR-first bilingual placeholder corpus with shared logical IDs and localized slugs
-- metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, and glossary lookup
+- metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, glossary lookup, and glossary-reference validation
 - a content-backed Table of Contents with empty states, orientation cues, and basic responsive behavior
-- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, semantic callout rendering, and audience-conditional block rendering
+- generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, semantic callout rendering, audience-conditional block rendering, and interactive glossary definitions
+- localized glossary indexes and static validation of inline glossary IDs
 - automated unit/content, browser/accessibility, and dependency-audit checks
 
 The current implementation does **not** yet include:
 
-- glossary hover cards or reader-side glossary interactions
-- full translation parity or complete localization behavior
 - authentication, authorization, or backend infrastructure
 
-This means the repository now reflects the complete content-driven reader layer and current rich-content feature set, including audience blocks. Glossary interactions and localization consolidation remain planned rather than implemented.
+This means the repository now reflects the complete content-driven reader layer and current rich-content feature set, including audience blocks, glossary interactions, and bilingual route resolution with strict parity validation.
 
 ## Planned evolution
 
@@ -150,9 +150,9 @@ The intended implementation order remains incremental:
 4. book home and Table of Contents generation — completed
 5. chapter reader — completed
 6. rich content features — completed
-7. interactive glossary — next
-8. real localization — planned
-9. UX and layout refinement — planned
+7. interactive glossary — completed
+8. real localization — completed
+9. reader controls and layout refinement — next
 10. contribution docs and hardening — planned
 
 The architecture should continue to follow these principles as the project grows:

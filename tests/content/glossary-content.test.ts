@@ -25,6 +25,7 @@ async function listGlossaryIds(locale: "en" | "pt-BR") {
           sourcePath: `${localePath}/${entry.name}`,
           id: getField(source, "id"),
           lang: getField(source, "lang"),
+          type: getField(source, "type"),
         };
       }),
   );
@@ -59,5 +60,13 @@ describe("placeholder glossary content", () => {
     expect(portugueseEntries.map((entry) => entry.id).sort()).toEqual(
       englishEntries.map((entry) => entry.id).sort(),
     );
+
+    for (const englishEntry of englishEntries) {
+      const portugueseEntry = portugueseEntries.find(
+        (entry) => entry.id === englishEntry.id,
+      );
+
+      expect(portugueseEntry?.type).toBe(englishEntry.type);
+    }
   });
 });

@@ -18,6 +18,10 @@ export interface ChapterSlugScope extends ChapterScope {
   slug: ChapterEntry["data"]["slug"];
 }
 
+export interface ChapterIdScope extends ChapterScope {
+  id: ChapterEntry["data"]["id"];
+}
+
 export interface AdjacentChapterEntries {
   previous: ChapterEntry | undefined;
   current: ChapterEntry;
@@ -63,6 +67,14 @@ export async function getChapterEntryByLanguageBookAndSlug(
   const chapters = await listChapterEntriesByLanguageAndBook(scope);
 
   return chapters.find((entry) => entry.data.slug === scope.slug);
+}
+
+export async function getChapterEntryByLanguageBookAndId(
+  scope: ChapterIdScope,
+): Promise<ChapterEntry | undefined> {
+  const chapters = await listChapterEntriesByLanguageAndBook(scope);
+
+  return chapters.find((entry) => entry.data.id === scope.id);
 }
 
 export async function listOrderedChapterEntriesByLanguageAndBook(
