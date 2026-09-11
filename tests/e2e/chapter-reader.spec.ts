@@ -35,6 +35,26 @@ test.describe("chapter reader", () => {
     ).toHaveAttribute("href", chapterPath);
   });
 
+  test("shows the support signal on every internal surface, not the cover", async ({
+    page,
+  }) => {
+    await page.goto("/en/");
+    await expect(page.getByRole("contentinfo")).toHaveCount(0);
+
+    for (const path of [
+      "/en/home/",
+      "/en/book/",
+      "/en/glossary/",
+      "/en/book/getting-started/reading-the-book/",
+    ]) {
+      await page.goto(path);
+      await expect(
+        page.getByRole("contentinfo", { name: "Support" }),
+      ).toBeVisible();
+      await expect(page.getByText("Support signal")).toBeVisible();
+    }
+  });
+
   test("uses a compact book layout on notebook-sized screens", async ({
     page,
   }) => {

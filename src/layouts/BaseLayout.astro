@@ -41,6 +41,19 @@ const navigationCopy = {
   },
 } as const;
 const navigation = navigationCopy[documentLang];
+const supportCopy = {
+  en: {
+    label: "Support signal",
+    title: "Support",
+    body: "A voluntary support link will appear here once the project selects a provider. No payment destination is configured yet.",
+  },
+  "pt-BR": {
+    label: "Sinal de apoio",
+    title: "Apoie",
+    body: "Um link de apoio voluntário aparecerá aqui quando o projeto escolher um provedor. Ainda não há destino de pagamento configurado.",
+  },
+} as const;
+const support = supportCopy[documentLang];
 ---
 
 <!doctype html>
@@ -147,6 +160,16 @@ const navigation = navigationCopy[documentLang];
           <slot />
         </div>
       </main>
+
+      <footer class="site-support-footer" aria-label={support.title}>
+        <div class="site-support-footer__inner">
+          <p class="site-support-footer__label">{support.label}</p>
+          <p class="site-support-footer__body">
+            <strong>{support.title}</strong>
+            {" "}{support.body}
+          </p>
+        </div>
+      </footer>
     </div>
 
     <script>
