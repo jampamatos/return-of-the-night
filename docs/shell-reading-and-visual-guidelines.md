@@ -30,6 +30,19 @@ The second pass develops the useful “materiality” identified during review w
 - Light is treated as a colder corporate interface through restrained technical rules, while Paper remains the unauthorized printed copy. Native scrollbars now inherit each theme's track, thumb, and accent treatment.
 - Translation-workflow callouts use the informational note treatment; magenta remains reserved for restricted/GM/corruption meanings rather than generic workflow emphasis.
 
+## Fifth redesign iteration — implemented refinement
+
+The next visual pass deliberately edits the existing identity rather than replacing it. Its working rule is: **the H1 shouts, the interface whispers, and the text converses.**
+
+- **Big Shoulders Display** is reserved for the brand, page H1s, chapter openings, TOC group names, and oversized group numbers. **Big Shoulders Text** carries secondary headings and individual TOC chapter titles. **IBM Plex Mono** remains the UI/metadata voice, and **Source Serif 4** remains exclusive to continuous reading prose.
+- The semantic palette is constrained to cyan for public/system interaction, amber for warnings, and magenta for GM/restricted material. Player is the normal public state and uses cyan rather than a fourth lime-green signal.
+- Dark remains the native Night Terminal. Light is a high-contrast corporate terminal with clinical surfaces and decisive near-black type. Paper is a leaked hardcopy: warm stock, dark ink, rust for public/system, ochre for warnings, and oxblood for GM material. Paper has no cyan token.
+- Header preferences use a solid active signal rather than outlined segmented controls. The shared bar stays compact, one-line on desktop, and visually closer to a switchboard than a component library.
+- The cover replaces its boxed book-structure card with an unboxed archive metadata rail, and its CTA is a restrained public-build access control rather than a premium-gradient button.
+- The Home preserves the asymmetric archive record / dispatch layout, elevates one full-width open-source contribution protocol, and moves the unresolved support placeholder into a quiet footer note.
+- The TOC preserves its large group numbers while reducing individual chapter headings to the secondary family. Reader H1s stay brutal; internal headings and chapter navigation step down to editorial hierarchy. Reader glossary definitions remain in the desktop rail and use a bottom-sheet treatment on narrow screens.
+- Callouts use one shared anatomy: a thin rule, a 4px left signal bar, a mono label, a small color segment, and a lightly tinted surface. The only difference between types is semantic color.
+
 ---
 
 ## Product Experience North Star
@@ -490,7 +503,7 @@ Typography should balance:
 
 ### Current implementation baseline
 
-The first redesign iteration uses **Source Serif 4** for continuous reading, **Space Grotesk** for page and chapter display hierarchy, and **IBM Plex Mono** for UI, metadata, breadcrumbs, and system labels. This split is deliberate: the book stays calm in its main column while the surrounding archive retains its technical voice.
+The reader uses **Source Serif 4** for continuous prose, **Big Shoulders Display** for scarce, high-impact display moments, **Big Shoulders Text** for secondary editorial headings, and **IBM Plex Mono** for UI, metadata, breadcrumbs, and system labels. This split is deliberate: the book stays calm in its main column while the surrounding archive retains its technical voice.
 
 The platform likely needs **two complementary type families**:
 

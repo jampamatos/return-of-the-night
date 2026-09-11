@@ -227,6 +227,20 @@ const entriesById = Object.fromEntries(
     box-shadow: none;
   }
 
+  .reader-glossary__popover:not([hidden]) {
+    animation: glossary-rail-update 150ms ease-out;
+  }
+
+  @keyframes glossary-rail-update {
+    from {
+      border-left-color: var(--heading-color);
+    }
+
+    to {
+      border-left-color: var(--accent-primary);
+    }
+  }
+
   .reader-glossary__header {
     display: flex;
     align-items: center;
@@ -295,7 +309,13 @@ const entriesById = Object.fromEntries(
     .reader-glossary__popover {
       position: fixed;
       z-index: 20;
-      width: min(22rem, calc(100vw - 2rem));
+      right: 1rem;
+      bottom: 1rem;
+      left: 1rem !important;
+      top: auto !important;
+      width: auto;
+      max-height: min(24rem, calc(100dvh - 2rem));
+      overflow: auto;
       border: 1px solid var(--accent-primary);
       background: var(--surface-background-strong);
       box-shadow: var(--shadow-soft);

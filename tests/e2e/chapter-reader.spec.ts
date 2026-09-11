@@ -8,7 +8,7 @@ test.describe("chapter reader", () => {
     await page.goto("/en/");
 
     const openBookCoverLink = page.getByRole("link", {
-      name: "Open the Book",
+      name: "Access public build",
     });
 
     await expect(openBookCoverLink).toHaveAttribute("href", "/en/home/");

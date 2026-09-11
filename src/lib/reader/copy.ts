@@ -38,8 +38,8 @@ export const READER_COPY = {
     chapterNavigationLabel: "Chapter navigation",
     previousChapterLabel: "Previous Chapter",
     nextChapterLabel: "Next Chapter",
-    previousChapterUnavailableLabel: "This is the first available chapter.",
-    nextChapterUnavailableLabel: "This is the last available chapter.",
+    previousChapterUnavailableLabel: "Start of archive",
+    nextChapterUnavailableLabel: "End of archive",
   },
   "pt-BR": {
     title: "Leitor de Capítulo",
@@ -64,8 +64,8 @@ export const READER_COPY = {
     chapterNavigationLabel: "Navegação entre capítulos",
     previousChapterLabel: "Capítulo Anterior",
     nextChapterLabel: "Próximo Capítulo",
-    previousChapterUnavailableLabel: "Este é o primeiro capítulo disponível.",
-    nextChapterUnavailableLabel: "Este é o último capítulo disponível.",
+    previousChapterUnavailableLabel: "Início do arquivo",
+    nextChapterUnavailableLabel: "Fim do arquivo",
   },
 } as const satisfies Record<Locale, ReaderCopy>;
 
