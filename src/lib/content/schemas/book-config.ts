@@ -13,6 +13,7 @@ const chapterGroupSchema = z.object({
   label: z.string().trim().min(1),
   description: z.string().trim().min(1).optional(),
   order: z.number().int().min(0),
+  audience: z.enum(["all", "player", "gm"]).default("all"),
   chapterNumbers: z.array(z.number().int().min(0)).min(1),
 });
 

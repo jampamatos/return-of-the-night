@@ -1,5 +1,6 @@
 import type { BookConfigEntry } from "./book-config";
 import type { ChapterEntry } from "./chapters";
+import type { ChapterAudience } from "../reader/types";
 import { TOC_GROUPING } from "./toc-conventions";
 
 type TocGroupDefinition = BookConfigEntry["data"]["chapterGroups"][number];
@@ -9,7 +10,27 @@ export interface TocGroup {
   label: string;
   description?: string;
   order: number;
+  audience: ChapterAudience;
   entries: ChapterEntry[];
+}
+
+export function getEffectiveChapterAudience(
+  chapter: ChapterEntry,
+  bookConfig: BookConfigEntry | undefined,
+): ChapterAudience {
+  const group = bookConfig?.data.chapterGroups.find((candidate) =>
+    candidate.chapterNumbers.includes(chapter.data.chapterNumber),
+  );
+
+  if (chapter.data.audience === "gm" || group?.audience === "gm") {
+    return "gm";
+  }
+
+  if (chapter.data.audience === "player" || group?.audience === "player") {
+    return "player";
+  }
+
+  return "all";
 }
 
 export function groupOrderedChapterEntriesForToc(
@@ -24,6 +45,7 @@ export function groupOrderedChapterEntriesForToc(
     label: group.label,
     description: group.description,
     order: group.order,
+    audience: group.audience,
     entries: chapters.filter((chapter) =>
       group.chapterNumbers.includes(chapter.data.chapterNumber),
     ),
@@ -48,6 +70,7 @@ export function groupOrderedChapterEntriesForToc(
         label: "Ungrouped",
         description: undefined,
         order: Number.MAX_SAFE_INTEGER,
+        audience: "all",
         entries: ungroupedEntries,
       });
     }

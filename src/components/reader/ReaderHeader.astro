@@ -5,14 +5,15 @@ interface Props {
   summary: string;
   tocHref: string;
   backToTocLabel: string;
+  entryStateLabel: string;
 }
 
-const { title, eyebrow, summary, tocHref, backToTocLabel } =
+const { title, eyebrow, summary, tocHref, backToTocLabel, entryStateLabel } =
   Astro.props as Props;
 ---
 
-<header class="reader-header">
-  <p class="reader-header__eyebrow">{eyebrow}</p>
+<header class="reader-header" data-entry-state={entryStateLabel}>
+  <p class="reader-header__eyebrow" data-reader-chapter-eyebrow>{eyebrow}</p>
 
   <h1 id="reader-route-title">{title}</h1>
 
@@ -24,11 +25,23 @@ const { title, eyebrow, summary, tocHref, backToTocLabel } =
 
 <style>
   .reader-header {
+    position: relative;
     display: grid;
-    max-width: 44rem;
-    gap: var(--space-4);
-    padding: var(--space-3) 0 var(--space-6);
+    max-width: 52rem;
+    gap: var(--space-3);
+    padding: var(--space-5) 0 var(--space-7);
     border-bottom: 1px solid var(--border-color);
+  }
+
+  .reader-header::before {
+    content: attr(data-entry-state);
+    position: absolute;
+    top: var(--space-2);
+    right: 0;
+    color: var(--border-color-strong);
+    font-family: var(--font-ui);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
   }
 
   .reader-header h1,
@@ -38,19 +51,54 @@ const { title, eyebrow, summary, tocHref, backToTocLabel } =
 
   .reader-header__eyebrow {
     font-family: var(--font-ui);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--accent-primary);
   }
 
+  .reader-header h1 {
+    max-width: 14ch;
+    font-size: clamp(3rem, 2rem + 4vw, 6.4rem);
+    font-weight: 700;
+    letter-spacing: 0.015em;
+    line-height: 0.86;
+    text-transform: uppercase;
+  }
+
+  .reader-header > p:not(.reader-header__eyebrow) {
+    max-width: 44rem;
+    font-size: clamp(1.05rem, 1rem + 0.3vw, 1.22rem);
+    line-height: 1.6;
+  }
+
   .reader-header__toc-link {
+    position: relative;
     width: fit-content;
     font-family: var(--font-ui);
     font-size: 0.78rem;
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .reader-header__toc-link::before {
+    content: "> ";
+    color: var(--accent-primary);
+  }
+
+  @media (max-width: 40rem) {
+    .reader-header {
+      padding-block: var(--space-4) var(--space-6);
+    }
+
+    .reader-header::before {
+      display: none;
+    }
+
+    .reader-header h1 {
+      font-size: clamp(2.8rem, 14vw, 4.4rem);
+    }
   }
 </style>

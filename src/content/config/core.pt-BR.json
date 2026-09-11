@@ -36,6 +36,7 @@
       "label": "Ferramentas para o Mestre",
       "description": "Placeholders de preparação para conduzir o cenário.",
       "order": 3,
+      "audience": "gm",
       "chapterNumbers": [7, 8]
     },
     {

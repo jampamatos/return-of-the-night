@@ -20,12 +20,16 @@ Open source applies to both the implementation and the original Return of the Ni
 Player and GM modes are reader preferences intended to reduce accidental spoilers during play.
 
 - The active mode controls which audience-marked blocks the reader chooses to display.
+- Player mode also removes GM-facing chapters and configured GM-facing chapter groups from the visible Table of Contents. It recalculates the displayed group and chapter numbers from that visible sequence.
+- A direct link to a GM-facing chapter in Player mode presents a reading-mode notice instead of the chapter body; switching to GM mode renders it. GM mode includes both Player and GM material.
 - The static build can contain content for both audiences.
 - Hiding an audience block in the interface does not protect it from source inspection, browser tools, cached output, or another reader selecting GM mode.
 - The project must not describe audience mode as authentication, authorization, access control, secrecy, or content protection.
 - Authors may use audience blocks for pacing and spoiler etiquette, but must not rely on them to protect material that truly needs to remain private.
 
 This limitation is intentional and compatible with the project's free, open-source model.
+
+Chapter groups may declare `audience: "all"`, `"player"`, or `"gm"` in the localized book configuration. A GM group makes every chapter in that group GM-facing unless an equivalent future content rule changes the structure. Keep this configuration aligned across PT-BR and English.
 
 ## Bilingual book workflow
 

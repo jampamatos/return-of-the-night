@@ -9,6 +9,7 @@ interface BookConfig {
   chapterGroups: Array<{
     id: string;
     order: number;
+    audience?: "all" | "player" | "gm";
     chapterNumbers: number[];
   }>;
 }
@@ -33,17 +34,23 @@ describe("localized book configuration", () => {
     expect(englishConfig.lang).toBe("en");
     expect(portugueseConfig.lang).toBe("pt-BR");
     expect(
-      portugueseConfig.chapterGroups.map(({ id, order, chapterNumbers }) => ({
-        id,
-        order,
-        chapterNumbers,
-      })),
+      portugueseConfig.chapterGroups.map(
+        ({ id, order, audience = "all", chapterNumbers }) => ({
+          id,
+          order,
+          audience,
+          chapterNumbers,
+        }),
+      ),
     ).toEqual(
-      englishConfig.chapterGroups.map(({ id, order, chapterNumbers }) => ({
-        id,
-        order,
-        chapterNumbers,
-      })),
+      englishConfig.chapterGroups.map(
+        ({ id, order, audience = "all", chapterNumbers }) => ({
+          id,
+          order,
+          audience,
+          chapterNumbers,
+        }),
+      ),
     );
   });
 });

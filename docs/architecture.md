@@ -111,12 +111,12 @@ Current implementation status:
 - typed schemas exist for `chapters`, `glossary`, and `book-config`
 - complete placeholder content exists for ten English chapters, ten PT-BR chapters, six glossary entries per locale, and localized book-config entries with aligned group membership
 - chapter metadata utilities support listing by language/book, stable ordering, and previous/next resolution
-- TOC utilities support metadata-driven grouping, configured groups, and fallback ungrouped entries
+- TOC utilities support metadata-driven grouping, configured groups, fallback ungrouped entries, and effective chapter audiences derived from chapter and group metadata
 - chapter route utilities generate reader links from content slugs; localization utilities resolve translated chapters by logical ID and expose an explicit missing-translation fallback
 - reader utilities normalize headings, build sidebar data, define reader copy, and create adjacent-reader links
 - glossary metadata utilities support listing by language and lookup by logical `id`; inline MDX term directives resolve against those IDs during the static build
-- the Table of Contents renders from content metadata with empty states, orientation cues, and basic responsive behavior
-- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, previous/next links, stable heading anchors, section deep links, semantic figures with captions, styled responsive Markdown tables, directive-authored responsive columns, callouts, Player/GM audience blocks, and accessible glossary cards through a shared reader MDX component surface
+- the Table of Contents renders from content metadata with empty states, orientation cues, basic responsive behavior, and dynamically renumbered Player/GM-visible entries
+- the chapter reader renders MDX content, chapter-level orientation, current-chapter sidebar navigation, Player-aware previous/next links, a direct-route GM reading-mode gate, stable heading anchors, section deep links, semantic figures with captions, styled responsive Markdown tables, directive-authored responsive columns, callouts, Player/GM audience blocks, and accessible glossary cards through a shared reader MDX component surface
 - the repository runs unit/content validation with Vitest, Chromium browser/accessibility validation with Playwright and axe, and high-severity dependency audits in CI
 
 ## Current boundaries

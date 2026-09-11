@@ -37,8 +37,8 @@ The label is translated prose. The `id` must exist in both locale glossary colle
 
 Use rich blocks only when they improve reading:
 
-- `:::note[...]`, `:::warning[...]`, and `:::example[...]` for intentional asides;
-- `:::audience[player]` and `:::audience[gm]` for spoiler etiquette;
+- `:::note[NOTA // ...]`, `:::warning[AVISO // ...]`, and `:::example[EXEMPLO // ...]` for intentional asides; localize the label alongside the prose;
+- `:::audience[JOGADOR // ...]{target="player"}` and `:::audience[MESTRE // ...]{target="gm"}` for spoiler etiquette; localize the visible label but preserve the English target ID;
 - tables for actual comparison or reference data;
 - figures only with licensed, documented assets and useful captions.
 

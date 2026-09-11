@@ -14,8 +14,12 @@ interface Props {
 const { lang, entry, index, audienceLabels } = Astro.props as Props;
 ---
 
-<li class="book-toc-entry">
-  <span class="book-toc-entry__number">
+<li
+  class="book-toc-entry"
+  data-toc-entry
+  data-toc-entry-audience={entry.data.audience}
+>
+  <span class="book-toc-entry__number" data-toc-entry-number>
     {String(index + 1).padStart(2, "0")}
   </span>
 
@@ -38,7 +42,7 @@ const { lang, entry, index, audienceLabels } = Astro.props as Props;
         <span
           class:list={[
             "book-toc-entry__meta-item",
-            { "book-toc-entry__meta-item--gm": entry.data.audience === "gm" },
+            `book-toc-entry__meta-item--${entry.data.audience}`,
           ]}
         >
           {audienceLabels[entry.data.audience]}
@@ -51,17 +55,17 @@ const { lang, entry, index, audienceLabels } = Astro.props as Props;
 <style>
   .book-toc-entry {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
     gap: var(--space-3);
-    padding: var(--space-4) 0 var(--space-5);
+    padding: var(--space-4) 0 var(--space-4);
     border-bottom: 1px solid var(--border-color);
   }
 
   .book-toc-entry__number {
     font-family: var(--font-ui);
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
     color: var(--accent-primary-strong);
   }
 
@@ -72,9 +76,9 @@ const { lang, entry, index, audienceLabels } = Astro.props as Props;
   .book-toc-entry__chapter {
     margin: 0 0 var(--space-1);
     font-family: var(--font-ui);
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--muted-text-color);
   }
@@ -82,8 +86,11 @@ const { lang, entry, index, audienceLabels } = Astro.props as Props;
   .book-toc-entry__title {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.65rem);
-    letter-spacing: -0.02em;
+    font-size: clamp(1.45rem, 1.1rem + 1vw, 2.05rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 0.9;
+    text-transform: uppercase;
   }
 
   .book-toc-entry__link {
@@ -109,30 +116,34 @@ const { lang, entry, index, audienceLabels } = Astro.props as Props;
   .book-toc-entry__summary {
     margin: var(--space-1) 0 0;
     max-width: 48rem;
-    font-size: 0.98rem;
+    font-size: 0.94rem;
     line-height: 1.5;
   }
 
   .book-toc-entry__meta-item {
+    --book-toc-badge-accent: var(--accent-player);
+    --book-toc-badge-contrast: var(--accent-player-contrast);
     display: inline-flex;
     width: fit-content;
     align-items: center;
     margin-top: var(--space-2);
     padding: 0.15rem 0.45rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--book-toc-badge-accent);
     border-radius: 0;
     font-family: var(--font-ui);
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--muted-text-color);
-    background: rgba(22, 27, 34, 0.72);
+    color: var(--book-toc-badge-contrast);
+    background: var(--book-toc-badge-accent);
+    box-shadow: 0.18rem 0.18rem 0
+      color-mix(in srgb, var(--book-toc-badge-accent) 38%, transparent);
   }
 
   .book-toc-entry__meta-item--gm {
-    border-color: var(--accent-secondary);
-    color: var(--accent-secondary);
+    --book-toc-badge-accent: var(--accent-secondary);
+    --book-toc-badge-contrast: var(--accent-secondary-contrast);
   }
 
   @media (max-width: 40rem) {

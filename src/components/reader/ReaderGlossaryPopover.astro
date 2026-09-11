@@ -186,7 +186,10 @@ const entriesById = Object.fromEntries(
 
   popover?.addEventListener("pointerenter", clearScheduledClose);
   popover?.addEventListener("pointerleave", scheduleClose);
-  closeButton?.addEventListener("click", () => closePopover(true));
+  // Returning focus to the source term triggers its focus handler again. In rail
+  // mode that also scrolls the source back into view, making the close action
+  // look as if it failed. The close button should simply dismiss the reference.
+  closeButton?.addEventListener("click", () => closePopover());
   updatePopoverMode();
   window.addEventListener("resize", () => {
     updatePopoverMode();

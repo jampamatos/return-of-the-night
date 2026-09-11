@@ -17,10 +17,6 @@ test.describe("chapter reader", () => {
 
     const coverLink = page.getByRole("link", { name: "Return of the Night" });
     await expect(coverLink).toHaveAttribute("href", "/en/");
-    await coverLink.click();
-    await expect(page).toHaveURL(/\/en\/$/);
-
-    await page.goto("/en/home/");
 
     const openBookLink = page.getByRole("link", { name: "Open the book" });
     await expect(openBookLink).toHaveAttribute("href", "/en/book/");
@@ -56,6 +52,61 @@ test.describe("chapter reader", () => {
     await page.evaluate(() => window.scrollTo(0, 300));
     await expect(page.locator("[data-site-header]")).toHaveClass(
       /is-condensed/,
+    );
+  });
+
+  test("filters GM-facing groups and chapters while keeping TOC numbering dynamic", async ({
+    page,
+  }) => {
+    await page.goto("/en/book/");
+
+    const gmGroup = page.locator('[data-toc-group-audience="gm"]');
+    const referenceGroup = page
+      .locator("[data-toc-group]")
+      .filter({ hasText: "Reference" });
+
+    await expect(gmGroup).toBeHidden();
+    await expect(page.locator("[data-toc-visible-group-count]")).toHaveText(
+      "4",
+    );
+    await expect(referenceGroup.locator("[data-toc-group-index]")).toHaveText(
+      "04",
+    );
+
+    await page.getByRole("button", { name: "GM" }).click();
+
+    await expect(gmGroup).toBeVisible();
+    await expect(page.locator("[data-toc-visible-group-count]")).toHaveText(
+      "5",
+    );
+    await expect(referenceGroup.locator("[data-toc-group-index]")).toHaveText(
+      "05",
+    );
+  });
+
+  test("gates a GM chapter in Player mode and skips it in chapter navigation", async ({
+    page,
+  }) => {
+    await page.goto("/en/book/gm-toolkit/running-return-of-the-night/");
+
+    const gate = page.locator("[data-reader-audience-gate]");
+    const chapterContent = page.locator(
+      "[data-reader-chapter-visible-content]",
+    );
+
+    await expect(gate).toBeVisible();
+    await expect(chapterContent).toBeHidden();
+
+    await gate.getByRole("button", { name: "Open facilitator mode" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-audience", "gm");
+    await expect(gate).toBeHidden();
+    await expect(chapterContent).toBeVisible();
+
+    await page.getByRole("button", { name: "Player" }).click();
+    await page.goto("/en/book/world-in-conflict/resistance-and-factions/");
+    await expect(page.locator('[data-reader-nav-link="next"]')).toHaveAttribute(
+      "href",
+      "/en/book/reference/reference-and-workspace/",
     );
   });
 
@@ -128,10 +179,27 @@ test.describe("chapter reader", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "How to Read This Book" }),
     ).toBeVisible();
+    await expect(
+      page.locator('[data-reader-nav-link="previous"]'),
+    ).toBeHidden();
+    await expect(
+      page.locator('[data-reader-nav-empty="previous"]'),
+    ).toBeVisible();
+    await expect(page.locator('[data-reader-nav-link="next"]')).toBeVisible();
+    await expect(page.locator('[data-reader-nav-empty="next"]')).toBeHidden();
     await expect(page.locator("figure")).toHaveCount(1);
     await expect(page.locator(".reader-table")).toHaveCount(2);
     await expect(page.locator(".reader-columns")).toHaveCount(1);
     await expect(page.locator(".reader-callout")).toHaveCount(3);
+    await expect(
+      page.locator(".reader-callout--warning .reader-callout__label"),
+    ).toHaveText("WARNING // Public build");
+    await expect(
+      page.locator(".reader-callout--note .reader-callout__label").last(),
+    ).toHaveText("NOTE // Translation workflow");
+    await expect(
+      page.locator(".reader-audience--player .reader-audience__label"),
+    ).toHaveText("PLAYER // Public reading");
 
     const playerBlock = page.getByText(
       "This player-facing placeholder reserves an explanation",
@@ -148,6 +216,9 @@ test.describe("chapter reader", () => {
     await expect(page.locator("html")).toHaveAttribute("data-audience", "gm");
     await expect(playerBlock).toBeHidden();
     await expect(gmBlock).toBeVisible();
+    await expect(
+      page.locator(".reader-audience--gm .reader-audience__label"),
+    ).toHaveText("GM // Facilitator reading");
   });
 
   test("returns to the chapter opening from long reader content", async ({
@@ -211,8 +282,9 @@ test.describe("chapter reader", () => {
     await expect(definition).toBeVisible();
     await expect(definition).toContainText("Arcology");
 
-    await page.keyboard.press("Escape");
+    await definition.getByRole("button", { name: "Close definition" }).click();
     await expect(definition).toBeHidden();
+    await expect(term).not.toBeFocused();
 
     await term.click();
     await definition.getByRole("link", { name: "Open in glossary" }).click();

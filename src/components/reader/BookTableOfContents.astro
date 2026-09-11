@@ -12,6 +12,8 @@ interface Props {
   bookTitle: string;
   bookSubtitle?: string;
   tocLabel: string;
+  indexLabel: string;
+  archiveLabel: string;
   groups: TocGroup[];
   audienceLabels: Record<"all" | ChapterAudience, string>;
   emptyStateTitle: string;
@@ -38,6 +40,8 @@ const {
   bookTitle,
   bookSubtitle,
   tocLabel,
+  indexLabel,
+  archiveLabel,
   groups,
   audienceLabels,
   emptyStateTitle,
@@ -72,6 +76,8 @@ const entryCount = groups.reduce(
         title={bookTitle}
         subtitle={bookSubtitle}
         tocLabel={tocLabel}
+        indexLabel={indexLabel}
+        archiveLabel={archiveLabel}
       />
 
       {
@@ -92,7 +98,7 @@ const entryCount = groups.reduce(
 
       {
         hasTocEntries ? (
-          <div class="book-toc__groups">
+          <div class="book-toc__groups" data-toc-groups>
             {groups.map((group, groupIndex) => (
               <BookTocGroup
                 lang={lang}
@@ -114,15 +120,21 @@ const entryCount = groups.reduce(
       <dl>
         <div>
           <dt>{indexCopy.groups}</dt>
-          <dd>{groups.length}</dd>
+          <dd data-toc-visible-group-count>{groups.length}</dd>
         </div>
         <div>
           <dt>{indexCopy.entries}</dt>
-          <dd>{entryCount}</dd>
+          <dd data-toc-visible-entry-count>{entryCount}</dd>
         </div>
         <div>
           <dt>{indexCopy.profile}</dt>
-          <dd>{audienceLabels.all}</dd>
+          <dd
+            data-toc-profile
+            data-toc-player-label={audienceLabels.player}
+            data-toc-gm-label={audienceLabels.gm}
+          >
+            {audienceLabels.player}
+          </dd>
         </div>
       </dl>
     </aside>
@@ -130,6 +142,10 @@ const entryCount = groups.reduce(
 </section>
 
 <script>
+  import { getAudienceOrDefault, type Audience } from "../../config/site";
+  import { AUDIENCE_CHANGE_EVENT } from "../../lib/audience/audience-switcher";
+  import { isChapterVisibleForAudience } from "../../lib/audience/chapter-visibility";
+
   const translationUnavailableNotice = document.querySelector<HTMLElement>(
     "[data-translation-unavailable]",
   );
@@ -149,6 +165,89 @@ const entryCount = groups.reduce(
 
   updateTranslationUnavailableNotice();
   window.addEventListener("hashchange", updateTranslationUnavailableNotice);
+
+  const tocGroups = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-toc-group]"),
+  );
+  const visibleGroupCount = document.querySelector<HTMLElement>(
+    "[data-toc-visible-group-count]",
+  );
+  const visibleEntryCount = document.querySelector<HTMLElement>(
+    "[data-toc-visible-entry-count]",
+  );
+  const tocProfile = document.querySelector<HTMLElement>("[data-toc-profile]");
+
+  const updateTocForAudience = (audience: Audience) => {
+    let visibleGroups = 0;
+    let visibleEntries = 0;
+
+    for (const group of tocGroups) {
+      const groupAudience = group.dataset.tocGroupAudience ?? "all";
+      const entries = Array.from(
+        group.querySelectorAll<HTMLElement>("[data-toc-entry]"),
+      );
+      const groupIsVisible = isChapterVisibleForAudience(
+        groupAudience === "gm" || groupAudience === "player"
+          ? groupAudience
+          : "all",
+        audience,
+      );
+
+      const visibleEntriesForGroup = entries.filter((entry) => {
+        const entryAudience = entry.dataset.tocEntryAudience;
+        const entryIsVisible =
+          groupIsVisible &&
+          isChapterVisibleForAudience(
+            entryAudience === "gm" || entryAudience === "player"
+              ? entryAudience
+              : "all",
+            audience,
+          );
+
+        entry.hidden = !entryIsVisible;
+        return entryIsVisible;
+      });
+
+      group.hidden = visibleEntriesForGroup.length === 0;
+
+      if (group.hidden) continue;
+
+      visibleGroups += 1;
+      visibleEntries += visibleEntriesForGroup.length;
+
+      const groupIndex = group.querySelector<HTMLElement>(
+        "[data-toc-group-index]",
+      );
+      if (groupIndex)
+        groupIndex.textContent = String(visibleGroups).padStart(2, "0");
+
+      visibleEntriesForGroup.forEach((entry, index) => {
+        const entryNumber = entry.querySelector<HTMLElement>(
+          "[data-toc-entry-number]",
+        );
+        if (entryNumber)
+          entryNumber.textContent = String(index + 1).padStart(2, "0");
+      });
+    }
+
+    if (visibleGroupCount)
+      visibleGroupCount.textContent = String(visibleGroups);
+    if (visibleEntryCount)
+      visibleEntryCount.textContent = String(visibleEntries);
+    if (tocProfile) {
+      tocProfile.textContent =
+        audience === "gm"
+          ? (tocProfile.dataset.tocGmLabel ?? "GM")
+          : (tocProfile.dataset.tocPlayerLabel ?? "Player");
+    }
+  };
+
+  updateTocForAudience(
+    getAudienceOrDefault(document.documentElement.dataset.audience),
+  );
+  document.addEventListener(AUDIENCE_CHANGE_EVENT, (event) => {
+    updateTocForAudience((event as CustomEvent<Audience>).detail);
+  });
 </script>
 
 <style>

@@ -3,6 +3,7 @@ import { render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import ChapterReader from "../../../components/reader/ChapterReader.astro";
 import ReaderMdxContent from "../../../components/reader/ReaderMdxContent.astro";
+import ReaderAudienceGate from "../../../components/reader/ReaderAudienceGate.astro";
 import ReaderBreadcrumb from "../../../components/reader/ReaderBreadcrumb.astro";
 import ReaderHeader from "../../../components/reader/ReaderHeader.astro";
 import ReaderGlossaryPopover from "../../../components/reader/ReaderGlossaryPopover.astro";
@@ -10,6 +11,7 @@ import ReaderBackToTop from "../../../components/reader/ReaderBackToTop.astro";
 import ShellHeaderControls from "../../../components/ui/ShellHeaderControls.astro";
 import {
   AUDIENCES,
+  DEFAULT_AUDIENCE,
   getLocaleOrDefault,
   LOCALES,
   type Locale,
@@ -17,13 +19,15 @@ import {
 import { getBookConfigEntryByLanguageAndBook } from "../../../lib/content/book-config";
 import { MVP_BOOK_ID } from "../../../lib/content/conventions";
 import {
-  getAdjacentChapterEntriesByLanguageAndBook,
   getChapterEntryByLanguageBookAndId,
   getChapterEntryByLanguageBookAndSlug,
   listChapterEntries,
   listOrderedChapterEntriesByLanguageAndBook,
 } from "../../../lib/content/chapters";
 import { buildLocalizedChapterHref } from "../../../lib/content/localization";
+import { buildChapterReaderHref } from "../../../lib/content/chapter-routes";
+import { getEffectiveChapterAudience } from "../../../lib/content/toc";
+import { isChapterVisibleForAudience } from "../../../lib/audience/chapter-visibility";
 import {
   getAudienceOptionsForReader,
   getReaderCopy,
@@ -32,7 +36,6 @@ import {
   buildReaderSidebarItems,
   normalizeReaderHeadings,
 } from "../../../lib/reader/headings";
-import { buildReaderAdjacentLink } from "../../../lib/reader/navigation";
 import type { ReaderChapterSummary } from "../../../lib/reader/types";
 import { listGlossaryEntriesByLanguage } from "../../../lib/glossary/entries";
 
@@ -80,27 +83,29 @@ const bookConfigEntry = await getBookConfigEntryByLanguageAndBook({
   book: MVP_BOOK_ID,
 });
 
-const adjacentChapterEntries = chapterEntry
-  ? await getAdjacentChapterEntriesByLanguageAndBook(
-      {
-        lang,
-        book: MVP_BOOK_ID,
-      },
-      chapterEntry.data.id,
-    )
-  : undefined;
-
 const orderedChapterEntries = chapterEntry
   ? await listOrderedChapterEntriesByLanguageAndBook({
       lang,
       book: MVP_BOOK_ID,
     })
   : [];
-const chapterPosition = chapterEntry
-  ? orderedChapterEntries.findIndex(
-      (entry) => entry.data.id === chapterEntry.data.id,
-    ) + 1
-  : undefined;
+const readerChapterEntries = orderedChapterEntries.map((entry) => ({
+  id: entry.data.id,
+  href: buildChapterReaderHref(lang, entry),
+  chapterTitle: entry.data.chapterTitle,
+  pageTitle: entry.data.pageTitle,
+  audience: getEffectiveChapterAudience(entry, bookConfigEntry),
+}));
+const initialVisibleChapterEntries = readerChapterEntries.filter((entry) =>
+  isChapterVisibleForAudience(entry.audience, DEFAULT_AUDIENCE),
+);
+const initialChapterIndex = chapterEntry
+  ? initialVisibleChapterEntries.findIndex(
+      (entry) => entry.id === chapterEntry.data.id,
+    )
+  : -1;
+const chapterPosition =
+  initialChapterIndex >= 0 ? initialChapterIndex + 1 : undefined;
 
 const chapter: ReaderChapterSummary | undefined = chapterEntry
   ? {
@@ -109,7 +114,9 @@ const chapter: ReaderChapterSummary | undefined = chapterEntry
       pageTitle: chapterEntry.data.pageTitle,
       summary: chapterEntry.data.summary,
       status: chapterEntry.data.status,
-      audience: chapterEntry.data.audience,
+      audience:
+        readerChapterEntries.find((entry) => entry.id === chapterEntry.data.id)
+          ?.audience ?? chapterEntry.data.audience,
     }
   : undefined;
 
@@ -119,11 +126,25 @@ const glossaryEntries = await listGlossaryEntriesByLanguage(lang);
 
 const readerHeadings = normalizeReaderHeadings(renderedChapter?.headings);
 const readerSidebarItems = buildReaderSidebarItems(readerHeadings);
-const previousChapter = adjacentChapterEntries?.previous
-  ? buildReaderAdjacentLink(lang, adjacentChapterEntries.previous)
+const initialPreviousChapter =
+  initialChapterIndex > 0
+    ? initialVisibleChapterEntries[initialChapterIndex - 1]
+    : undefined;
+const initialNextChapter =
+  initialChapterIndex >= 0
+    ? initialVisibleChapterEntries[initialChapterIndex + 1]
+    : undefined;
+const previousChapter = initialPreviousChapter
+  ? {
+      ...initialPreviousChapter,
+      chapterNumber: initialChapterIndex,
+    }
   : undefined;
-const nextChapter = adjacentChapterEntries?.next
-  ? buildReaderAdjacentLink(lang, adjacentChapterEntries.next)
+const nextChapter = initialNextChapter
+  ? {
+      ...initialNextChapter,
+      chapterNumber: initialChapterIndex + 2,
+    }
   : undefined;
 
 const copy = getReaderCopy(lang);
@@ -140,11 +161,31 @@ const pageTitle = chapter?.pageTitle ?? copy.title;
 const pageDescription = chapter?.summary ?? copy.description;
 const eyebrow = chapter
   ? lang === "pt-BR"
-    ? `Capítulo ${chapterPosition} de ${orderedChapterEntries.length} · ${chapter.chapterTitle}`
-    : `Chapter ${chapterPosition} of ${orderedChapterEntries.length} · ${chapter.chapterTitle}`
+    ? `Capítulo ${chapterPosition} de ${initialVisibleChapterEntries.length} · ${chapter.chapterTitle}`
+    : `Chapter ${chapterPosition} of ${initialVisibleChapterEntries.length} · ${chapter.chapterTitle}`
   : copy.eyebrow;
 const homeHref = `/${lang}/home/`;
 const tocHref = `/${lang}/book/`;
+const entryStateLabel =
+  lang === "pt-BR" ? "REGISTRO // ABERTO" : "ENTRY // OPEN";
+const readerAudienceGateCopy =
+  lang === "pt-BR"
+    ? {
+        label: "MESTRE // MODO DE LEITURA",
+        title: "Capítulo para Mestre",
+        body: "Este capítulo fica oculto enquanto o modo Jogador está ativo. Isso reduz spoilers durante a leitura, mas não protege o material publicado.",
+        switchLabel: "Abrir modo Mestre",
+      }
+    : {
+        label: "GM // READING MODE",
+        title: "GM-facing chapter",
+        body: "This chapter is hidden while Player reading mode is active. It reduces spoilers during reading, but does not protect published material.",
+        switchLabel: "Open facilitator mode",
+      };
+const eyebrowTemplate =
+  lang === "pt-BR"
+    ? "Capítulo {position} de {total} · {title}"
+    : "Chapter {position} of {total} · {title}";
 const glossaryCopy =
   lang === "pt-BR"
     ? {
@@ -180,86 +221,217 @@ const glossaryCopy =
     class="reader-page"
     aria-labelledby="reader-route-title"
     data-reader-locale={lang}
+    data-reader-page
+    data-reader-chapter-id={chapterEntry?.data.id}
+    data-reader-chapter-audience={chapter?.audience}
+    data-reader-chapters={JSON.stringify(readerChapterEntries)}
+    data-reader-eyebrow-template={eyebrowTemplate}
+    data-reader-chapter-label={copy.chapterLabel}
   >
-    <ReaderBreadcrumb
-      label={copy.breadcrumbLabel}
-      homeHref={homeHref}
-      homeLabel={copy.homeLabel}
-      tocHref={tocHref}
-      tocLabel={tocLabel}
-      currentPageLabel={chapter?.pageTitle}
+    <ReaderAudienceGate
+      {...readerAudienceGateCopy}
+      initiallyHidden={chapter?.audience !== "gm"}
     />
 
-    <ReaderHeader
-      title={chapter?.pageTitle ?? copy.heading}
-      eyebrow={eyebrow}
-      summary={chapter?.summary ?? copy.body}
-      tocHref={tocHref}
-      backToTocLabel={copy.backToTocLabel}
-    />
-
-    <ChapterReader
-      copy={copy}
-      hasContent={Boolean(ChapterContent)}
-      sidebarItems={readerSidebarItems}
-      previousChapter={previousChapter}
-      nextChapter={nextChapter}
-      previousChapterLabel={previousChapterLabel}
-      nextChapterLabel={nextChapterLabel}
+    <div
+      data-reader-chapter-visible-content
+      hidden={chapter?.audience === "gm"}
     >
-      {
-        ChapterContent && (
-          <Fragment slot="content">
-            <ReaderMdxContent Content={ChapterContent} />
-          </Fragment>
-        )
-      }
-
-      <ReaderGlossaryPopover
-        slot="reference"
-        lang={lang}
-        entries={glossaryEntries.map((entry) => ({
-          id: entry.data.id,
-          term: entry.data.term,
-          type:
-            lang === "pt-BR"
-              ? entry.data.type === "term"
-                ? "Termo"
-                : "Regra"
-              : entry.data.type === "term"
-                ? "Term"
-                : "Rule",
-          summary: entry.data.summary,
-        }))}
-        {...glossaryCopy}
+      <ReaderBreadcrumb
+        label={copy.breadcrumbLabel}
+        homeHref={homeHref}
+        homeLabel={copy.homeLabel}
+        tocHref={tocHref}
+        tocLabel={tocLabel}
+        currentPageLabel={chapter?.pageTitle}
       />
-    </ChapterReader>
 
-    <ReaderBackToTop
-      label={lang === "pt-BR" ? "Voltar ao topo" : "Back to top"}
-      targetId="reader-route-title"
-    />
+      <ReaderHeader
+        title={chapter?.pageTitle ?? copy.heading}
+        eyebrow={eyebrow}
+        summary={chapter?.summary ?? copy.body}
+        tocHref={tocHref}
+        backToTocLabel={copy.backToTocLabel}
+        entryStateLabel={entryStateLabel}
+      />
+
+      <ChapterReader
+        copy={copy}
+        hasContent={Boolean(ChapterContent)}
+        sidebarItems={readerSidebarItems}
+        previousChapter={previousChapter}
+        nextChapter={nextChapter}
+        previousChapterLabel={previousChapterLabel}
+        nextChapterLabel={nextChapterLabel}
+      >
+        {
+          ChapterContent && (
+            <Fragment slot="content">
+              <ReaderMdxContent Content={ChapterContent} />
+            </Fragment>
+          )
+        }
+
+        <ReaderGlossaryPopover
+          slot="reference"
+          lang={lang}
+          entries={glossaryEntries.map((entry) => ({
+            id: entry.data.id,
+            term: entry.data.term,
+            type:
+              lang === "pt-BR"
+                ? entry.data.type === "term"
+                  ? "Termo"
+                  : "Regra"
+                : entry.data.type === "term"
+                  ? "Term"
+                  : "Rule",
+            summary: entry.data.summary,
+          }))}
+          {...glossaryCopy}
+        />
+      </ChapterReader>
+
+      <ReaderBackToTop
+        label={lang === "pt-BR" ? "Voltar ao topo" : "Back to top"}
+        targetId="reader-route-title"
+      />
+    </div>
   </section>
 
   <script>
-    import { initAudienceSwitchers } from "../../../lib/audience/audience-switcher";
+    import {
+      AUDIENCE_CHANGE_EVENT,
+      initAudienceSwitchers,
+    } from "../../../lib/audience/audience-switcher";
+    import { isChapterVisibleForAudience } from "../../../lib/audience/chapter-visibility";
     import { rememberLastReaderPath } from "../../../lib/reader/last-reader";
     import { initThemeSwitchers } from "../../../lib/theme/theme-switcher";
-    import { getLocaleOrDefault } from "../../../config/site";
+    import {
+      getAudienceOrDefault,
+      getLocaleOrDefault,
+      type Audience,
+    } from "../../../config/site";
 
     initAudienceSwitchers();
     initThemeSwitchers();
 
-    const readerLocale = document.querySelector<HTMLElement>(
-      "[data-reader-locale]",
-    )?.dataset.readerLocale;
-
-    if (readerLocale) {
-      rememberLastReaderPath(
-        getLocaleOrDefault(readerLocale),
-        window.location.pathname,
-      );
+    interface ReaderChapterEntry {
+      id: string;
+      href: string;
+      chapterTitle: string;
+      pageTitle: string;
+      audience: "all" | Audience;
     }
+
+    const readerPage =
+      document.querySelector<HTMLElement>("[data-reader-page]");
+    const readerContent = readerPage?.querySelector<HTMLElement>(
+      "[data-reader-chapter-visible-content]",
+    );
+    const readerGate = readerPage?.querySelector<HTMLElement>(
+      "[data-reader-audience-gate]",
+    );
+    const readerGateSwitch = readerGate?.querySelector<HTMLButtonElement>(
+      "[data-reader-switch-audience]",
+    );
+    const readerChapters = JSON.parse(
+      readerPage?.dataset.readerChapters ?? "[]",
+    ) as ReaderChapterEntry[];
+
+    const updateReaderChapterNavigation = (
+      visibleChapters: ReaderChapterEntry[],
+      currentIndex: number,
+    ) => {
+      const navigation = readerPage?.querySelector<HTMLElement>(
+        "[data-reader-chapter-nav]",
+      );
+      const chapterLabel = readerPage?.dataset.readerChapterLabel ?? "Chapter";
+
+      if (!navigation || currentIndex < 0) return;
+
+      (
+        Object.entries({
+          previous: visibleChapters[currentIndex - 1],
+          next: visibleChapters[currentIndex + 1],
+        }) as Array<["previous" | "next", ReaderChapterEntry | undefined]>
+      ).forEach(([direction, chapter]) => {
+        const link = navigation.querySelector<HTMLAnchorElement>(
+          `[data-reader-nav-link="${direction}"]`,
+        );
+        const empty = navigation.querySelector<HTMLElement>(
+          `[data-reader-nav-empty="${direction}"]`,
+        );
+
+        if (link) link.hidden = !chapter;
+        if (empty) empty.hidden = Boolean(chapter);
+        if (!chapter || !link) return;
+
+        link.href = chapter.href;
+        const title = link.querySelector<HTMLElement>(
+          "[data-reader-nav-title]",
+        );
+        const context = link.querySelector<HTMLElement>(
+          "[data-reader-nav-context]",
+        );
+
+        if (title) title.textContent = chapter.pageTitle;
+        if (context) {
+          const chapterPosition = visibleChapters.indexOf(chapter) + 1;
+          context.textContent = `${chapterLabel} ${chapterPosition} · ${chapter.chapterTitle}`;
+        }
+      });
+    };
+
+    const updateReaderForAudience = (audience: Audience) => {
+      const currentChapterId = readerPage?.dataset.readerChapterId;
+      const visibleChapters = readerChapters.filter((chapter) =>
+        isChapterVisibleForAudience(chapter.audience, audience),
+      );
+      const currentIndex = visibleChapters.findIndex(
+        (chapter) => chapter.id === currentChapterId,
+      );
+      const chapterIsVisible = currentIndex >= 0;
+
+      if (readerContent) readerContent.hidden = !chapterIsVisible;
+      if (readerGate) readerGate.hidden = chapterIsVisible;
+      if (!chapterIsVisible) return;
+
+      const currentChapter = visibleChapters[currentIndex];
+      const eyebrow = readerPage?.querySelector<HTMLElement>(
+        "[data-reader-chapter-eyebrow]",
+      );
+      const eyebrowTemplate = readerPage?.dataset.readerEyebrowTemplate;
+
+      if (eyebrow && eyebrowTemplate) {
+        eyebrow.textContent = eyebrowTemplate
+          .replace("{position}", String(currentIndex + 1))
+          .replace("{total}", String(visibleChapters.length))
+          .replace("{title}", currentChapter.chapterTitle);
+      }
+
+      updateReaderChapterNavigation(visibleChapters, currentIndex);
+
+      const readerLocale = readerPage?.dataset.readerLocale;
+      if (readerLocale) {
+        rememberLastReaderPath(
+          getLocaleOrDefault(readerLocale),
+          window.location.pathname,
+        );
+      }
+    };
+
+    updateReaderForAudience(
+      getAudienceOrDefault(document.documentElement.dataset.audience),
+    );
+    document.addEventListener(AUDIENCE_CHANGE_EVENT, (event) => {
+      updateReaderForAudience((event as CustomEvent<Audience>).detail);
+    });
+    readerGateSwitch?.addEventListener("click", () => {
+      document
+        .querySelector<HTMLButtonElement>("[data-audience-option=gm]")
+        ?.click();
+    });
   </script>
 </BaseLayout>
 

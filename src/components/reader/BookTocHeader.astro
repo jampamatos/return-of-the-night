@@ -3,13 +3,16 @@ interface Props {
   title: string;
   subtitle?: string;
   tocLabel: string;
+  indexLabel: string;
+  archiveLabel: string;
 }
 
-const { title, subtitle, tocLabel } = Astro.props as Props;
+const { title, subtitle, tocLabel, indexLabel, archiveLabel } =
+  Astro.props as Props;
 ---
 
-<header class="book-toc-header">
-  <p class="book-toc-header__eyebrow">{tocLabel}</p>
+<header class="book-toc-header" data-archive-label={archiveLabel}>
+  <p class="book-toc-header__eyebrow">{indexLabel} // {tocLabel}</p>
   <h1 id="book-toc-title">{title}</h1>
 
   {subtitle && <p class="book-toc-header__subtitle">{subtitle}</p>}
@@ -17,9 +20,21 @@ const { title, subtitle, tocLabel } = Astro.props as Props;
 
 <style>
   .book-toc-header {
+    position: relative;
     max-width: 46rem;
-    padding-bottom: var(--space-4);
+    padding: var(--space-4) 0 var(--space-5);
     border-bottom: 1px solid var(--border-color);
+  }
+
+  .book-toc-header::after {
+    content: attr(data-archive-label);
+    position: absolute;
+    right: 0;
+    bottom: var(--space-2);
+    color: var(--border-color-strong);
+    font-family: var(--font-ui);
+    font-size: 0.58rem;
+    letter-spacing: 0.13em;
   }
 
   .book-toc-header__eyebrow {
@@ -34,7 +49,18 @@ const { title, subtitle, tocLabel } = Astro.props as Props;
 
   .book-toc-header__subtitle {
     margin-bottom: 0;
-    font-size: 1.1rem;
+    max-width: 40rem;
+    font-size: 1.06rem;
+    line-height: 1.55;
+  }
+
+  .book-toc-header h1 {
+    max-width: 11ch;
+    font-size: clamp(3.4rem, 2.15rem + 4.6vw, 6.3rem);
+    font-weight: 700;
+    letter-spacing: 0.015em;
+    line-height: 0.86;
+    text-transform: uppercase;
   }
 
   @media (max-width: 40rem) {
@@ -49,6 +75,10 @@ const { title, subtitle, tocLabel } = Astro.props as Props;
 
     .book-toc-header__subtitle {
       font-size: 1rem;
+    }
+
+    .book-toc-header::after {
+      display: none;
     }
   }
 </style>

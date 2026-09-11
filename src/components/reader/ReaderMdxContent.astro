@@ -23,46 +23,88 @@ const readerMdxComponents = {
 
 <style>
   :global(.reader-callout) {
+    position: relative;
     display: grid;
     gap: var(--space-2);
     width: 100%;
     margin-block: var(--space-5);
-    padding: var(--space-4);
+    padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
     border: 1px solid var(--reader-callout-border, var(--border-color));
-    border-left-width: 0.35rem;
-    border-radius: var(--radius-sm);
+    border-left-width: 0.45rem;
+    border-radius: 0;
     background: var(--reader-callout-background, rgba(10, 15, 20, 0.34));
+  }
+
+  :global(.reader-callout::before) {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 2.25rem;
+    height: 0.24rem;
+    background: var(--reader-callout-accent, var(--accent-primary));
   }
 
   :global(.reader-callout--note) {
     --reader-callout-accent: var(--accent-primary);
-    --reader-callout-background: rgba(34, 211, 238, 0.07);
-    --reader-callout-border: rgba(34, 211, 238, 0.34);
+    --reader-callout-contrast: var(--accent-primary-contrast);
+    --reader-callout-background: color-mix(
+      in srgb,
+      var(--accent-primary) 9%,
+      transparent
+    );
+    --reader-callout-border: color-mix(
+      in srgb,
+      var(--accent-primary) 42%,
+      var(--border-color)
+    );
   }
 
   :global(.reader-callout--warning) {
     --reader-callout-accent: var(--accent-warning);
-    --reader-callout-background: rgba(250, 204, 21, 0.08);
-    --reader-callout-border: rgba(250, 204, 21, 0.38);
+    --reader-callout-contrast: var(--accent-warning-contrast);
+    --reader-callout-background: color-mix(
+      in srgb,
+      var(--accent-warning) 11%,
+      transparent
+    );
+    --reader-callout-border: color-mix(
+      in srgb,
+      var(--accent-warning) 48%,
+      var(--border-color)
+    );
   }
 
   :global(.reader-callout--example) {
     --reader-callout-accent: var(--accent-secondary);
-    --reader-callout-background: rgba(247, 37, 133, 0.07);
-    --reader-callout-border: rgba(247, 37, 133, 0.32);
+    --reader-callout-contrast: var(--accent-secondary-contrast);
+    --reader-callout-background: color-mix(
+      in srgb,
+      var(--accent-secondary) 9%,
+      transparent
+    );
+    --reader-callout-border: color-mix(
+      in srgb,
+      var(--accent-secondary) 44%,
+      var(--border-color)
+    );
   }
 
   :global(.reader-callout > * + *) {
     margin-top: 0;
   }
 
-  :global(.reader-callout__label) {
+  :global(.site-main__inner .reader-callout__label) {
+    width: fit-content;
     margin: 0;
-    color: var(--reader-callout-accent, var(--accent-primary));
+    padding: 0.18rem 0.48rem;
+    border: 1px solid var(--reader-callout-accent, var(--accent-primary));
+    color: var(--reader-callout-contrast, var(--accent-primary-contrast));
+    background: var(--reader-callout-accent, var(--accent-primary));
     font-family: var(--font-ui);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
     line-height: 1.15;
     text-transform: uppercase;
   }
@@ -72,14 +114,48 @@ const readerMdxComponents = {
   }
 
   :global(.reader-audience) {
+    --reader-audience-accent: var(--accent-player);
+    --reader-audience-contrast: var(--accent-player-contrast);
+    --reader-audience-background: color-mix(
+      in srgb,
+      var(--accent-player) 9%,
+      transparent
+    );
+    position: relative;
     display: grid;
     gap: var(--space-3);
     width: 100%;
     margin-block: var(--space-5);
-    padding: var(--space-4);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 15, 20, 0.24);
+    padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
+    border: 1px solid var(--border-color-strong);
+    border-left: 0.45rem solid var(--reader-audience-accent);
+    border-radius: 0;
+    background: var(--reader-audience-background);
+  }
+
+  :global(.reader-audience--gm) {
+    --reader-audience-accent: var(--accent-secondary);
+    --reader-audience-contrast: var(--accent-secondary-contrast);
+    --reader-audience-background: color-mix(
+      in srgb,
+      var(--accent-secondary) 8%,
+      transparent
+    );
+  }
+
+  :global(.site-main__inner .reader-audience__label) {
+    width: fit-content;
+    margin: 0;
+    padding: 0.15rem 0.42rem;
+    border: 1px solid var(--reader-audience-accent);
+    color: var(--reader-audience-contrast);
+    background: var(--reader-audience-accent);
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
   }
 
   :global(.reader-audience > * + *) {

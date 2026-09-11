@@ -59,6 +59,8 @@ const pageCopy = {
     heading: "Return of the Night",
     body: "Browse the current core book structure and choose where to start reading.",
     tocLabel: "Table of Contents",
+    indexLabel: "Index",
+    archiveLabel: "Public archive",
     emptyStateTitle: "No chapters available yet",
     emptyStateBody:
       "This book does not have chapter entries for the current language yet.",
@@ -86,6 +88,8 @@ const pageCopy = {
     heading: "Return of the Night",
     body: "Explore a estrutura atual do livro principal e escolha por onde começar a leitura.",
     tocLabel: "Sumário",
+    indexLabel: "Índice",
+    archiveLabel: "Arquivo público",
     emptyStateTitle: "Ainda não há capítulos disponíveis",
     emptyStateBody: "Este livro ainda não tem capítulos para o idioma atual.",
     emptyGroupLabel: "Ainda não há entradas disponíveis nesta seção.",
@@ -141,6 +145,8 @@ const audienceOptions = AUDIENCES.map((audience) => ({
     bookTitle={bookTitle}
     bookSubtitle={bookSubtitle}
     tocLabel={tocLabel}
+    indexLabel={copy.indexLabel}
+    archiveLabel={copy.archiveLabel}
     groups={tocGroups}
     audienceLabels={audienceLabels[lang]}
     emptyStateTitle={copy.emptyStateTitle}

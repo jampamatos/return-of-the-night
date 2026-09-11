@@ -25,17 +25,60 @@ function getAudienceTarget(node) {
   return target;
 }
 
+function getTextContent(node) {
+  if (node?.type === "text") return node.value;
+  if (!Array.isArray(node?.children)) return "";
+
+  return node.children.map((child) => getTextContent(child)).join("");
+}
+
+function getAudienceLabel(node, target) {
+  const firstChild = node.children?.[0];
+
+  if (!firstChild?.data?.directiveLabel) {
+    return {
+      children: [{ type: "text", value: target.toUpperCase() }],
+      text: target.toUpperCase(),
+    };
+  }
+
+  node.children.shift();
+
+  return {
+    children: firstChild.children ?? [
+      { type: "text", value: target.toUpperCase() },
+    ],
+    text: getTextContent(firstChild).trim() || target.toUpperCase(),
+  };
+}
+
 function transformAudienceDirective(node) {
   const target = getAudienceTarget(node);
 
   if (!target) return;
+
+  const label = getAudienceLabel(node, target);
+
+  node.children = [
+    {
+      type: "paragraph",
+      data: {
+        hName: "p",
+        hProperties: {
+          className: ["reader-audience__label"],
+        },
+      },
+      children: label.children,
+    },
+    ...(node.children ?? []),
+  ];
 
   node.data = {
     ...node.data,
     hName: "section",
     hProperties: {
       ...node.data?.hProperties,
-      "aria-label": AUDIENCE_LABELS[target],
+      "aria-label": `${AUDIENCE_LABELS[target]}: ${label.text}`,
       className: ["reader-audience", `reader-audience--${target}`],
       "data-reader-audience": target,
       "data-reader-rich-content": "audience",

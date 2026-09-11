@@ -99,11 +99,11 @@ The reader transforms supported `note`, `warning`, and `example` directives into
 Audience-filtered content uses directive-style Markdown blocks with an explicit `target` attribute:
 
 ```md
-:::audience{target="player"}
+:::audience[PLAYER // Public reading]{target="player"}
 Player-mode content goes here.
 :::
 
-:::audience{target="gm"}
+:::audience[GM // Facilitator reading]{target="gm"}
 GM-mode content goes here.
 :::
 ```

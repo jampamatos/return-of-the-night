@@ -63,12 +63,18 @@ const { label, targetId } = Astro.props as Props;
     min-height: 2.75rem;
     padding: 0.65rem 0.9rem;
     border: 1px solid var(--accent-primary);
-    border-radius: 999px;
-    background: var(--surface-background-strong);
+    border-radius: 0;
+    background: color-mix(
+      in srgb,
+      var(--surface-background-strong) 90%,
+      transparent
+    );
     color: var(--heading-color);
     box-shadow: var(--shadow-soft), var(--shadow-glow);
     font-family: var(--font-ui);
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   @media (max-width: 40rem) {

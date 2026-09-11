@@ -24,48 +24,58 @@ const {
 } = Astro.props as Props;
 ---
 
-<footer class="reader-chapter-nav" aria-label={label}>
-  {
-    previousChapter ? (
-      <a
-        class="reader-chapter-nav__link reader-chapter-nav__link--previous"
-        href={previousChapter.href}
-      >
-        <span class="reader-chapter-nav__kicker">{previousChapterLabel}</span>
-        <span class="reader-chapter-nav__title">
-          {previousChapter.pageTitle}
-        </span>
-        <span class="reader-chapter-nav__context">
-          {`${chapterLabel} ${previousChapter.chapterNumber} · ${previousChapter.chapterTitle}`}
-        </span>
-      </a>
-    ) : (
-      <p class="reader-chapter-nav__empty">
-        <span class="reader-chapter-nav__kicker">{previousChapterLabel}</span>
-        <span>{previousChapterUnavailableLabel}</span>
-      </p>
-    )
-  }
+<footer class="reader-chapter-nav" aria-label={label} data-reader-chapter-nav>
+  <a
+    class="reader-chapter-nav__link reader-chapter-nav__link--previous"
+    href={previousChapter?.href}
+    data-reader-nav-link="previous"
+    hidden={!previousChapter}
+  >
+    <span class="reader-chapter-nav__kicker">{previousChapterLabel}</span>
+    <span class="reader-chapter-nav__title" data-reader-nav-title>
+      {previousChapter?.pageTitle}
+    </span>
+    <span class="reader-chapter-nav__context" data-reader-nav-context>
+      {
+        previousChapter &&
+          `${chapterLabel} ${previousChapter.chapterNumber} · ${previousChapter.chapterTitle}`
+      }
+    </span>
+  </a>
+  <p
+    class="reader-chapter-nav__empty"
+    data-reader-nav-empty="previous"
+    hidden={Boolean(previousChapter)}
+  >
+    <span class="reader-chapter-nav__kicker">{previousChapterLabel}</span>
+    <span>{previousChapterUnavailableLabel}</span>
+  </p>
 
-  {
-    nextChapter ? (
-      <a
-        class="reader-chapter-nav__link reader-chapter-nav__link--next"
-        href={nextChapter.href}
-      >
-        <span class="reader-chapter-nav__kicker">{nextChapterLabel}</span>
-        <span class="reader-chapter-nav__title">{nextChapter.pageTitle}</span>
-        <span class="reader-chapter-nav__context">
-          {`${chapterLabel} ${nextChapter.chapterNumber} · ${nextChapter.chapterTitle}`}
-        </span>
-      </a>
-    ) : (
-      <p class="reader-chapter-nav__empty">
-        <span class="reader-chapter-nav__kicker">{nextChapterLabel}</span>
-        <span>{nextChapterUnavailableLabel}</span>
-      </p>
-    )
-  }
+  <a
+    class="reader-chapter-nav__link reader-chapter-nav__link--next"
+    href={nextChapter?.href}
+    data-reader-nav-link="next"
+    hidden={!nextChapter}
+  >
+    <span class="reader-chapter-nav__kicker">{nextChapterLabel}</span>
+    <span class="reader-chapter-nav__title" data-reader-nav-title>
+      {nextChapter?.pageTitle}
+    </span>
+    <span class="reader-chapter-nav__context" data-reader-nav-context>
+      {
+        nextChapter &&
+          `${chapterLabel} ${nextChapter.chapterNumber} · ${nextChapter.chapterTitle}`
+      }
+    </span>
+  </a>
+  <p
+    class="reader-chapter-nav__empty"
+    data-reader-nav-empty="next"
+    hidden={Boolean(nextChapter)}
+  >
+    <span class="reader-chapter-nav__kicker">{nextChapterLabel}</span>
+    <span>{nextChapterUnavailableLabel}</span>
+  </p>
 </footer>
 
 <style>
@@ -90,6 +100,11 @@ const {
     background: transparent;
     color: var(--muted-text-color);
     text-decoration: none;
+  }
+
+  .reader-chapter-nav__link[hidden],
+  .reader-chapter-nav__empty[hidden] {
+    display: none;
   }
 
   .reader-chapter-nav__link:hover {

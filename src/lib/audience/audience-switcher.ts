@@ -6,6 +6,7 @@ import {
 
 const AUDIENCE_SELECTOR = "[data-audience-selector]";
 const AUDIENCE_OPTION_SELECTOR = "[data-audience-option]";
+export const AUDIENCE_CHANGE_EVENT = "rotn:audience-change";
 
 function applyAudience(buttons: HTMLButtonElement[], value: Audience): void {
   buttons.forEach((button) => {
@@ -17,6 +18,9 @@ function applyAudience(buttons: HTMLButtonElement[], value: Audience): void {
   });
 
   document.documentElement.dataset.audience = value;
+  document.dispatchEvent(
+    new CustomEvent<Audience>(AUDIENCE_CHANGE_EVENT, { detail: value }),
+  );
 }
 
 export function initAudienceSwitchers(root: ParentNode = document): void {

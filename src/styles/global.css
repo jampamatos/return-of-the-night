@@ -11,15 +11,15 @@
   --font-ui:
     "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --font-display:
-    "Space Grotesk", Inter, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+    "Big Shoulders Display", Impact, Haettenschweiler, "Arial Narrow Bold",
+    sans-serif;
 
-  --page-background: #0a0f14;
-  --page-background-elevated: #111827;
-  --surface-background: #161b22;
-  --surface-background-strong: #1f2937;
-  --shell-header-background: rgba(10, 15, 20, 0.78);
-  --shell-panel-background: rgba(22, 27, 34, 0.82);
+  --page-background: #060b11;
+  --page-background-elevated: #0d161d;
+  --surface-background: #111c22;
+  --surface-background-strong: #17262e;
+  --shell-header-background: rgba(6, 11, 17, 0.9);
+  --shell-panel-background: rgba(13, 22, 29, 0.9);
 
   --control-background: rgba(31, 41, 55, 0.82);
   --control-background-hover: rgba(56, 189, 248, 0.14);
@@ -27,18 +27,23 @@
   --control-border-color: rgba(216, 225, 234, 0.18);
   --control-text-color: var(--text-color);
 
-  --text-color: #f5f7fa;
-  --muted-text-color: #d8e1ea;
+  --text-color: #f2f7f6;
+  --muted-text-color: #bfccd0;
   --heading-color: #ffffff;
 
-  --border-color: rgba(216, 225, 234, 0.16);
-  --border-color-strong: rgba(216, 225, 234, 0.28);
+  --border-color: rgba(191, 204, 208, 0.2);
+  --border-color-strong: rgba(191, 204, 208, 0.38);
 
   --accent-primary: #22d3ee;
   --accent-primary-strong: #38bdf8;
   --accent-secondary: #f72585;
   --accent-warning: #facc15;
+  --accent-player: #a3e635;
   --accent-danger: #ef4444;
+  --accent-primary-contrast: #06151a;
+  --accent-secondary-contrast: #220712;
+  --accent-warning-contrast: #241d00;
+  --accent-player-contrast: #172107;
 
   --link-color: var(--accent-primary);
   --focus-ring-color: var(--accent-primary-strong);
@@ -73,25 +78,25 @@
 :root[data-theme="light"] {
   color-scheme: light;
 
-  --page-background: #f3f5f7;
-  --page-background-elevated: #e8edf2;
-  --surface-background: #ffffff;
-  --surface-background-strong: #d7dee7;
-  --shell-header-background: rgba(243, 245, 247, 0.84);
-  --shell-panel-background: rgba(255, 255, 255, 0.9);
+  --page-background: #e7edef;
+  --page-background-elevated: #d7e1e5;
+  --surface-background: #f7faf9;
+  --surface-background-strong: #cbd7dc;
+  --shell-header-background: rgba(231, 237, 239, 0.94);
+  --shell-panel-background: rgba(247, 250, 249, 0.96);
 
   --control-background: rgba(232, 237, 242, 0.88);
   --control-background-hover: rgba(8, 145, 178, 0.1);
   --control-background-active: rgba(8, 145, 178, 0.16);
-  --control-border-color: rgba(17, 24, 39, 0.14);
+  --control-border-color: rgba(8, 27, 38, 0.28);
   --control-text-color: var(--text-color);
 
-  --text-color: #111827;
-  --muted-text-color: #334155;
-  --heading-color: #0f172a;
+  --text-color: #081b26;
+  --muted-text-color: #274451;
+  --heading-color: #06161f;
 
-  --border-color: rgba(17, 24, 39, 0.12);
-  --border-color-strong: rgba(17, 24, 39, 0.24);
+  --border-color: rgba(8, 27, 38, 0.22);
+  --border-color-strong: rgba(8, 27, 38, 0.42);
 
   --link-color: #0891b2;
   --focus-ring-color: #0284c7;
@@ -110,29 +115,34 @@
   color-scheme: light;
 
   --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --page-background: #e9dfc9;
-  --page-background-elevated: #dfd1b6;
-  --surface-background: #fbf4e5;
-  --surface-background-strong: #f3e8d3;
-  --shell-header-background: rgba(245, 236, 217, 0.9);
-  --shell-panel-background: rgba(251, 244, 229, 0.94);
+  --page-background: #ded1b8;
+  --page-background-elevated: #d0bea1;
+  --surface-background: #f5ecd9;
+  --surface-background-strong: #e9d9bc;
+  --shell-header-background: rgba(245, 236, 217, 0.96);
+  --shell-panel-background: rgba(245, 236, 217, 0.98);
 
   --control-background: rgba(238, 225, 201, 0.9);
   --control-background-hover: rgba(126, 81, 42, 0.1);
   --control-background-active: rgba(126, 81, 42, 0.16);
   --control-border-color: rgba(68, 44, 27, 0.22);
 
-  --text-color: #31251d;
-  --muted-text-color: #594638;
-  --heading-color: #241b15;
+  --text-color: #211a15;
+  --muted-text-color: #49382c;
+  --heading-color: #160f0b;
 
-  --border-color: rgba(68, 44, 27, 0.18);
-  --border-color-strong: rgba(68, 44, 27, 0.32);
+  --border-color: rgba(48, 32, 21, 0.26);
+  --border-color-strong: rgba(48, 32, 21, 0.46);
 
   --accent-primary: #8b5e34;
   --accent-primary-strong: #6f421f;
   --accent-secondary: #9d3a5a;
   --accent-warning: #9a6b13;
+  --accent-player: #617129;
+  --accent-primary-contrast: #fff7ed;
+  --accent-secondary-contrast: #fff7f2;
+  --accent-warning-contrast: #fff8e8;
+  --accent-player-contrast: #ffffff;
   --link-color: #77461f;
   --focus-ring-color: #6f421f;
   --selection-background: rgba(157, 114, 60, 0.25);
@@ -167,8 +177,8 @@ html {
 
 html[data-theme="light"] {
   background:
-    linear-gradient(90deg, rgba(8, 145, 178, 0.08), transparent 18rem),
-    linear-gradient(180deg, rgba(15, 23, 42, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.14), transparent 18rem),
+    linear-gradient(180deg, rgba(8, 27, 38, 0.055) 1px, transparent 1px),
     var(--page-background);
   background-size:
     auto,
@@ -178,8 +188,8 @@ html[data-theme="light"] {
 
 html[data-theme="paper"] {
   background:
-    linear-gradient(rgba(117, 81, 45, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(117, 81, 45, 0.025) 1px, transparent 1px),
+    linear-gradient(rgba(48, 32, 21, 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(48, 32, 21, 0.05) 1px, transparent 1px),
     var(--page-background);
   background-size: 1.25rem 1.25rem;
 }
@@ -250,6 +260,33 @@ textarea {
 
 button {
   cursor: pointer;
+}
+
+@media (any-pointer: fine) {
+  html {
+    cursor:
+      url("/images/rotn-cursor.svg") 3 2,
+      auto;
+  }
+
+  a,
+  button:not(:disabled),
+  [role="button"],
+  label[for],
+  select,
+  summary {
+    cursor:
+      url("/images/rotn-cursor.svg") 3 2,
+      pointer;
+  }
+
+  input:not([type="button"]):not([type="checkbox"]):not([type="radio"]):not(
+      [type="submit"]
+    ),
+  textarea,
+  [contenteditable="true"] {
+    cursor: text;
+  }
 }
 
 ::selection {

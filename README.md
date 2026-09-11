@@ -11,7 +11,7 @@ The current codebase is a plain Astro application with a cover-first entry, a lo
 - The route `/{lang}/` is the visual cover: localized language and audience choices lead into the project.
 - The route `/{lang}/home/` is the project Home. It has placeholders for the public project explanation, news, discussion/comments, contribution, and future support; its book CTA resumes the last local chapter when possible, otherwise it opens the Table of Contents.
 - Chapter locale switching resolves the equivalent localized chapter by its shared logical ID, so each locale can use its own natural slug. When a counterpart is missing, it opens a localized Table-of-Contents fallback state rather than a broken route.
-- The audience preference persists in `localStorage` under the approved key `rotn:audience`.
+- The audience preference persists in `localStorage` under the approved key `rotn:audience`. Player mode omits GM-facing chapters and groups from the visible Table of Contents, dynamically renumbers the remaining entries, and gates direct GM chapter routes; GM mode includes both audiences. This remains spoiler etiquette, not access control.
 - Dark and light reading themes persist locally across the site. The Paper theme also persists, but is available only on the Table of Contents, chapter reader, and glossary.
 - The root route `/` redirects to the current default locale, `en`.
 - The project registers Astro content collections for `chapters`, `glossary`, and `book-config` in [`src/content.config.ts`](src/content.config.ts).

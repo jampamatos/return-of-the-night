@@ -36,6 +36,7 @@
       "label": "GM Toolkit",
       "description": "Preparation-facing placeholders for running the setting.",
       "order": 3,
+      "audience": "gm",
       "chapterNumbers": [7, 8]
     },
     {

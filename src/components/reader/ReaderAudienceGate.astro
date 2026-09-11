@@ -1,0 +1,87 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  body: string;
+  switchLabel: string;
+  initiallyHidden?: boolean;
+}
+
+const {
+  label,
+  title,
+  body,
+  switchLabel,
+  initiallyHidden = false,
+} = Astro.props as Props;
+---
+
+<aside
+  class="reader-audience-gate"
+  data-reader-audience-gate
+  hidden={initiallyHidden}
+>
+  <p>{label}</p>
+  <h2>{title}</h2>
+  <p>{body}</p>
+  <button type="button" data-reader-switch-audience="gm">
+    {switchLabel}
+  </button>
+</aside>
+
+<style>
+  .reader-audience-gate {
+    display: grid;
+    max-width: 46rem;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--accent-secondary);
+    border-left: 0.45rem solid var(--accent-secondary);
+    background: color-mix(
+      in srgb,
+      var(--accent-secondary) 9%,
+      var(--surface-background)
+    );
+  }
+
+  .reader-audience-gate[hidden] {
+    display: none;
+  }
+
+  .reader-audience-gate > * {
+    margin: 0;
+  }
+
+  .reader-audience-gate > p:first-child {
+    width: fit-content;
+    padding: 0.18rem 0.48rem;
+    color: var(--accent-secondary-contrast);
+    background: var(--accent-secondary);
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .reader-audience-gate h2 {
+    font-size: clamp(1.5rem, 1.15rem + 1vw, 2.2rem);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  .reader-audience-gate button {
+    width: fit-content;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--accent-secondary);
+    color: var(--accent-secondary-contrast);
+    background: var(--accent-secondary);
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+</style>
