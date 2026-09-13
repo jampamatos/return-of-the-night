@@ -100,7 +100,7 @@ const {
     margin-bottom: 0;
   }
 
-  .chapter-reader__content :global(* + *) {
+  .chapter-reader__content > :global(* + *) {
     margin-top: var(--space-4);
   }
 
@@ -118,6 +118,13 @@ const {
   .chapter-reader__content :global(li) {
     font-size: clamp(1.05rem, 1rem + 0.2vw, 1.16rem);
     line-height: 1.72;
+    text-align: left;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  .chapter-reader__content :global(p) {
+    white-space: pre-line;
   }
 
   .chapter-reader__content :global(h2) {

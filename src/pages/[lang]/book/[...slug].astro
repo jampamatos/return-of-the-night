@@ -38,6 +38,7 @@ import {
 } from "../../../lib/reader/headings";
 import type { ReaderChapterSummary } from "../../../lib/reader/types";
 import { listGlossaryEntriesByLanguage } from "../../../lib/glossary/entries";
+import { getGlossaryTypeLabel } from "../../../lib/glossary/types";
 
 export async function getStaticPaths() {
   const chapterEntries = await listChapterEntries();
@@ -278,14 +279,7 @@ const glossaryCopy =
           entries={glossaryEntries.map((entry) => ({
             id: entry.data.id,
             term: entry.data.term,
-            type:
-              lang === "pt-BR"
-                ? entry.data.type === "term"
-                  ? "Termo"
-                  : "Regra"
-                : entry.data.type === "term"
-                  ? "Term"
-                  : "Rule",
+            type: getGlossaryTypeLabel(entry.data.type, lang),
             summary: entry.data.summary,
           }))}
           {...glossaryCopy}

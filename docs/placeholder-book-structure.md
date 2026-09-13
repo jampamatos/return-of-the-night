@@ -1,32 +1,25 @@
-# Bilingual Placeholder Book Structure
+# Current Book Content
 
 ## Purpose
 
-This document defines the complete temporary content map used to validate the reader before final book prose is written.
+This document describes the content contract while _Return of the Night_ is actively being written.
 
-Every chapter and glossary entry is a **placeholder**, not finished canon. Book prose is written in PT-BR first and translated to English in the same change. The two localized entries use the same logical ID, order, audience, status, and intended document role; their visible labels and slugs are localized.
+The final chapter count and sequence are deliberately not fixed. Book prose is written in PT-BR first and translated to English in the same change. The two localized entries use the same logical ID, order, audience, status, and intended document role; their visible labels and slugs are localized.
 
-## Chapter map
+## Current chapter draft
 
-| Number | Stable ID                     | EN page title               | PT-BR page title                | Audience | Purpose                                          |
-| ------ | ----------------------------- | --------------------------- | ------------------------------- | -------- | ------------------------------------------------ |
-| 0      | `how-to-read-this-book`       | How to Read This Book       | Como Ler Este Livro             | All      | Reader and rich-content fixture.                 |
-| 1      | `the-world-under-endless-day` | The World Under Endless Day | O Mundo sob o Dia Infinito      | All      | Public premise and setting vocabulary.           |
-| 2      | `characters-at-the-threshold` | Characters at the Threshold | Personagens no Limiar           | Player   | Character-facing setting choices.                |
-| 3      | `the-shape-of-play`           | The Shape of Play           | A Forma do Jogo                 | All      | Mission loop and play expectations.              |
-| 4      | `life-under-control`          | Life Under Control          | Vida sob Controle               | All      | Original setting pressures.                      |
-| 5      | `beyond-the-arcology`         | Beyond the Arcology         | Além da Arcologia               | All      | Exterior and public/GM context boundary.         |
-| 6      | `resistance-and-factions`     | Resistance and Factions     | Resistência e Facções           | All      | Faction relationships.                           |
-| 7      | `running-return-of-the-night` | Running Return of the Night | Conduzindo Return of the Night  | GM       | GM preparation.                                  |
-| 8      | `campaign-frames`             | Campaign Frames             | Estruturas de Campanha          | GM       | Campaign starting points and escalation.         |
-| 9      | `reference-and-workspace`     | Reference and Workspace     | Referência e Espaço de Trabalho | All      | Future quick reference and glossary destination. |
+| Number | Stable ID                          | EN page title | PT-BR page title | Audience | Role                                     |
+| ------ | ---------------------------------- | ------------- | ---------------- | -------- | ---------------------------------------- |
+| 0      | `the-world-under-the-infinite-day` | Three Lives   | Três Vidas       | All      | Introduces the world and themes of play. |
+
+This is the current draft, not a promise about the eventual structure. New chapters can be added, reordered, or removed as the book develops, provided every supported locale stays structurally aligned.
 
 ## Validation coverage
 
-The `how-to-read-this-book` pair exercises figures, tables, responsive columns, note/warning/example callouts, Player/GM blocks, heading navigation, and language-specific routing. The other chapters provide the complete table-of-contents, grouping, reader-navigation, audience, and responsive-content surface.
+The reader continues to support figures, tables, responsive columns, callouts, Player/GM blocks, heading navigation, and language-specific routing. Those features are not currently represented by a dedicated chapter fixture; authors should use them only when they improve the book content.
 
-The content tests require the exact chapter map in both locales and compare book, number, order, audience, and status. They also require matching localized book-config group IDs, group audiences, and chapter membership, glossary IDs and types, and inline glossary references for matching chapters. Player mode excludes the GM Toolkit from the visible index and recomputes visible numbering; GM mode includes every placeholder chapter. Reader locale controls resolve translated chapters by shared logical ID; if a counterpart is absent, they route to a localized Table-of-Contents notice instead of a broken URL.
+Content tests do not require a fixed number of chapters or predetermined IDs. They require non-empty EN and PT-BR editions with matching chapter IDs in order; then compare each pair's book, number, order, audience, and status. They also require matching localized book-config group IDs, group audiences, chapter membership, glossary IDs and types, and inline glossary references for matching chapters. Reader locale controls resolve translated chapters by shared logical ID; if a counterpart is absent, they route to a localized Table-of-Contents notice instead of a broken URL.
 
-## Placeholder glossary map
+## Glossary status
 
-The temporary glossary includes aligned EN/PT-BR entries for `arcology`, `endless-day`, `access-chip`, `exposure`, `corporate-heat`, and `night-network`. It is intentionally content-only until the interactive glossary implementation begins.
+The current glossary entries are provisional placeholders used to establish stable IDs and inline references while the setting is being written. They are not yet canonical definitions. Every entry still needs an EN/PT-BR counterpart with the same `id` and `type`; terms such as corporation and its in-world slang can be added when their canonical wording is ready.

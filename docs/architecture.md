@@ -19,7 +19,7 @@ That choice is intentional. The current architecture prioritizes:
 - progressive complexity over premature abstraction
 - open-source readiness over fast visual polish
 
-At the moment, the project is a static Astro application with repository-quality tooling, locale-prefixed routes, Astro content collections, typed schemas, a complete bilingual placeholder corpus, a localized glossary index with inline reader interactions, a cover route, a project Home route, a content-backed Table of Contents route, and generated chapter reader pages that render MDX content.
+At the moment, the project is a static Astro application with repository-quality tooling, locale-prefixed routes, Astro content collections, typed schemas, an actively written PT-BR-first bilingual book, a localized glossary index with inline reader interactions, a cover route, a project Home route, a content-backed Table of Contents route, and generated chapter reader pages that render MDX content.
 
 ## Core system layers
 
@@ -109,7 +109,8 @@ Current implementation status:
 - `src/pages/[lang]/glossary/index.astro` provides localized glossary indexes
 - Astro content collections are registered in `src/content.config.ts`
 - typed schemas exist for `chapters`, `glossary`, and `book-config`
-- complete placeholder content exists for ten English chapters, ten PT-BR chapters, six glossary entries per locale, and localized book-config entries with aligned group membership
+- current chapter drafts exist in PT-BR and English with aligned metadata; the final chapter map is intentionally open while writing proceeds
+- provisional glossary entries exist in both locales and will be replaced with setting definitions during editorial work
 - chapter metadata utilities support listing by language/book, stable ordering, and previous/next resolution
 - TOC utilities support metadata-driven grouping, configured groups, fallback ungrouped entries, and effective chapter audiences derived from chapter and group metadata
 - chapter route utilities generate reader links from content slugs; localization utilities resolve translated chapters by logical ID and expose an explicit missing-translation fallback
@@ -127,7 +128,7 @@ The current implementation includes:
 - locale-prefixed cover, project Home, and Table of Contents routes
 - audience and theme preference persistence, including a Paper theme limited to book routes
 - typed Astro content collections for chapters, glossary, and book config
-- complete PT-BR-first bilingual placeholder corpus with shared logical IDs and localized slugs
+- PT-BR-first bilingual chapter drafts with shared logical IDs and localized slugs; no fixed final chapter count
 - metadata utilities for chapter listing, ordering, adjacent navigation, TOC grouping, reader link generation, glossary lookup, and glossary-reference validation
 - a content-backed Table of Contents with empty states, orientation cues, theme controls, and responsive behavior
 - generated chapter reader pages with plain MDX rendering, current-chapter sidebar navigation, previous/next chapter navigation, stable heading anchors, working section links, responsive fallback behavior, sparse-heading safeguards, persistent dark/light themes, a Paper theme limited to book routes, compact keyboard-dismissible mobile navigation, a back-to-top control, a shared reader MDX component surface, semantic figure rendering, styled responsive Markdown table rendering, responsive reader column rendering, semantic callout rendering, audience-conditional block rendering, and interactive glossary definitions

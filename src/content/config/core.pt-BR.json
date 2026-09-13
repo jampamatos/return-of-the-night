@@ -2,7 +2,7 @@
   "book": "core",
   "lang": "pt-BR",
   "bookTitle": "Return of the Night",
-  "bookSubtitle": "Uma estrutura placeholder bilíngue para validar o livro-base completo antes da escrita do texto final.",
+  "bookSubtitle": "Um RPG cyberpunk sobre dívida, vigilância e um mundo que esqueceu a noite.",
   "navigation": {
     "tableOfContents": "Sumário",
     "previousChapter": "Capítulo Anterior",
@@ -11,40 +11,11 @@
   },
   "chapterGroups": [
     {
-      "id": "start-here",
-      "label": "Comece Aqui",
-      "description": "Como usar este livro inacabado, mas totalmente testável.",
+      "id": "the-world-under-the-infinite-day",
+      "label": "O Mundo Sob o Dia Infinito",
+      "description": "\"Viver é fúria e folia rumo ao mágico\"",
       "order": 0,
       "chapterNumbers": [0]
-    },
-    {
-      "id": "player-guide",
-      "label": "Guia do Jogador",
-      "description": "O mundo público, personagens e pressão cotidiana.",
-      "order": 1,
-      "chapterNumbers": [1, 2, 3, 4]
-    },
-    {
-      "id": "world-in-conflict",
-      "label": "Mundo em Conflito",
-      "description": "O cenário mais amplo e suas possibilidades disputadas.",
-      "order": 2,
-      "chapterNumbers": [5, 6]
-    },
-    {
-      "id": "gm-toolkit",
-      "label": "Ferramentas para o Mestre",
-      "description": "Placeholders de preparação para conduzir o cenário.",
-      "order": 3,
-      "audience": "gm",
-      "chapterNumbers": [7, 8]
-    },
-    {
-      "id": "reference",
-      "label": "Referência",
-      "description": "Uma superfície de teste para material de consulta rápida.",
-      "order": 4,
-      "chapterNumbers": [9]
     }
   ]
 }

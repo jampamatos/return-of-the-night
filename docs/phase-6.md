@@ -6,7 +6,7 @@ Add the features that make the reader more powerful and closer to the intended v
 
 ## Status
 
-Completed. The repository implements every Phase 6 block type and exercises it through the bilingual placeholder book structure. The completed feature set is covered by formatting, linting, Astro typechecking, production builds, unit/content tests, and Chromium accessibility tests with Node.js 22.19.0 and npm 11.7.0. The placeholder material remains temporary until final prose is written.
+Completed. The repository implements every Phase 6 block type. The former placeholder fixture chapter was retired when active book writing began, so rich-content features are now available for deliberate use in authored chapters rather than required by a standing content fixture. The completed feature set remains covered by formatting, linting, Astro typechecking, production builds, unit/content tests, and Chromium accessibility tests with Node.js 22.19.0 and npm 11.7.0.
 
 ## Deliverables
 

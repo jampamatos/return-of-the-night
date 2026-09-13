@@ -2,7 +2,7 @@
 
 Return of the Night is an open-source web platform for reading RPG rulebooks, setting books, campaign books, and compendiums through a content-first digital-book experience.
 
-The current codebase is a plain Astro application with a cover-first entry, a localized project home, typed content collections, a complete bilingual placeholder chapter and glossary corpus, metadata utilities for chapter ordering and glossary lookup, a content-backed Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, section deep links, and a shared rich-content surface for figures, tables, columns, callouts, and audience-filtered blocks.
+The current codebase is a plain Astro application with a cover-first entry, a localized project home, typed content collections, an in-progress PT-BR-first bilingual book, metadata utilities for chapter ordering and glossary lookup, a content-backed Table of Contents, and generated chapter reader pages with MDX rendering, current-chapter navigation, previous/next links, heading anchors, section deep links, and a shared rich-content surface for figures, tables, columns, callouts, and audience-filtered blocks.
 
 ## Current status
 
@@ -16,7 +16,7 @@ The current codebase is a plain Astro application with a cover-first entry, a lo
 - The root route `/` redirects to the current default locale, `en`.
 - The project registers Astro content collections for `chapters`, `glossary`, and `book-config` in [`src/content.config.ts`](src/content.config.ts).
 - Chapters, glossary entries, and book config are validated through typed Zod schemas under [`src/lib/content/schemas/`](src/lib/content/schemas/).
-- The repository includes a complete bilingual placeholder book map: every planned core chapter and glossary entry has aligned PT-BR and English content, stable logical IDs, localized slugs, and generated reader routes.
+- Book prose is now in active development. Chapters are written in PT-BR with an immediate English translation; the final chapter count and map are intentionally not fixed yet.
 - Metadata utilities now support chapter listing by language and book, stable reading order, adjacent chapter resolution, glossary listing by language, and glossary lookup by logical ID.
 - The route `/{lang}/book/` renders the current book home and Table of Contents from real content metadata.
 - The Table of Contents supports metadata-driven ordering, book-config grouping, fallback grouping for sparse localized content, chapter-reader links, empty states, orientation cues, and basic responsive behavior.
@@ -40,8 +40,8 @@ The current codebase is a plain Astro application with a cover-first entry, a lo
 
 ## Content and Reader Status
 
-- `src/content/chapters/en/` and `src/content/chapters/pt-BR/` contain aligned placeholder chapters for the MVP book.
-- `src/content/glossary/en/` and `src/content/glossary/pt-BR/` contain aligned placeholder glossary entries.
+- `src/content/chapters/en/` and `src/content/chapters/pt-BR/` contain the current aligned book drafts.
+- `src/content/glossary/en/` and `src/content/glossary/pt-BR/` contain provisional bilingual glossary entries to be developed alongside the book.
 - `src/content/config/` contains aligned English and PT-BR book-level configuration for the MVP book.
 - `src/lib/content/chapters.ts` provides chapter listing, ordering, and adjacent-entry utilities.
 - `src/lib/content/toc.ts` provides metadata-driven grouping for the Table of Contents.
@@ -71,7 +71,7 @@ The documents in [`docs/`](docs/) are the source of truth for this repository.
 - [`docs/shell-reading-and-visual-guidelines.md`](docs/shell-reading-and-visual-guidelines.md): the current visual and reading-direction guide for the shell.
 - [`docs/writing-guide.md`](docs/writing-guide.md): minimum writing standards for repository artifacts and documentation language policy.
 - [`docs/open-source-and-spoiler-policy.md`](docs/open-source-and-spoiler-policy.md): open-source scope, spoiler-mode limitations, and the PT-BR-to-English authoring workflow.
-- [`docs/placeholder-book-structure.md`](docs/placeholder-book-structure.md): the temporary bilingual chapter map and its validation rules.
+- [`docs/placeholder-book-structure.md`](docs/placeholder-book-structure.md): current book-content status and dynamic bilingual validation rules.
 - [`docs/interactive-glossary.md`](docs/interactive-glossary.md): inline term syntax, reader behavior, and glossary validation rules.
 - [`docs/editorial-guide.md`](docs/editorial-guide.md): practical PT-BR-first chapter and glossary workflow, review checklist, and reusable templates.
 - [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md): compatibility and third-party intellectual-property notices, including Cities Without Number.
@@ -106,9 +106,7 @@ The development server starts the cover, project Home, content-backed Table of C
 - `/en/book/`
 - `/pt-BR/book/`
 - `/en/book/getting-started/reading-the-book/`
-- `/en/book/getting-started/reading-the-book/#reader-feature-fixture`
-- `/en/book/gm-toolkit/running-return-of-the-night/`
-- `/pt-BR/book/comecando/como-ler-o-livro/`
+- `/pt-BR/book/o-mundo-sob-o-dia-infinito/`
 
 ## Available scripts
 
@@ -144,7 +142,7 @@ The long-term direction is to build a maintainable RPG digital-book platform wit
 - localization support, starting with English and PT-BR
 - a writing workflow that stays close to Markdown and MDX
 
-The repository has a working foundation, base shell, content engine, complete bilingual placeholder book structure, Table of Contents, chapter reader, localized glossary index, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, semantic reader callouts, audience-filtered reader blocks, and accessible contextual glossary definitions.
+The repository has a working foundation, base shell, content engine, actively written bilingual book, Table of Contents, chapter reader, localized glossary index, semantic figure support, styled Markdown table support, directive-authored columns with responsive reader rendering, semantic reader callouts, audience-filtered reader blocks, and accessible contextual glossary definitions.
 
 ## Licensing
 

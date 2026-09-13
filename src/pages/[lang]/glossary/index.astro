@@ -10,6 +10,7 @@ import {
   type Locale,
 } from "../../../config/site";
 import { listGlossaryEntriesByLanguage } from "../../../lib/glossary/entries";
+import { getGlossaryTypeLabel } from "../../../lib/glossary/types";
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({ params: { lang } }));
@@ -38,7 +39,7 @@ const copy =
         description: "Glossário de termos de Return of the Night.",
         eyebrow: "Referência do livro",
         heading: "Glossário",
-        body: "Definições e termos compartilhados do livro. Cada entrada é um placeholder bilíngue pronto para a prosa final.",
+        body: "Definições e termos compartilhados do livro. O glossário está em desenvolvimento e suas entradas atuais ainda são provisórias.",
         home: "Início",
         contents: "Sumário",
         language: "Idioma",
@@ -50,7 +51,7 @@ const copy =
         description: "Glossary of Return of the Night terms.",
         eyebrow: "Book reference",
         heading: "Glossary",
-        body: "Shared terms and definitions from the book. Every entry is a bilingual placeholder ready for final prose.",
+        body: "Shared terms and definitions from the book. The glossary is in development and its current entries are provisional.",
         home: "Home",
         contents: "Table of Contents",
         language: "Language",
@@ -102,13 +103,7 @@ const audienceOptions = AUDIENCES.map((audience) => ({
           <article id={entry.data.id} class="glossary-entry">
             <div class="glossary-entry__term">
               <p class="glossary-entry__type">
-                {lang === "pt-BR"
-                  ? entry.data.type === "term"
-                    ? "Termo"
-                    : "Regra"
-                  : entry.data.type === "term"
-                    ? "Term"
-                    : "Rule"}
+                {getGlossaryTypeLabel(entry.data.type, lang)}
               </p>
               <h2>{entry.data.term}</h2>
             </div>

@@ -8,9 +8,9 @@ The source of truth for detailed scope, architecture direction, and implementati
 
 The repository has completed **Phase 9 — Reader controls and layout refinement**.
 
-The current implementation checkpoint is **Editorial authoring readiness**.
+The current implementation checkpoint is **Active editorial writing**.
 
-The next project milestone is **writing the final PT-BR prose with immediate English translations**.
+The next project milestone is **growing the PT-BR-first book with immediate English translations**.
 
 ## Planned phases
 
@@ -86,14 +86,14 @@ Add expressive content blocks and reader features:
 - callouts
 - audience-conditional blocks
 
-### Content readiness checkpoint — Complete bilingual placeholder book structure ✅
+### Content readiness checkpoint — Bilingual content contract ✅
 
-Validate the full book surface before final prose is written:
+Validate the content model and reader surface before active writing:
 
-- complete PT-BR-first placeholder chapters with immediate English counterparts
-- localized book configuration and complete Table of Contents groups
-- aligned placeholder glossary entries
-- parity checks for stable chapter IDs, metadata, and group membership
+- PT-BR-first authoring with immediate English counterparts
+- localized book configuration and content-backed Table of Contents groups
+- aligned provisional glossary entries
+- dynamic parity checks for localized chapter IDs, metadata, and group membership
 
 ### Phase 7 — Interactive glossary ✅
 
@@ -130,6 +130,14 @@ Prepare the validated book structure for final prose:
 - PT-BR-first and immediate-English authoring workflow
 - reusable chapter and glossary templates for both locales
 - practical editorial guidance and a ready-for-review checklist
+
+### Active editorial writing ← Next
+
+Write the book without a predetermined chapter count:
+
+- grow the chapter map from the material as it is authored
+- maintain PT-BR and English entries together
+- replace provisional glossary text with canonical setting definitions when the terms stabilize
 
 ### Phase 10 — Contribution docs and hardening
 

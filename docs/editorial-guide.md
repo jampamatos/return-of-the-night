@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This guide is the working path for turning the validated placeholder corpus into final book prose. It complements the repository-wide [Writing Guide](./writing-guide.md) with the practical decisions needed for chapters and glossary entries.
+This guide is the working path for the active book-writing phase. It complements the repository-wide [Writing Guide](./writing-guide.md) with the practical decisions needed for chapters and glossary entries.
 
 ## Authoring sequence
 

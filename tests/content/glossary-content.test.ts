@@ -31,7 +31,7 @@ async function listGlossaryIds(locale: "en" | "pt-BR") {
   );
 }
 
-describe("placeholder glossary content", () => {
+describe("glossary content", () => {
   it("keeps the same stable glossary IDs in both locales", async () => {
     const [englishEntries, portugueseEntries] = await Promise.all([
       listGlossaryIds("en"),
@@ -49,14 +49,8 @@ describe("placeholder glossary content", () => {
       Array(portugueseEntries.length).fill("pt-BR"),
     );
 
-    expect(englishEntries.map((entry) => entry.id).sort()).toEqual([
-      "access-chip",
-      "arcology",
-      "corporate-heat",
-      "endless-day",
-      "exposure",
-      "night-network",
-    ]);
+    expect(englishEntries.length).toBeGreaterThan(0);
+    expect(portugueseEntries.length).toBeGreaterThan(0);
     expect(portugueseEntries.map((entry) => entry.id).sort()).toEqual(
       englishEntries.map((entry) => entry.id).sort(),
     );

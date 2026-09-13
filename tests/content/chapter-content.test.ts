@@ -28,19 +28,6 @@ interface ChapterSource {
   body: string;
 }
 
-const expectedChapterIds = [
-  "how-to-read-this-book",
-  "the-world-under-endless-day",
-  "characters-at-the-threshold",
-  "the-shape-of-play",
-  "life-under-control",
-  "beyond-the-arcology",
-  "resistance-and-factions",
-  "running-return-of-the-night",
-  "campaign-frames",
-  "reference-and-workspace",
-] as const;
-
 function getFrontmatter(source: string): Record<string, string> {
   const match = source.match(/^---\r?\n(?<frontmatter>[\s\S]*?)\r?\n---/);
   const frontmatter = match?.groups?.frontmatter;
@@ -116,8 +103,6 @@ describe("chapter source content", () => {
       expect(chapter.fields.lang).toBe(chapter.localeDirectory);
       expect(Number.isFinite(Number(chapter.fields.chapterNumber))).toBe(true);
       expect(Number.isFinite(Number(chapter.fields.order))).toBe(true);
-      expect(chapter.body.toLowerCase()).toContain("placeholder");
-
       const logicalIdentity = `${chapter.fields.lang}/${chapter.fields.book}/${chapter.fields.id}`;
       const localizedRoute = `${chapter.fields.lang}/${chapter.fields.slug}`;
 
@@ -129,7 +114,7 @@ describe("chapter source content", () => {
     }
   });
 
-  it("keeps the complete chapter map aligned across both locales", async () => {
+  it("keeps the localized chapter maps aligned", async () => {
     const chapters = await listChapterSources();
     const chaptersByLocale = new Map(
       ["en", "pt-BR"].map((locale) => [
@@ -146,11 +131,10 @@ describe("chapter source content", () => {
     const englishChapters = chaptersByLocale.get("en") ?? [];
     const portugueseChapters = chaptersByLocale.get("pt-BR") ?? [];
 
+    expect(englishChapters.length).toBeGreaterThan(0);
+    expect(portugueseChapters.length).toBeGreaterThan(0);
     expect(englishChapters.map((chapter) => chapter.fields.id)).toEqual(
-      expectedChapterIds,
-    );
-    expect(portugueseChapters.map((chapter) => chapter.fields.id)).toEqual(
-      expectedChapterIds,
+      portugueseChapters.map((chapter) => chapter.fields.id),
     );
 
     for (const englishChapter of englishChapters) {

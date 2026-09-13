@@ -2,7 +2,7 @@
   "book": "core",
   "lang": "en",
   "bookTitle": "Return of the Night",
-  "bookSubtitle": "A bilingual placeholder structure for validating the complete core book before final prose is written.",
+  "bookSubtitle": "A cyberpunk RPG about debt, surveillance, and a world that forgot the night.",
   "navigation": {
     "tableOfContents": "Table of Contents",
     "previousChapter": "Previous Chapter",
@@ -11,40 +11,11 @@
   },
   "chapterGroups": [
     {
-      "id": "start-here",
-      "label": "Start Here",
-      "description": "How to use this unfinished but fully testable book.",
+      "id": "the-world-under-the-infinite-day",
+      "label": "The World Under the Infinite Day",
+      "description": "\"Living is fury and revelry toward the magical\"",
       "order": 0,
       "chapterNumbers": [0]
-    },
-    {
-      "id": "player-guide",
-      "label": "Player Guide",
-      "description": "The public world, characters, and daily pressure.",
-      "order": 1,
-      "chapterNumbers": [1, 2, 3, 4]
-    },
-    {
-      "id": "world-in-conflict",
-      "label": "World in Conflict",
-      "description": "The wider setting and its contested possibilities.",
-      "order": 2,
-      "chapterNumbers": [5, 6]
-    },
-    {
-      "id": "gm-toolkit",
-      "label": "GM Toolkit",
-      "description": "Preparation-facing placeholders for running the setting.",
-      "order": 3,
-      "audience": "gm",
-      "chapterNumbers": [7, 8]
-    },
-    {
-      "id": "reference",
-      "label": "Reference",
-      "description": "A testing surface for quick-reference material.",
-      "order": 4,
-      "chapterNumbers": [9]
     }
   ]
 }

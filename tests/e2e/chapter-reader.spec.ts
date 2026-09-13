@@ -75,58 +75,18 @@ test.describe("chapter reader", () => {
     );
   });
 
-  test("filters GM-facing groups and chapters while keeping TOC numbering dynamic", async ({
+  test("updates the reading-mode preference without assuming a chapter map", async ({
     page,
   }) => {
     await page.goto("/en/book/");
 
-    const gmGroup = page.locator('[data-toc-group-audience="gm"]');
-    const referenceGroup = page
-      .locator("[data-toc-group]")
-      .filter({ hasText: "Reference" });
-
-    await expect(gmGroup).toBeHidden();
-    await expect(page.locator("[data-toc-visible-group-count]")).toHaveText(
-      "4",
-    );
-    await expect(referenceGroup.locator("[data-toc-group-index]")).toHaveText(
-      "04",
-    );
-
     await page.getByRole("button", { name: "GM" }).click();
-
-    await expect(gmGroup).toBeVisible();
-    await expect(page.locator("[data-toc-visible-group-count]")).toHaveText(
-      "5",
-    );
-    await expect(referenceGroup.locator("[data-toc-group-index]")).toHaveText(
-      "05",
-    );
-  });
-
-  test("gates a GM chapter in Player mode and skips it in chapter navigation", async ({
-    page,
-  }) => {
-    await page.goto("/en/book/gm-toolkit/running-return-of-the-night/");
-
-    const gate = page.locator("[data-reader-audience-gate]");
-    const chapterContent = page.locator(
-      "[data-reader-chapter-visible-content]",
-    );
-
-    await expect(gate).toBeVisible();
-    await expect(chapterContent).toBeHidden();
-
-    await gate.getByRole("button", { name: "Open facilitator mode" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-audience", "gm");
-    await expect(gate).toBeHidden();
-    await expect(chapterContent).toBeVisible();
 
     await page.getByRole("button", { name: "Player" }).click();
-    await page.goto("/en/book/world-in-conflict/resistance-and-factions/");
-    await expect(page.locator('[data-reader-nav-link="next"]')).toHaveAttribute(
-      "href",
-      "/en/book/reference/reference-and-workspace/",
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-audience",
+      "player",
     );
   });
 
@@ -135,7 +95,7 @@ test.describe("chapter reader", () => {
   }) => {
     for (const path of [
       "/en/book/getting-started/reading-the-book/",
-      "/pt-BR/book/referencia/referencia-e-espaco-de-trabalho/",
+      "/pt-BR/book/o-mundo-sob-o-dia-infinito/",
     ]) {
       await page.setViewportSize({ width: 1366, height: 768 });
       await page.goto(path);
@@ -191,56 +151,6 @@ test.describe("chapter reader", () => {
     await expect(page.locator("html")).toHaveAttribute("data-theme", "paper");
   });
 
-  test("renders the rich-content fixture and switches reading mode", async ({
-    page,
-  }) => {
-    await page.goto("/en/book/getting-started/reading-the-book/");
-
-    await expect(
-      page.getByRole("heading", { level: 1, name: "How to Read This Book" }),
-    ).toBeVisible();
-    await expect(
-      page.locator('[data-reader-nav-link="previous"]'),
-    ).toBeHidden();
-    await expect(
-      page.locator('[data-reader-nav-empty="previous"]'),
-    ).toBeVisible();
-    await expect(page.locator('[data-reader-nav-link="next"]')).toBeVisible();
-    await expect(page.locator('[data-reader-nav-empty="next"]')).toBeHidden();
-    await expect(page.locator("figure")).toHaveCount(1);
-    await expect(page.locator(".reader-table")).toHaveCount(2);
-    await expect(page.locator(".reader-columns")).toHaveCount(1);
-    await expect(page.locator(".reader-callout")).toHaveCount(3);
-    await expect(
-      page.locator(".reader-callout--warning .reader-callout__label"),
-    ).toHaveText("WARNING // Public build");
-    await expect(
-      page.locator(".reader-callout--note .reader-callout__label").last(),
-    ).toHaveText("NOTE // Translation workflow");
-    await expect(
-      page.locator(".reader-audience--player .reader-audience__label"),
-    ).toHaveText("PLAYER // Public reading");
-
-    const playerBlock = page.getByText(
-      "This player-facing placeholder reserves an explanation",
-    );
-    const gmBlock = page.getByText(
-      "This GM-facing placeholder reserves a reminder",
-    );
-
-    await expect(playerBlock).toBeVisible();
-    await expect(gmBlock).toBeHidden();
-
-    await page.getByRole("button", { name: "GM" }).click();
-
-    await expect(page.locator("html")).toHaveAttribute("data-audience", "gm");
-    await expect(playerBlock).toBeHidden();
-    await expect(gmBlock).toBeVisible();
-    await expect(
-      page.locator(".reader-audience--gm .reader-audience__label"),
-    ).toHaveText("GM // Facilitator reading");
-  });
-
   test("returns to the chapter opening from long reader content", async ({
     page,
   }) => {
@@ -266,10 +176,10 @@ test.describe("chapter reader", () => {
     await page.getByRole("link", { name: "pt-BR" }).click();
 
     await expect(page).toHaveURL(
-      /\/pt-BR\/book\/comecando\/como-ler-o-livro\/$/,
+      /\/pt-BR\/book\/o-mundo-sob-o-dia-infinito\/$/,
     );
     await expect(
-      page.getByRole("heading", { level: 1, name: "Como Ler Este Livro" }),
+      page.getByRole("heading", { level: 1, name: "Três Vidas" }),
     ).toBeVisible();
   });
 

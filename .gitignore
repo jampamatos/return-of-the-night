@@ -16,3 +16,6 @@ npm-debug.log*
 MEMORY.md
 
 docs/cwn
+
+# My personal text example file
+docs/templates/_test.mdx
